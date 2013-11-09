@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="60" height="60" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
+  <image source="tmx/tileset.png" width="512" height="832"/>
+  <tile id="0" terrain="0,0,0,2"/>
+  <tile id="1" terrain="0,0,2,2"/>
+  <tile id="2" terrain="0,0,2,0"/>
+  <tile id="3" terrain="0,0,0,0">
+   <properties>
+    <property name="grass" value="1"/>
+   </properties>
+  </tile>
+  <tile id="4" terrain="0,0,0,0">
+   <properties>
+    <property name="grass" value="1"/>
+   </properties>
+  </tile>
+  <tile id="5" terrain="1,1,1,1">
+   <properties>
+    <property name="concrete" value="1"/>
+   </properties>
+  </tile>
+  <tile id="6" terrain="1,1,1,1">
+   <properties>
+    <property name="concrete" value="1"/>
+   </properties>
+  </tile>
+  <tile id="11" terrain="0,0,0,4"/>
+  <tile id="12" terrain="0,0,4,4"/>
+  <tile id="13" terrain="0,0,4,0"/>
+  <tile id="16" terrain="0,2,0,2"/>
+  <tile id="17" terrain="2,2,2,2">
+   <properties>
+    <property name="water" value="1"/>
+   </properties>
+  </tile>
+  <tile id="18" terrain="2,0,2,0"/>
+  <tile id="19" terrain="0,0,0,0">
+   <properties>
+    <property name="grass" value="1"/>
+   </properties>
+  </tile>
+  <tile id="20" terrain="0,0,0,0">
+   <properties>
+    <property name="grass" value="1"/>
+   </properties>
+  </tile>
+  <tile id="21" terrain="1,1,1,1">
+   <properties>
+    <property name="concrete" value="1"/>
+   </properties>
+  </tile>
+  <tile id="22" terrain="1,1,1,1">
+   <properties>
+    <property name="concrete" value="1"/>
+   </properties>
+  </tile>
+  <tile id="27" terrain="0,4,0,4"/>
+  <tile id="28" terrain="4,4,4,4">
+   <properties>
+    <property name="field" value="1"/>
+   </properties>
+  </tile>
+  <tile id="29" terrain="4,0,4,0"/>
+  <tile id="32" terrain="0,2,0,0"/>
+  <tile id="33" terrain="2,2,0,0"/>
+  <tile id="34" terrain="2,0,0,0"/>
+  <tile id="43" terrain="0,4,0,0"/>
+  <tile id="44" terrain="4,4,0,0"/>
+  <tile id="45" terrain="4,0,0,0"/>
+  <tile id="48" terrain="0,0,0,3"/>
+  <tile id="49" terrain="0,0,3,3"/>
+  <tile id="50" terrain="0,0,3,0">
+   <properties>
+    <property name="mud" value="1"/>
+   </properties>
+  </tile>
+  <tile id="59" terrain="0,0,0,5"/>
+  <tile id="60" terrain="0,0,5,5"/>
+  <tile id="61" terrain="0,0,5,0"/>
+  <tile id="64" terrain="0,3,0,3"/>
+  <tile id="65" terrain="3,3,3,3">
+   <properties>
+    <property name="mud" value="1"/>
+   </properties>
+  </tile>
+  <tile id="66" terrain="3,0,3,0"/>
+  <tile id="75" terrain="0,5,0,5"/>
+  <tile id="76" terrain="5,5,5,5"/>
+  <tile id="77" terrain="5,0,5,0"/>
+  <tile id="80" terrain="0,3,0,0"/>
+  <tile id="81" terrain="3,3,0,0"/>
+  <tile id="82" terrain="3,0,0,0"/>
+  <tile id="91" terrain="0,5,0,0"/>
+  <tile id="92" terrain="5,5,0,0"/>
+  <tile id="93" terrain="5,0,0,0"/>
+ </tileset>
+ <layer name="ground" width="60" height="60">
+  <data encoding="base64" compression="zlib">
+   eJzt0bENwDAQA7EvnA2S/VeNZ3AjQGYhXC+umXn21iV9976Lmv6bL1++fPny5dvf9N98+fLly5cv3/6m/+bLly9fvnz59jf9N1++fPny5cu3v+m/+fLly5cvX779Tf/Nly9fvnz58u1v+m++fPme9wfFc6/J
+  </data>
+ </layer>
+</map>

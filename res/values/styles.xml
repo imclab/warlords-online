@@ -1,0 +1,180 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <!-- SPLASHSCREEN -->
+    <style name="SplashScreenTitle">
+        <item name="android:textSize">60sp</item>
+        <item name="android:textColor">#ddd</item>
+    </style>
+
+    <!-- HOMESCREEN -->
+    <style name="HomeScreenButton">
+        <item name="android:width">265dp</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:background">@drawable/bg_btn_home</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- SETTINGS -->
+    <style name="DifficultyRadioButton">
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/bg_radio_btn</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:drawablePadding">8dp</item>
+    </style>
+
+    <style name="SettingsLabel">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="SettingsSmallButton" parent="@style/ArmyBuilderSmallButton">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <!-- ABOUT -->
+    <style name="AboutDialogText" parent="@style/SettingsLabel">
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textColorHighlight">@color/bg_btn_green</item>
+        <item name="android:textColorLink">@color/link</item>
+    </style>
+
+    <!-- BATTLE CHOOSER -->
+    <style name="BattleChooserTitle" parent="@style/ArmyBuilderTitle">
+        <item name="android:background">@drawable/bg_title</item>
+    </style>
+
+    <style name="MapTitle" parent="@style/SettingsLabel">
+        <item name="android:textSize">26sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- ARMY BUILDER -->
+    <style name="ArmyBuilderTitle" parent="@style/SettingsLabel">
+        <item name="android:textSize">32sp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="ArmyBuilderSubTitle" parent="@style/SettingsLabel">
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="ArmyBuilderText" parent="@style/SettingsLabel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">3dp</item>
+    </style>
+
+    <style name="ArmyBuilderColumn">
+        <item name="android:background">@drawable/bg_army_column</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="ArmyBuilderTroopsList">
+        <item name="android:scrollbarSize">1dp</item>
+        <item name="android:overScrollMode">never</item>
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:listSelector">@android:color/transparent</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:dividerHeight">5.0sp</item>
+    </style>
+
+    <style name="ArmyBuilderSmallButton">
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/bg_btn_home</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="UnitText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="UnitEfficiency" parent="@style/UnitText">
+        <item name="android:textSize">11sp</item>
+        <item name="android:width">20dp</item>
+        <item name="android:height">20dp</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bg_unit_efficiency_black</item>
+    </style>
+
+    <!-- ARMY BUILDER -->
+    <style name="Quote" parent="@style/SettingsLabel">
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <!-- DIALOGS -->
+    <style name="FullScreenDialog" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+        <item name="@android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Dialog" parent="@android:style/Theme.Holo.Dialog.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+        <item name="@android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
+    <style name="AlertDialogButton">
+        <item name="android:background">@drawable/bg_alert_dialog_btn</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- CAMPAIGN -->
+    <style name="IntroductionText" parent="@style/SettingsLabel">
+        <item name="android:textSize">26sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <!-- IN GAME -->
+    <style name="WeaponAmmo" parent="@style/UnitText">
+        <item name="android:textSize">10sp</item>
+        <item name="android:width">16dp</item>
+        <item name="android:height">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bg_weapon_ammo</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="bg_btn_pressed">#88000000</color>
+    <color name="bg_btn_green_pressed">#881E4224</color>
+    <color name="bg_btn_green">#1E4224</color>
+    <color name="bg_home">#55000000</color>
+    <color name="link">#23541D</color>
+    <color name="requisitionPoints">#EDEA39</color>
+    <color name="grey">#D4CDCD</color>
+    <color name="red">#D10000</color>
+    <color name="orange">#FF9F38</color>
+    <color name="yellow">#EDEA39</color>
+    <color name="green">#84dd38</color>
+    <color name="recruit">#6BB3D6</color>
+    <color name="veteran">#ffffff</color>
+    <color name="elite">#999999</color>
+    <color name="yellow_bullet">#D9B904</color>
+    <color name="bg_game_gui">#aa000000</color>
+    <color name="bg_game_menu">#cc000000</color>
+
+</resources>

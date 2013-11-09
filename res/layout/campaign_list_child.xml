@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/black"
+    android:orientation="horizontal"
+    android:padding="8dp" >
+
+    <com.glevel.wwii.views.CustomTextView
+        android:id="@+id/text"
+        style="@style/ArmyBuilderSubTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_radio_btn"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/placeholder" />
+
+</LinearLayout>

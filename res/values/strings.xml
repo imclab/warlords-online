@@ -1,0 +1,144 @@
+<resources>
+
+    <string name="app_name">WWII Squad</string>
+    <string name="app_publisher">G-Level</string>
+    <string name="id">id</string>
+    <string name="placeholder">placeholder</string>
+    <string name="viewholder">placeholder</string>
+    <string name="cancel">Cancel</string>
+    <string name="coming_soon">Coming soon&#8230;</string>
+
+    <!-- Contact -->
+    <string name="mail_address">guillaume.gouchon@gmail.com</string>
+    <string name="contact_title">Question about </string>
+    <string name="contact_support_via">Contact support via&#8230;</string>
+    <string name="no_mail_client">There are no email clients installed on your device&#8230;</string>
+
+    <!-- Rate Dialog -->
+    <string name="rate_dont_want">No, thanks</string>
+    <string name="rate_later">Remind me later</string>
+    <string name="rate_now">Rate now !</string>
+    <string name="rate_title">Rate the app ?</string>
+    <string name="rate_message">If you enjoy using %s, please take a moment to rate it.\nThanks for your support !</string>
+
+    <!-- About Dialog -->
+    <string name="about_title">About WWII</string>
+    <string name="about_credits">Game, assets and music\nby <a href="http://www.linkedin.com/profile/view?id=144913212">Guillaume Gouchon</a>.</string>
+    <string name="about_blog">Check out <a href="http://glevelapps.blogspot.co.uk">my Blog</a> !</string>
+    <string name="about_contact"><a href="mailto:guillaume.gouchon@gmail.com">Contact me</a> if you have any issue or question.</string>
+    <string name="about_other_sources">The game is using And Engine by Nicolas Gramlich.\nHistorical sources from National Archives and Wikipedia.</string>
+    <string name="about_version">App version : 1.0</string>
+
+    <!-- Home Screen -->
+    <string name="solo">Play Solo</string>
+    <string name="multiplayer">Multiplayer</string>
+    <string name="settings">Settings</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="campaign">Campaign</string>
+    <string name="battle_mode">Battle Mode</string>
+    <string name="back">Back</string>
+    <string name="resume_saved_battle">You have a saved game located in %s, do you want to finish it ?\nIt will be lost if you start another battle.</string>
+
+    <!-- Settings -->
+    <string name="music_volume">Music / Sound</string>
+    <string name="music_off">Off</string>
+    <string name="music_on">On</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="about">About WWII</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="difficult">Hard</string>
+    <string name="rate_app">Rate the app</string>
+
+    <!-- Campaign Chooser -->
+    <string name="new_campaign">New Campaign</string>
+    <string name="load_campaign">Load Campaign</string>
+    <string name="no_saved_campaigns">No saved games yet&#8230;</string>
+
+    <!-- Battle Chooser -->
+    <string name="choose_army">Choose your side</string>
+    <string name="choose_map">Pick a map</string>
+
+    <!-- Army Builder -->
+    <string name="hire_troops">Hire your troops</string>
+    <string name="requisition_points">Requisition Points :</string>
+    <string name="your_army">Your Squad</string>
+    <string name="available_troops">Available Troops</string>
+    <string name="start_battle">Start Battle !</string>
+    <string name="no_troops">Hire some troops before !</string>
+    <string name="confirm_battle_message">You have some unused requisition points, continue to battlefield ?</string>
+    <string name="no_slots_left">No more unit slot left&#8230;\nSell one of your unit !</string>
+    <string name="not_enough_requisition">You do not have enough requisition points to hire this unit !</string>
+    <string name="buy">Hire</string>
+    <string name="sell">Sell</string>
+    <string name="confirm_transaction">%1$s %2$s for %3$s requisition points ?</string>
+    <string name="unit_image">Unit image</string>
+    <string name="frags_number">Frags : %1$s</string>
+    <string name="points">%1$s pts</string>
+    <string name="ap">AP</string>
+    <string name="at">AT</string>
+
+    <!-- Game -->
+    <string name="loading_game">Loading</string>
+    <string name="loading_dots">. . .</string>
+    <string name="game_paused">Pause</string>
+    <string name="surrender">Surrender</string>
+    <string name="confirm_surrender_message">Are you sure you want to surrender ?</string>
+    <string name="resume_game">Resume Game</string>
+    <string name="save_exit">Exit</string>
+    <string name="deployment_phase">Deployment Phase</string>
+    <string name="start">Deployment Done</string>
+    <string name="go">Go !</string>
+    <string name="victory">Victory !</string>
+    <string name="defeat">Defeat&#8230;</string>
+
+    <!-- Battle Report -->
+    <string name="battle_report">Battle Report</string>
+    <string name="leave_report">Leave Report</string>
+    <string name="enemy_army">Enemy\'s Army</string>
+
+    <!-- Campaign Screen -->
+    <string name="objective_points">Objective Points : %1$s / %2$s</string>
+    <string name="game_menu">Game Menu</string>
+    <string name="help">Help</string>
+    <string name="skip">Skip</string>
+
+    <!-- Armies -->
+    <string name="german_army">Germany</string>
+    <string name="usa_army">USA</string>
+
+    <!-- Weapons -->
+    <string name="grenade">Hand Grenade</string>
+    <string name="cannon75">Cannon 75mm</string>
+    <string name="garandM1">Garand M1</string>
+    <string name="thompson">Thompson</string>
+    <string name="browningM2">Browning M2</string>
+    <string name="mortar50">Mortar 50mm</string>
+    <string name="bazookaM1A">Bazooka</string>
+    <string name="mauser">Mauser G98</string>
+    <string name="mp40">MP 40</string>
+    <string name="mg42">MG 42</string>
+    <string name="mortar81">Mortar 81mm</string>
+    <string name="panzerschreck">Panzerschreck</string>
+    <string name="panzerfaust">Panzerfaust</string>
+    <string name="pak43">Pak43 88mm</string>
+
+    <!-- Units -->
+    <string name="rifleman">Rifleman</string>
+    <string name="scout">Scout</string>
+    <string name="hmg">Heavy MG</string>
+    <string name="mortar">Mortar</string>
+    <string name="at_cannon">Anti-tank Cannon</string>
+    <string name="bazooka">Bazooka</string>
+    <string name="shermanM4A1">Sherman M4A1</string>
+    <string name="pantherG">Panther G</string>
+
+    <!-- Campaigns -->
+    <string name="market_garden">Market Garden</string>
+    <string name="market_garden_intro_1">Operation Market-Garden
+        \nAfter the successes encountered in the Normandy Breakout from July through August 1944, it was believed that the German Army was a beaten foe and in retreat.
+        \nAs such, British General Montgomery lay forth a brazen plan to capture key bridges that would be required conquests for the final push into Germany, perhaps ending the war in Europe by Christmas of 1944.
+        \nMontgomery relayed his plan and, following acceptance by Supreme Allied Commander in Europe - US General Dwight Eisenhower - put the plan into action.
+        \nOn September 17th - just seven days after the official approval, Operation Market Garden was set in motion&#8230;</string>
+
+</resources>

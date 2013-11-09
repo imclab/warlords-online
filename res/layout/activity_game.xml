@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <org.andengine.opengl.view.RenderSurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.glevel.wwii.views.CustomTextView
+        android:id="@+id/bigLabel"
+        style="@style/SplashScreenTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/deployment_phase"
+        android:visibility="gone" />
+
+    <com.glevel.wwii.views.CustomButton
+        android:id="@+id/finishDeployment"
+        style="@style/ArmyBuilderSmallButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:text="@string/start" />
+
+    <include
+        android:id="@+id/selectedUnit"
+        android:layout_width="235dp"
+        android:layout_height="85dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="2dp"
+        layout="@layout/in_game_unit_layout"
+        android:visibility="gone" />
+
+</RelativeLayout>

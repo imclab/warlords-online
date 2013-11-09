@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_game_menu"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <com.glevel.wwii.views.CustomTextView
+        style="@style/SplashScreenTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="@string/game_menu" />
+
+    <com.glevel.wwii.views.CustomButton
+        android:id="@+id/resumeGameButton"
+        style="@style/HomeScreenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/resume_game" />
+
+    <com.glevel.wwii.views.CustomButton
+        android:id="@+id/exitButton"
+        style="@style/HomeScreenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/save_exit" />
+
+</LinearLayout>
