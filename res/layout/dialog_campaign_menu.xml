@@ -7,14 +7,14 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <com.glevel.wwii.views.CustomTextView
+    <com.giggs.apps.chaos.views.CustomTextView
         style="@style/SplashScreenTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:text="@string/game_menu" />
 
-    <com.glevel.wwii.views.CustomButton
+    <com.giggs.apps.chaos.views.CustomButton
         android:id="@+id/resumeGameButton"
         style="@style/HomeScreenButton"
         android:layout_width="wrap_content"
@@ -22,7 +22,7 @@
         android:layout_marginBottom="10dp"
         android:text="@string/resume_game" />
 
-    <com.glevel.wwii.views.CustomButton
+    <com.giggs.apps.chaos.views.CustomButton
         android:id="@+id/exitButton"
         style="@style/HomeScreenButton"
         android:layout_width="wrap_content"

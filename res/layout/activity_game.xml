@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.glevel.wwii.views.CustomTextView
+    <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/bigLabel"
         style="@style/SplashScreenTitle"
         android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
         android:text="@string/deployment_phase"
         android:visibility="gone" />
 
-    <com.glevel.wwii.views.CustomButton
+    <com.giggs.apps.chaos.views.CustomButton
         android:id="@+id/finishDeployment"
         style="@style/ArmyBuilderSmallButton"
         android:layout_width="wrap_content"

@@ -36,7 +36,7 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_launcher" />
 
-            <com.glevel.wwii.views.CustomTextView
+            <com.giggs.apps.chaos.views.CustomTextView
                 style="@style/SettingsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:gravity="center"
             android:orientation="vertical" >
 
-            <com.glevel.wwii.views.CustomButton
+            <com.giggs.apps.chaos.views.CustomButton
                 android:id="@+id/soloButton"
                 style="@style/HomeScreenButton"
                 android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                 android:layout_marginBottom="15dp"
                 android:text="@string/solo" />
 
-            <com.glevel.wwii.views.CustomButton
+            <com.giggs.apps.chaos.views.CustomButton
                 android:id="@+id/multiplayerButton"
                 style="@style/HomeScreenButton"
                 android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
                 android:layout_marginBottom="15dp"
                 android:text="@string/multiplayer" />
 
-            <com.glevel.wwii.views.CustomButton
+            <com.giggs.apps.chaos.views.CustomButton
                 android:id="@+id/settingsButton"
                 style="@style/HomeScreenButton"
                 android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
             android:gravity="center"
             android:orientation="vertical" >
 
-            <com.glevel.wwii.views.CustomButton
+            <com.giggs.apps.chaos.views.CustomButton
                 android:id="@+id/tutorialButton"
                 style="@style/HomeScreenButton"
                 android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
                 android:text="@string/tutorial"
                 android:visibility="gone" />
 
-            <com.glevel.wwii.views.CustomButton
+            <com.giggs.apps.chaos.views.CustomButton
                 android:id="@+id/campaignButton"
                 style="@style/HomeScreenButton"
                 android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
                 android:text="@string/campaign"
                 android:visibility="gone" />
 
-            <com.glevel.wwii.views.CustomButton
+            <com.giggs.apps.chaos.views.CustomButton
                 android:id="@+id/battleButton"
                 style="@style/HomeScreenButton"
                 android:layout_width="wrap_content"
@@ -119,7 +119,7 @@
             android:orientation="vertical"
             android:visibility="gone" >
 
-            <com.glevel.wwii.views.CustomButton
+            <com.giggs.apps.chaos.views.CustomButton
                 android:id="@+id/aboutButton"
                 style="@style/SettingsSmallButton"
                 android:layout_width="wrap_content"
@@ -127,7 +127,7 @@
                 android:layout_margin="3dp"
                 android:text="@string/about" />
 
-            <com.glevel.wwii.views.CustomButton
+            <com.giggs.apps.chaos.views.CustomButton
                 android:id="@+id/rateButton"
                 style="@style/SettingsSmallButton"
                 android:layout_width="wrap_content"
@@ -135,7 +135,7 @@
                 android:layout_margin="3dp"
                 android:text="@string/rate_app" />
 
-            <com.glevel.wwii.views.CustomTextView
+            <com.giggs.apps.chaos.views.CustomTextView
                 style="@style/SettingsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                 android:layout_marginTop="3dp"
                 android:orientation="horizontal" >
 
-                <com.glevel.wwii.views.CustomRadioButton
+                <com.giggs.apps.chaos.views.CustomRadioButton
                     android:id="@+id/musicOff"
                     style="@style/DifficultyRadioButton"
                     android:layout_width="0dp"
@@ -158,7 +158,7 @@
                     android:layout_weight="1"
                     android:text="@string/music_off" />
 
-                <com.glevel.wwii.views.CustomRadioButton
+                <com.giggs.apps.chaos.views.CustomRadioButton
                     android:id="@+id/musicOn"
                     style="@style/DifficultyRadioButton"
                     android:layout_width="0dp"
@@ -167,7 +167,7 @@
                     android:text="@string/music_on" />
             </RadioGroup>
 
-            <com.glevel.wwii.views.CustomTextView
+            <com.giggs.apps.chaos.views.CustomTextView
                 style="@style/SettingsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                 android:layout_marginTop="3dp"
                 android:orientation="horizontal" >
 
-                <com.glevel.wwii.views.CustomRadioButton
+                <com.giggs.apps.chaos.views.CustomRadioButton
                     android:id="@+id/easyRadioBtn"
                     style="@style/DifficultyRadioButton"
                     android:layout_width="0dp"
@@ -190,7 +190,7 @@
                     android:layout_weight="1"
                     android:text="@string/easy" />
 
-                <com.glevel.wwii.views.CustomRadioButton
+                <com.giggs.apps.chaos.views.CustomRadioButton
                     android:id="@+id/mediumRadioBtn"
                     style="@style/DifficultyRadioButton"
                     android:layout_width="0dp"
@@ -199,7 +199,7 @@
                     android:layout_weight="1"
                     android:text="@string/medium" />
 
-                <com.glevel.wwii.views.CustomRadioButton
+                <com.giggs.apps.chaos.views.CustomRadioButton
                     android:id="@+id/hardRadioBtn"
                     style="@style/DifficultyRadioButton"
                     android:layout_width="0dp"
@@ -209,7 +209,7 @@
             </RadioGroup>
         </LinearLayout>
 
-        <com.glevel.wwii.views.CustomButton
+        <com.giggs.apps.chaos.views.CustomButton
             android:id="@+id/backButton"
             style="@style/HomeScreenButton"
             android:layout_width="100dp"

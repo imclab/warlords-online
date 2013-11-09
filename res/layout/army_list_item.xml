@@ -6,7 +6,7 @@
     android:minHeight="60dp"
     android:padding="5dp" >
 
-    <com.glevel.wwii.views.CustomTextView
+    <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/unitName"
         style="@style/UnitText"
         android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_launcher" />
 
-    <com.glevel.wwii.views.CustomTextView
+    <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/unitExperience"
         style="@style/UnitText"
         android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
             android:layout_marginBottom="2dp"
             android:orientation="horizontal" >
 
-            <com.glevel.wwii.views.CustomTextView
+            <com.giggs.apps.chaos.views.CustomTextView
                 android:id="@+id/unitMainWeaponName"
                 style="@style/UnitText"
                 android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                 android:layout_marginRight="5dp"
                 android:text="@string/placeholder" />
 
-            <com.glevel.wwii.views.CustomTextView
+            <com.giggs.apps.chaos.views.CustomTextView
                 android:id="@+id/unitMainWeaponAP"
                 style="@style/UnitEfficiency"
                 android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
                 android:layout_marginRight="2dp"
                 android:text="@string/ap" />
 
-            <com.glevel.wwii.views.CustomTextView
+            <com.giggs.apps.chaos.views.CustomTextView
                 android:id="@+id/unitMainWeaponAT"
                 style="@style/UnitEfficiency"
                 android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <com.glevel.wwii.views.CustomTextView
+            <com.giggs.apps.chaos.views.CustomTextView
                 android:id="@+id/unitSecondaryWeaponName"
                 style="@style/UnitText"
                 android:layout_width="wrap_content"
@@ -89,7 +89,7 @@
                 android:layout_marginRight="5dp"
                 android:text="@string/placeholder" />
 
-            <com.glevel.wwii.views.CustomTextView
+            <com.giggs.apps.chaos.views.CustomTextView
                 android:id="@+id/unitSecondaryWeaponAP"
                 style="@style/UnitEfficiency"
                 android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
                 android:layout_marginRight="2dp"
                 android:text="@string/ap" />
 
-            <com.glevel.wwii.views.CustomTextView
+            <com.giggs.apps.chaos.views.CustomTextView
                 android:id="@+id/unitSecondaryWeaponAT"
                 style="@style/UnitEfficiency"
                 android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.glevel.wwii.views.CustomTextView
+    <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/unitPrice"
         style="@style/UnitText"
         android:layout_width="wrap_content"

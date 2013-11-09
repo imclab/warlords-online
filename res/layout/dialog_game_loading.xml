@@ -11,13 +11,13 @@
         android:layout_centerInParent="true"
         android:orientation="horizontal" >
 
-        <com.glevel.wwii.views.CustomTextView
+        <com.giggs.apps.chaos.views.CustomTextView
             style="@style/ArmyBuilderTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/loading_game" />
 
-        <com.glevel.wwii.views.CustomTextView
+        <com.giggs.apps.chaos.views.CustomTextView
             android:id="@+id/loadingDots"
             style="@style/ArmyBuilderTitle"
             android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
             android:text="@string/loading_dots" />
     </LinearLayout>
 
-    <com.glevel.wwii.views.CustomTextView
+    <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/quote"
         style="@style/SettingsLabel"
         android:layout_width="wrap_content"

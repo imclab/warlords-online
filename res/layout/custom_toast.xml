@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:padding="5dp" >
 
-    <com.glevel.wwii.views.CustomTextView
+    <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/text"
         style="@style/ArmyBuilderSubTitle"
         android:layout_width="wrap_content"

@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="2dp" >
 
-    <com.glevel.wwii.views.CustomTextView
+    <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/message"
         style="@style/AboutDialogText"
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <com.glevel.wwii.views.CustomButton
+        <com.giggs.apps.chaos.views.CustomButton
             android:id="@+id/cancelButton"
             style="@style/AlertDialogButton"
             android:layout_width="0dp"
@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:text="@string/cancel" />
 
-        <com.glevel.wwii.views.CustomButton
+        <com.giggs.apps.chaos.views.CustomButton
             android:id="@+id/okButton"
             style="@style/AlertDialogButton"
             android:layout_width="0dp"

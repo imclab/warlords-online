@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
-        <com.glevel.wwii.views.CustomTextView
+        <com.giggs.apps.chaos.views.CustomTextView
             android:id="@+id/title"
             style="@style/ArmyBuilderTitle"
             android:layout_width="0dp"
@@ -23,7 +23,7 @@
             android:gravity="left|center_vertical"
             android:text="@string/hire_troops" />
 
-        <com.glevel.wwii.views.CustomButton
+        <com.giggs.apps.chaos.views.CustomButton
             android:id="@+id/startBattle"
             style="@style/ArmyBuilderSmallButton"
             android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                <com.glevel.wwii.views.CustomTextView
+                <com.giggs.apps.chaos.views.CustomTextView
                     style="@style/ArmyBuilderSubTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -63,14 +63,14 @@
                     android:gravity="left|center_vertical"
                     android:text="@string/your_army" />
 
-                <com.glevel.wwii.views.CustomTextView
+                <com.giggs.apps.chaos.views.CustomTextView
                     style="@style/ArmyBuilderSubTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/requisition_points"
                     android:textSize="14sp" />
 
-                <com.glevel.wwii.views.CustomTextView
+                <com.giggs.apps.chaos.views.CustomTextView
                     android:id="@+id/requisitionPoints"
                     style="@style/ArmyBuilderTitle"
                     android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <com.glevel.wwii.views.CustomTextView
+            <com.giggs.apps.chaos.views.CustomTextView
                 style="@style/ArmyBuilderSubTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
