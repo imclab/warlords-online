@@ -8,9 +8,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.giggs.apps.chaos.database.dao.BattleDao;
-import com.giggs.apps.chaos.database.dao.CampaignDao;
-
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 	private final static int DATABASE_VERSION = 5;
@@ -18,14 +15,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String DB_NAME = "wwii";
 
 	private Context mContext;
-	private BattleDao mBattleDao;
-	private CampaignDao mCampaignDao;
 
 	public DatabaseHelper(Context context) {
 		super(context, DB_NAME, null, DATABASE_VERSION);
 		this.mContext = context;
-		mBattleDao = new BattleDao(this);
-		mCampaignDao = new CampaignDao(this);
 	}
 
 	@Override
@@ -60,14 +53,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onOpen(SQLiteDatabase db) {
 		super.onOpen(db);
-	}
-
-	public BattleDao getBattleDao() {
-		return mBattleDao;
-	}
-
-	public CampaignDao getCampaignDao() {
-		return mCampaignDao;
 	}
 
 }

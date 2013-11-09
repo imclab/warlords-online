@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">WWII Squad</string>
+    <string name="app_name">Warlords 2</string>
     <string name="app_publisher">G-Level</string>
     <string name="id">id</string>
     <string name="placeholder">placeholder</string>
@@ -22,16 +22,17 @@
     <string name="rate_message">If you enjoy using %s, please take a moment to rate it.\nThanks for your support !</string>
 
     <!-- About Dialog -->
-    <string name="about_title">About WWII</string>
-    <string name="about_credits">Game, assets and music\nby <a href="http://www.linkedin.com/profile/view?id=144913212">Guillaume Gouchon</a>.</string>
+    <string name="about_title">About Warlords</string>
+    <string name="about_credits">Game and music\nby <a href="http://www.linkedin.com/profile/view?id=144913212">Guillaume Gouchon</a>.</string>
     <string name="about_blog">Check out <a href="http://glevelapps.blogspot.co.uk">my Blog</a> !</string>
     <string name="about_contact"><a href="mailto:guillaume.gouchon@gmail.com">Contact me</a> if you have any issue or question.</string>
-    <string name="about_other_sources">The game is using And Engine by Nicolas Gramlich.\nHistorical sources from National Archives and Wikipedia.</string>
-    <string name="about_version">App version : 1.0</string>
+    <string name="about_other_sources">The game is using AndEngine by Nicolas Gramlich.</string>
+    <string name="about_version">App version : 2.0.0</string>
 
     <!-- Home Screen -->
     <string name="solo">Play Solo</string>
     <string name="multiplayer">Multiplayer</string>
+    <string name="help">How to Play</string>
     <string name="settings">Settings</string>
     <string name="tutorial">Tutorial</string>
     <string name="campaign">Campaign</string>
@@ -40,20 +41,11 @@
     <string name="resume_saved_battle">You have a saved game located in %s, do you want to finish it ?\nIt will be lost if you start another battle.</string>
 
     <!-- Settings -->
-    <string name="music_volume">Music / Sound</string>
+    <string name="music_volume">Music</string>
     <string name="music_off">Off</string>
     <string name="music_on">On</string>
-    <string name="difficulty">Difficulty</string>
-    <string name="about">About WWII</string>
-    <string name="easy">Easy</string>
-    <string name="medium">Medium</string>
-    <string name="difficult">Hard</string>
+    <string name="about">About Warlords</string>
     <string name="rate_app">Rate the app</string>
-
-    <!-- Campaign Chooser -->
-    <string name="new_campaign">New Campaign</string>
-    <string name="load_campaign">Load Campaign</string>
-    <string name="no_saved_campaigns">No saved games yet&#8230;</string>
 
     <!-- Battle Chooser -->
     <string name="choose_army">Choose your side</string>
@@ -91,54 +83,219 @@
     <string name="go">Go !</string>
     <string name="victory">Victory !</string>
     <string name="defeat">Defeat&#8230;</string>
-
-    <!-- Battle Report -->
-    <string name="battle_report">Battle Report</string>
-    <string name="leave_report">Leave Report</string>
-    <string name="enemy_army">Enemy\'s Army</string>
-
-    <!-- Campaign Screen -->
-    <string name="objective_points">Objective Points : %1$s / %2$s</string>
-    <string name="game_menu">Game Menu</string>
-    <string name="help">Help</string>
-    <string name="skip">Skip</string>
-
-    <!-- Armies -->
-    <string name="german_army">Germany</string>
-    <string name="usa_army">USA</string>
-
-    <!-- Weapons -->
-    <string name="grenade">Hand Grenade</string>
-    <string name="cannon75">Cannon 75mm</string>
-    <string name="garandM1">Garand M1</string>
-    <string name="thompson">Thompson</string>
-    <string name="browningM2">Browning M2</string>
-    <string name="mortar50">Mortar 50mm</string>
-    <string name="bazookaM1A">Bazooka</string>
-    <string name="mauser">Mauser G98</string>
-    <string name="mp40">MP 40</string>
-    <string name="mg42">MG 42</string>
-    <string name="mortar81">Mortar 81mm</string>
-    <string name="panzerschreck">Panzerschreck</string>
-    <string name="panzerfaust">Panzerfaust</string>
-    <string name="pak43">Pak43 88mm</string>
-
-    <!-- Units -->
-    <string name="rifleman">Rifleman</string>
-    <string name="scout">Scout</string>
-    <string name="hmg">Heavy MG</string>
-    <string name="mortar">Mortar</string>
-    <string name="at_cannon">Anti-tank Cannon</string>
-    <string name="bazooka">Bazooka</string>
-    <string name="shermanM4A1">Sherman M4A1</string>
-    <string name="pantherG">Panther G</string>
-
-    <!-- Campaigns -->
-    <string name="market_garden">Market Garden</string>
-    <string name="market_garden_intro_1">Operation Market-Garden
-        \nAfter the successes encountered in the Normandy Breakout from July through August 1944, it was believed that the German Army was a beaten foe and in retreat.
-        \nAs such, British General Montgomery lay forth a brazen plan to capture key bridges that would be required conquests for the final push into Germany, perhaps ending the war in Europe by Christmas of 1944.
-        \nMontgomery relayed his plan and, following acceptance by Supreme Allied Commander in Europe - US General Dwight Eisenhower - put the plan into action.
-        \nOn September 17th - just seven days after the official approval, Operation Market Garden was set in motion&#8230;</string>
+    <string name="battle1">- Amount of damages dealt to your enemies depends mainly on your units\' health, morale and experience.\n- Experience is earned during battles, the more the fight is undecided the more your units will earn experience.\n- Morale is lost each time your units get damages.\n- When your army has a morale inferior to 40 percents, it flees the battlefield. Winners get back some morale points after the battle.</string>
+    <string name="battleTitle1">Morale and Experience during battles</string>
+    <string name="battle2">- When you are attacking an enemy with units coming from different tiles, you get a damage bonus of 15 percents.</string>
+    <string name="battleTitle2">Surround your enemies</string>
+    <string name="battle3">- When protecting a fort or a castle, units only get half of the damages dealt to them.</string>
+    <string name="battleTitle3">Strong places</string>
+    <string name="battle4">- Bowmen shoot first during battles, as contact units are moving.\n- Bowmen units with a defense order get a 20 percents bonus on their damages.\n- When accompanied with some contact units, bowmen are protected and can unleash rain of arrows peacufully. If not, their damages are divided by 2 as they are engaged in a contact fight.</string>
+    <string name="battleTitle4">Bowmen</string>
+    <string name="humanHelp">- Average army with good skills in defense.</string>
+    <string name="infantryHelp">- Basic human unit.\n- Unit capacity : 100\n- Attack power : Average</string>
+    <string name="bowmenHelp">- Good defense unit, especially with a defense order or in a strong place.\n- To be accompanied with a contact unit to be even more effective.\n- Unit capacity : 60\n- Attack power : Average</string>
+    <string name="knightsHelp">- Heavy infantry.\n- Unit capacity : 100\n- Attack power : Great</string>
+    <string name="undeadHelp">- Undead have a life steal skill against living armies. When dealing damages, undead units resurrect 15 percents of the dealt damages.\n-  Moreover, each time a undead unit is dealing damages, the enemy unit loses 5 percents of morale.</string>
+    <string name="skeletonHelp">- Weak infantry unit.\n- Unit capacity : 100\n- Attack power : Low</string>
+    <string name="skeletonBowmenHelp">- Good defense unit, especially with a defense order or in a strong place.\n- To be accompanied with a contact unit to be even more effective.\n- Unit capacity : 60\n- Attack power : Average</string>
+    <string name="necromancerHelp">- Powerful support unit.\n- A necromancer unit doubles the life steal of its whole army.\n- Unit capacity : 50\n- Attack power : Great</string>
+    <string name="chaosHelp">- Chaos armies are outnumbered but are only composed of elite troops.\n- Chaos troops never lose morale and will fight until death.</string>
+    <string name="chaosWarriorsHelp">- Strong infantry unit.\n- Unit capacity : 70\n- Attack power : Great</string>
+    <string name="chaosWizardsHelp">- Good support unit.\nUsing their powerful demonic spells, the Chaos Wizards cancel enemies\' damages during the first round of every battle.\n- Unit capacity : 50\n- Attack power : Good</string>
+    <string name="demonsHelp">- Powerful but expensive unit.\n- Demons have a regeneration ability which allows them to get back 15 percents of their health per turn.\n- Moreover, they have 15 percents of chance to deal a critical strike (damages x 1.5).\n- Unit capacity : 90\n- Attack power : Great</string>
+    <string name="orcsArmyHelp">- The Orcs and Goblins are some agressive and ruthlessly troops.\n- They get a 20 percents damage bonus when attacking, but they get less bonus than other armies when defending.</string>
+    <string name="goblinsHelp">- Weak scout unit.\n- Goblins do not need any supply when they are in the forests or in the mountains as they are feeding themselves.\n- Unit capacity : 70\n- Attack power : Low</string>
+    <string name="orcsHelp">- Heavy Infantry.\n- Unit capacity : 90\n- Attack power : Good</string>
+    <string name="trollsHelp">- Deadly monsters, very effective against the heavy infantry and the toughest troops.\n- Trolls have a regeneration capacity which allow them to get back 15 percents of their health per turn.\n- Unit capacity : 80\n- Attack power : Great</string>
+    <string name="grass">Grass</string>
+    <string name="forest">Forest</string>
+    <string name="castle">Castle</string>
+    <string name="fort">Fort</string>
+    <string name="windmill">Windmill Farms</string>
+    <string name="mountain">Mountain</string>
+    <string name="hauntedRuins">Haunted Ruins</string>
+    <string name="grassDescription">No effect</string>
+    <string name="forestDescription">- When fogs of war are activated, forest tiles are invisible to units in diagonal.\n- Bowmen are less efficient in the forest due to the numerous shelters.</string>
+    <string name="castleDescription">- The most important place of your kingdom; lose it and your game is over.\n- Hiring units is possible on this tile.\n- Gives bonuses to units in defense and heal them.\n- Makes you earn 100 gold coins per turn (70 during winter).</string>
+    <string name="fortDescription">- Hiring units is possible on this tile.\n- Gives bonuses to units in defense and heal them.\n- Makes you earn 50 gold coins per turn (35 during winter).</string>
+    <string name="windmillDescription">- Gives morale recuperation bonuses.\n- Makes you earn 100 gold coins per turn (70 during winter).</string>
+    <string name="mountainDescription">- Heavy infantries cannot climb mountains.\n- Mountains allow you to see further in the fogs of war.</string>
+    <string name="hauntedRuinsDescription">- Each turn a unit is standing on some haunted ruins, it loses morale but gains experience.\n- When leaving the ruins, a unit has one chance out of two to be lost and finally not move.</string>
+    <string name="app_name">Warlords Online</string>
+    <string name="aboutTitle">About Warlords Online</string>
+    <string name="appInfo">Game Information</string>
+    <string name="rateLink">Rate the app</string>
+    <string name="ok">OK</string>
+    <string name="playerOptions">Player Options</string>
+    <string name="gameOptions">Game Options</string>
+    <string name="background">Background</string>
+    <string name="splash_label">Giggs Apps</string>
+    <string name="dontWant">No, thanks</string>
+    <string name="later">Remind me later</string>
+    <string name="rateNow">Rate Warlord Online</string>
+    <string name="rateItQuestion">If you enjoy playing Warlords Online,\nplease take a moment to rate it.\nThanks for your support !</string>
+    <string name="thanks">Special thanks to Ash Cairo, Jeremie Barbier and JB for beta-testing. Backgrounds by JAP and Justin Nichols. Icons and other assets by YAR, Ravenmore, wulax and Nicubunu.</string>
+    <string name="loading">Loading...</string>
+    <string name="newGame">New Game</string>
+    <string name="about1">Game and Music by Guillaume Gouchon</string>
+    <string name="about2">Current Version :</string>
+    <string name="exitQuestion">Are you sure you want to flee the battlefield ?</string>
+    <string name="exit">Exit</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="removeAds">Remove Ads</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="enableSound">Enable Music</string>
+    <string name="enableNotif">Enable Notifications</string>
+    <string name="next">next</string>
+    <string name="previous">previous</string>
+    <string name="button">button</string>
+    <string name="name">Change your name</string>
+    <string name="askName">What is your name, General ?</string>
+    <string name="nationality">Nationality</string>
+    <string name="veterans">Veterans (nb of Battles)</string>
+    <string name="bestPlayers">Best Generals (nb of Victories)</string>
+    <string name="noInternet">Problem of Connection...\nPlease retry later !</string>
+    <string name="turn">Turn</string>
+    <string name="vs">vs</string>
+    <string name="watch">Watch</string>
+    <string name="playMyTurn">Play</string>
+    <string name="waitOpponents">Players needed...</string>
+    <string name="waitOpponentsTurns">Waiting...</string>
+    <string name="mapType">Map Type</string>
+    <string name="loadGame">Load Game</string>
+    <string name="createGame">Create new Game</string>
+    <string name="currentGames">Current games</string>
+    <string name="playersNumber">Number of players</string>
+    <string name="turnDuration">Turn duration</string>
+    <string name="players2">2 players</string>
+    <string name="players3">3 players</string>
+    <string name="players4">4 players</string>
+    <string name="players8">8 players !</string>
+    <string name="standardMap">Standard map</string>
+    <string name="perTurn">/ turn</string>
+    <string name="players">Players</string>
+    <string name="confirmJoin">Do you really want to join this game ?</string>
+    <string name="cancel">Cancel</string>
+    <string name="networkIssue">Cannot contact the server...</string>
+    <string name="retry">Retry</string>
+    <string name="blason">blason</string>
+    <string name="sendOrders">Send Orders</string>
+    <string name="scores">Scores</string>
+    <string name="refresh">Refresh</string>
+    <string name="notificationMessage">Your troops await your command, sir !</string>
+    <string name="gameReport">Game Over</string>
+    <string name="removeGameQuestion">Remove this game ?</string>
+    <string name="trainUnits">Hire units</string>
+    <string name="unit">unit</string>
+    <string name="infantry">Infantry</string>
+    <string name="infantryDescription">Basic unit with average skills. Essential to conquer places and to protect bowmen.</string>
+    <string name="bowmen">Bowmen</string>
+    <string name="bowmenDescription">Defensive range unit. Deadly when associated to other units, less efficient alone or in the forest.</string>
+    <string name="knights">Knights</string>
+    <string name="knightsDescription">Powerful contact unit, to be placed in the center of the battles. Expensive to supply, be sure to have stable income.</string>
+    <string name="chooseGameType">Type of Map</string>
+    <string name="randomMap">Random Map</string>
+    <string name="kingdomMayhem">Kingdom Mayhem !</string>
+    <string name="defeat">Defeat...</string>
+    <string name="victory">Victory !</string>
+    <string name="gameRulesHere">Learn how to play !</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="tutoTitle1">Welcome to the tutorial !</string>
+    <string name="tutoText1">Here you will learn how to lead your troops to the victory. Use the arrows to navigate through the tutorial.</string>
+    <string name="tutoTitle2">A turn-based strategy game ?</string>
+    <string name="tutoText2">It means that the game is decomposed into turns, which can last different amount of time. Each turn, players have to send orders to their troops. When every player has played or the time limit is reached, then all the actions are resolved and a new turn is starting !</string>
+    <string name="tutoTitle3">Objectives</string>
+    <string name="tutoText3">To win, you have to capture your opponent\'s castles, by attacking them with your armies. You lose the game if at any time you do not control at least one castle... </string>
+    <string name="tutoTitle4">The map</string>
+    <string name="tutoText4">You can navigate in the map by sweeping the screen with your fingers. The minimap in the bottom left-hand corner allows you to see in which part of the entire map you are at the moment. You can use it to navigate too.</string>
+    <string name="tutoTitle5">Gathering resources</string>
+    <string name="tutoText5">Each turn, you will earn an amount of gold which depends on the number of castles and windmill farms in your kingdom. Each castle or windmill farm under your control makes you earn 100 gold coins per turn, and each fort 50 gold coins; these zones are enlighted in green on the map.</string>
+    <string name="tutoTitle6">Movement orders</string>
+    <string name="tutoText6">To give a movement order to an army, select it and tap on one the tiles that are enlighted in green. Try to send your infantry on the windmill farm !</string>
+    <string name="tutoTitle60">Nice, now finish your turn !</string>
+    <string name="tutoText60">To definitely send your turn\'s orders, press the send orders button. Once it is done, you cannot interact anymore with this game until your next turn. One more thing about move orders : a maximum of 3 units of the same owner can be on a single tile at the same time !</string>
+    <string name="tutoTitle61">You have conquered a place !</string>
+    <string name="tutoText61">Last turn you had sent a unit on this farm zone : as there are no enemies on it, you have successfully conquered it ! You will now earn 200 gold coins per turn !</string>
+    <string name="tutoTitle7">Kingdom\'s economy, where did my money go ?</string>
+    <string name="tutoText7">Each turn you are earning gold from your territories, but you also need to pay and supply your armies ! When you are buying a new unit, the price indicated is the price you have to paid every turn. If at any time, you do not have enough money to supply your armies, these will lose morale and even desert if they are already demoralized ! A stable economy is definitely a key to success.</string>
+    <string name="tutoTitle8">Hire units</string>
+    <string name="tutoText8">Now, it is time to hire fresh troops ! Tap on the icon in the top right-hand corner of your castle tile, and choose the unit you want to hire. Each unit has unique ability. Then click on the send orders button, to finish your turn. Next turn, a new unit will pop up on this tile, unless this tile is already full of your units (3 is the maximum).</string>
+    <string name="tutoTitle9">Fight !</string>
+    <string name="tutoText9">When 2 or more different armies are meeting each others on the same tile, or when they cross their path, a battle is engaging. Multiple factors are involved during a battle : the current life of the unit, the types of the units involved, the morale, the experience, the units\' orders, the terrain etc...</string>
+    <string name="tutoTitle10">Morale</string>
+    <string name="tutoText10">All armies have a morale capacity, represented by a blue bar on the top left-hand corner of each unit (near the flag). A unit loses morale when defeating in battles, or when it is not supplied anymore. Each resting turn, units are getting back their morale, more efficiencely on castles and farms. During battle, a low morale army will flee instead of fighting.</string>
+    <string name="tutoTitle11">Experience</string>
+    <string name="tutoText11">All armies have an experience capacity, represented by a green bar on the top left-hand corner of each unit (near the flag). A unit gets experience in battles, especially in long ones. More experienced armies are more efficient in battles.</string>
+    <string name="tutoTitle12">Battle tips</string>
+    <string name="tutoText12">When attacking you gain bonuses when your armies come from different sides of the battle. In defend, your armies, especially bowmen units, gain bonuses in castles and when they get defense orders. Bowmen are less efficient in the forest and can be quickly demoralized if they are fighting alone.</string>
+    <string name="tutoTitle13">Victory !</string>
+    <string name="tutoText13">Be part of the top score by playing and winning more games than the other players !</string>
+    <string name="options">Options</string>
+    <string name="fogsOfWar">Fogs of war</string>
+    <string name="chooseArmies">Choose your army</string>
+    <string name="human">Human</string>
+    <string name="undead">Undead</string>
+    <string name="humanDescription">Balanced army with a great ability to defend positions. Possibility to hire heavy infantry.</string>
+    <string name="undeadDescription">Undead units are weak in battle but resurrect when dealing damages to living armies. They also decrease largely opponents\' morale during battles.</string>
+    <string name="skeleton">Skeleton horde</string>
+    <string name="skeletonDescription">A weak unit in battle but which steals life to its enemies, making large hordes hard to defeat.</string>
+    <string name="skeletonBowmen">Skeleton Bowmen</string>
+    <string name="skeletonBowmenDescription">Defensive range unit. Less efficient alone or in the forest, stealing life when damaging enemies.</string>
+    <string name="necromancers">Necromancers</string>
+    <string name="necromancersDescription">Powerful but fragile support unit. When part of a battle, allied units\' life steals are twice more effective.</string>
+    <string name="discusionWith">Chat with </string>
+    <string name="sendMessage">Send !</string>
+    <string name="yourMessage">your message...</string>
+    <string name="withFogsOfWar">with fogs of war</string>
+    <string name="creator">Game creator :</string>
+    <string name="updateNationality">Update your nationality</string>
+    <string name="settings">Settings</string>
+    <string name="shareBody">Play Warlords Online with me !</string>
+    <string name="waitingEndTurn">Waiting for the end of turn...</string>
+    <string name="resetOrders">Reset Orders</string>
+    <string name="nameError">Another player has already chosen this name, please choose another one...</string>
+    <string name="filterFriends">Friends\' games</string>
+    <string name="addFriend">Add a friend</string>
+    <string name="inviteFriend">Invite a friend to play</string>
+    <string name="myFriends">My friends</string>
+    <string name="removeFriendQuestion">Remove this friend ?</string>
+    <string name="appLink">https://play.google.com/store/apps/details?id=com.giggs.chaos</string>
+    <string name="shareVia">Share via</string>
+    <string name="inviteSubject">Play to Warlords Online with me !</string>
+    <string name="typeFriendName">Type a friend name</string>
+    <string name="search">Search</string>
+    <string name="emptySearch">No player found...</string>
+    <string name="playersFound">players found !</string>
+    <string name="searchResult">Search result</string>
+    <string name="friendsSearch">Friends Search</string>
+    <string name="alreadyFriendWith">You are already friend with him !</string>
+    <string name="joinGame">Join Game</string>
+    <string name="connecting">Connecting...</string>
+    <string name="playAgainstAI">Play Solo</string>
+    <string name="playlocal">Play LAN</string>
+    <string name="playonline">Play Online</string>
+    <string name="cancelUnitProd">Cancel production</string>
+    <string name="enableAI">Enable AI when away</string>
+    <string name="playOffline">Play Offline Mode</string>
+    <string name="filterLocal">Local games</string>
+    <string name="terrainTiles">Terrain Tiles</string>
+    <string name="artOfWar">The Art Of War</string>
+    <string name="chaos">Chaos</string>
+    <string name="chaosDescription">The Chaos armies are composed of elite troops that have no notion of fear. Dominate you enemies with deadly spells and devilish monsters !</string>
+    <string name="chaosWarriors">Chaos Warriors</string>
+    <string name="chaosWizards">Chaos Wizards</string>
+    <string name="chaosDemons">Demons</string>
+    <string name="chaosWarriorsDescription">Chaos Warriors are some extremely dangerous fighters who will never flee the battlefield, even when largely outnumbered.</string>
+    <string name="chaosWizardsDescription">Chaos Wizards cast tormenting spells which prevent enemies to fight during the first round of battle.</string>
+    <string name="chaosDemonsDescription">Demons have the ability to deal critical damages and recover from their wounds through time.</string>
+    <string name="orcsArmy">Orcs</string>
+    <string name="orcsarmyDescription">The Orcs and Goblins are composed of agressive troops, very effective in attack.</string>
+    <string name="goblins">Goblins</string>
+    <string name="orcs">Orcs</string>
+    <string name="trolls">Trolls</string>
+    <string name="goblinsDescription">Goblins are one of the weakest creature but are useful for discovering and conquering the lands. They do not need to be supplied when they are in the forest or in the mountain.</string>
+    <string name="orcsDescription">Heavy infantry with good fighting skills. They are more effective in attack than in defense. </string>
+    <string name="trollsDescription">Trolls have the regeneration ability and deal greater damage to heavy troops.</string>
 
 </resources>

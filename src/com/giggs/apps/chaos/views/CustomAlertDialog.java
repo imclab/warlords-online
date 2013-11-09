@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.glevel.wwii.R;
+import com.giggs.apps.chaos.R;
 
 public class CustomAlertDialog extends Dialog implements OnClickListener {
 

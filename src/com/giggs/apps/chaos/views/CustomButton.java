@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
 
-import com.giggs.apps.chaos.WWApplication.FONTS;
+import com.giggs.apps.chaos.MyApplication.FONTS;
 
 public class CustomButton extends Button {
 

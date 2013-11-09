@@ -18,24 +18,4 @@
         android:text="@string/deployment_phase"
         android:visibility="gone" />
 
-    <com.giggs.apps.chaos.views.CustomButton
-        android:id="@+id/finishDeployment"
-        style="@style/ArmyBuilderSmallButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:text="@string/start" />
-
-    <include
-        android:id="@+id/selectedUnit"
-        android:layout_width="235dp"
-        android:layout_height="85dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="2dp"
-        layout="@layout/in_game_unit_layout"
-        android:visibility="gone" />
-
 </RelativeLayout>

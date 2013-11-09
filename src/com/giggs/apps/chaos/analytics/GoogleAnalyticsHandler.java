@@ -26,7 +26,7 @@ public class GoogleAnalyticsHandler {
     }
 
     public static enum TimingName {
-        load_game, deployment_time, game_time
+        load_game, game_time
     }
 
     public static void sendTiming(Context context, TimingCategory category, TimingName name, long loadTime) {
