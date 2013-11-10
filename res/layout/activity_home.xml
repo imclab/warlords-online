@@ -21,16 +21,43 @@
         android:src="@drawable/bg_home_thunder" />
 
     <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/appName"
         style="@style/SettingsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_margin="3dp"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp"
         android:drawableLeft="@drawable/ic_launcher"
-        android:drawablePadding="5dp"
+        android:drawablePadding="10dp"
         android:gravity="center"
         android:text="@string/app_name" />
+
+    <LinearLayout
+        android:id="@+id/loginLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp" >
+
+        <!-- sign-in button -->
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- sign-out button -->
+
+        <com.giggs.apps.chaos.views.CustomButton
+            android:id="@+id/sign_out_button"
+            style="@style/SettingsSmallButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/logout"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/mainButtonsLayout"

@@ -8,4 +8,6 @@ public class GameUtils {
 		off, on
 	}
 
+	public static int[] NB_PLAYERS_IN_GAME = { 2, 3, 4, 8 };
+
 }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/stormBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_home"
+        android:tint="#c5000000" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="15dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <com.giggs.apps.chaos.views.CustomTextView
+                style="@style/ArmyBuilderSubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_army_column"
+                android:text="@string/choose_army" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupArmy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="15dp" >
+            </RadioGroup>
+
+            <com.giggs.apps.chaos.views.CustomTextView
+                style="@style/ArmyBuilderSubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_army_column"
+                android:text="@string/choose_nb_players" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupNbPlayers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="15dp" >
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <com.giggs.apps.chaos.views.CustomButton
+                    android:id="@+id/cancelButton"
+                    style="@style/SettingsSmallButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/bg_btn_small"
+                    android:drawableLeft="@drawable/ic_choice_cancel"
+                    android:drawablePadding="10dp"
+                    android:text="@string/cancel" />
+
+                <com.giggs.apps.chaos.views.CustomButton
+                    android:id="@+id/okButton"
+                    style="@style/SettingsSmallButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_btn_small"
+                    android:drawableLeft="@drawable/ic_choice_ok"
+                    android:drawablePadding="10dp"
+                    android:text="@string/createGame" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

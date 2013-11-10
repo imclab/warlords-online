@@ -104,7 +104,6 @@
         <item name="android:divider">@android:color/transparent</item>
         <item name="android:cacheColorHint">@android:color/transparent</item>
         <item name="android:listSelector">@android:color/transparent</item>
-        <item name="android:padding">3dp</item>
     </style>
 
     <style name="ArmyBuilderSmallButton">

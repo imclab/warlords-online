@@ -20,9 +20,9 @@ import android.widget.TextView;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.activities.adapters.HelpSimpleAdapter;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
-import com.giggs.apps.chaos.utils.WWActivity;
+import com.giggs.apps.chaos.utils.MyActivity;
 
-public class HelpActivity extends WWActivity {
+public class HelpActivity extends MyActivity {
 
 	private ArrayList<HashMap<String, String>> mHelpCategoryList;
 	private Dialog mHelpDetailsDialog;

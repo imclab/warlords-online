@@ -1,11 +1,10 @@
 <resources>
 
-    <string name="app_name">Warlords 2</string>
+    <string name="app_name">Warlords</string>
     <string name="app_publisher">G-Level</string>
     <string name="id">id</string>
     <string name="placeholder">placeholder</string>
     <string name="viewholder">placeholder</string>
-    <string name="cancel">Cancel</string>
     <string name="coming_soon">Coming soon&#8230;</string>
 
     <!-- Contact -->
@@ -19,7 +18,7 @@
     <string name="rate_later">Remind me later</string>
     <string name="rate_now">Rate now !</string>
     <string name="rate_title">Rate the app ?</string>
-    <string name="rate_message">If you enjoy using %s, please take a moment to rate it.\nThanks for your support !</string>
+    <string name="rate_message">If you enjoy playing %s, please take a moment to rate it.\nThanks for your support !</string>
 
     <!-- About Dialog -->
     <string name="about_title">About Warlords</string>
@@ -39,7 +38,9 @@
     <string name="battle_mode">Battle Mode</string>
     <string name="back">Back</string>
     <string name="resume_saved_battle">You have a saved game located in %s, do you want to finish it ?\nIt will be lost if you start another battle.</string>
-
+    <string name="log_in_to_play_multi">You have to be logged in \nto play online !</string>
+    <string name="logout">Sign out</string>
+    
     <!-- Settings -->
     <string name="music_volume">Music</string>
     <string name="music_off">Off</string>
@@ -47,28 +48,9 @@
     <string name="about">About Warlords</string>
     <string name="rate_app">Rate the app</string>
 
-    <!-- Battle Chooser -->
-    <string name="choose_army">Choose your side</string>
-    <string name="choose_map">Pick a map</string>
-
-    <!-- Army Builder -->
-    <string name="hire_troops">Hire your troops</string>
-    <string name="requisition_points">Requisition Points :</string>
-    <string name="your_army">Your Squad</string>
-    <string name="available_troops">Available Troops</string>
-    <string name="start_battle">Start Battle !</string>
-    <string name="no_troops">Hire some troops before !</string>
-    <string name="confirm_battle_message">You have some unused requisition points, continue to battlefield ?</string>
-    <string name="no_slots_left">No more unit slot left&#8230;\nSell one of your unit !</string>
-    <string name="not_enough_requisition">You do not have enough requisition points to hire this unit !</string>
-    <string name="buy">Hire</string>
-    <string name="sell">Sell</string>
-    <string name="confirm_transaction">%1$s %2$s for %3$s requisition points ?</string>
-    <string name="unit_image">Unit image</string>
-    <string name="frags_number">Frags : %1$s</string>
-    <string name="points">%1$s pts</string>
-    <string name="ap">AP</string>
-    <string name="at">AT</string>
+    <!-- New Game -->
+    <string name="choose_army">Choose your army</string>
+    <string name="choose_nb_players">Select the number of players</string>
 
     <!-- Game -->
     <string name="loading_game">Loading</string>
@@ -78,9 +60,6 @@
     <string name="confirm_surrender_message">Are you sure you want to surrender ?</string>
     <string name="resume_game">Resume Game</string>
     <string name="save_exit">Exit</string>
-    <string name="deployment_phase">Deployment Phase</string>
-    <string name="start">Deployment Done</string>
-    <string name="go">Go !</string>
     <string name="victory">Victory !</string>
     <string name="defeat">Defeat&#8230;</string>
     <string name="battle1">- Amount of damages dealt to your enemies depends mainly on your units\' health, morale and experience.\n- Experience is earned during battles, the more the fight is undecided the more your units will earn experience.\n- Morale is lost each time your units get damages.\n- When your army has a morale inferior to 40 percents, it flees the battlefield. Winners get back some morale points after the battle.</string>
@@ -121,50 +100,15 @@
     <string name="windmillDescription">- Gives morale recuperation bonuses.\n- Makes you earn 100 gold coins per turn (70 during winter).</string>
     <string name="mountainDescription">- Heavy infantries cannot climb mountains.\n- Mountains allow you to see further in the fogs of war.</string>
     <string name="hauntedRuinsDescription">- Each turn a unit is standing on some haunted ruins, it loses morale but gains experience.\n- When leaving the ruins, a unit has one chance out of two to be lost and finally not move.</string>
-    <string name="app_name">Warlords Online</string>
-    <string name="aboutTitle">About Warlords Online</string>
-    <string name="appInfo">Game Information</string>
-    <string name="rateLink">Rate the app</string>
-    <string name="ok">OK</string>
-    <string name="playerOptions">Player Options</string>
-    <string name="gameOptions">Game Options</string>
-    <string name="background">Background</string>
-    <string name="splash_label">Giggs Apps</string>
-    <string name="dontWant">No, thanks</string>
-    <string name="later">Remind me later</string>
-    <string name="rateNow">Rate Warlord Online</string>
-    <string name="rateItQuestion">If you enjoy playing Warlords Online,\nplease take a moment to rate it.\nThanks for your support !</string>
-    <string name="thanks">Special thanks to Ash Cairo, Jeremie Barbier and JB for beta-testing. Backgrounds by JAP and Justin Nichols. Icons and other assets by YAR, Ravenmore, wulax and Nicubunu.</string>
     <string name="loading">Loading...</string>
     <string name="newGame">New Game</string>
-    <string name="about1">Game and Music by Guillaume Gouchon</string>
-    <string name="about2">Current Version :</string>
-    <string name="exitQuestion">Are you sure you want to flee the battlefield ?</string>
-    <string name="exit">Exit</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="removeAds">Remove Ads</string>
-    <string name="dismiss">Dismiss</string>
-    <string name="enableSound">Enable Music</string>
-    <string name="enableNotif">Enable Notifications</string>
-    <string name="next">next</string>
-    <string name="previous">previous</string>
-    <string name="button">button</string>
-    <string name="name">Change your name</string>
-    <string name="askName">What is your name, General ?</string>
-    <string name="nationality">Nationality</string>
-    <string name="veterans">Veterans (nb of Battles)</string>
-    <string name="bestPlayers">Best Generals (nb of Victories)</string>
-    <string name="noInternet">Problem of Connection...\nPlease retry later !</string>
     <string name="turn">Turn</string>
     <string name="vs">vs</string>
-    <string name="watch">Watch</string>
-    <string name="playMyTurn">Play</string>
     <string name="waitOpponents">Players needed...</string>
     <string name="waitOpponentsTurns">Waiting...</string>
     <string name="mapType">Map Type</string>
     <string name="loadGame">Load Game</string>
-    <string name="createGame">Create new Game</string>
+    <string name="createGame">Create Game !</string>
     <string name="currentGames">Current games</string>
     <string name="playersNumber">Number of players</string>
     <string name="turnDuration">Turn duration</string>

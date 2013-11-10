@@ -15,9 +15,9 @@ import android.widget.TextView;
 import com.giggs.apps.chaos.MyApplication.FONTS;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
-import com.giggs.apps.chaos.utils.WWActivity;
+import com.giggs.apps.chaos.utils.MyActivity;
 
-public class SplashActivity extends WWActivity {
+public class SplashActivity extends MyActivity {
 
 	private static final int DELAY_AFTER_ANIMATION = 300, DELAY_BEFORE_ANIMATION = 200;
 
@@ -32,7 +32,10 @@ public class SplashActivity extends WWActivity {
 		// increase number of launches
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		int nbLaunches = prefs.getInt(ApplicationUtils.PREFS_NB_LAUNCHES, 0);
-		prefs.edit().putInt(ApplicationUtils.PREFS_NB_LAUNCHES, ++nbLaunches);
+		prefs.edit().putInt(ApplicationUtils.PREFS_NB_LAUNCHES, ++nbLaunches).commit();
+		int nbLaunchesBeforeRateDialog = prefs.getInt(ApplicationUtils.PREFS_RATE_DIALOG_IN,
+		        ApplicationUtils.NB_LAUNCHES_RATE_DIALOG_APPEARS);
+		prefs.edit().putInt(ApplicationUtils.PREFS_RATE_DIALOG_IN, --nbLaunchesBeforeRateDialog).commit();
 
 		// do not show splashscreen after a few launches
 		if (nbLaunches >= ApplicationUtils.NB_LAUNCHES_WITH_SPLASHSCREEN) {

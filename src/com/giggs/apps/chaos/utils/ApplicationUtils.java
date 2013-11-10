@@ -1,6 +1,10 @@
 package com.giggs.apps.chaos.utils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,10 +15,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,25 +32,25 @@ import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventCategory;
 public class ApplicationUtils {
 
 	public static final String PREFS_NB_LAUNCHES = "nb_launches";
-	public static final int NB_LAUNCHES_WITH_SPLASHSCREEN = 5;
-	private static final int NB_LAUNCHES_RATE_DIALOG_APPEARS = 5;
+	public static final String PREFS_RATE_DIALOG_IN = "rate_dialog_in";
+	public static final int NB_LAUNCHES_WITH_SPLASHSCREEN = 10;
+	public static final int NB_LAUNCHES_RATE_DIALOG_APPEARS = 5;
 
 	private static final int STORM_EFFECT_INITIAL_ALPHA = 150;
 	private static final int STORM_EFFECT_ALPHA = 50;
 
-	public static void showRateDialogIfNeeded(final FragmentActivity activity) {
+	public static void showRateDialogIfNeeded(final Activity activity) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
-		if (prefs.getInt(PREFS_NB_LAUNCHES, 0) == NB_LAUNCHES_RATE_DIALOG_APPEARS) {
-
+		if (prefs.getInt(PREFS_RATE_DIALOG_IN, NB_LAUNCHES_RATE_DIALOG_APPEARS) == 0) {
 			final Editor editor = prefs.edit();
 
 			AlertDialog dialog = new AlertDialog.Builder(activity, R.style.Dialog)
-			        .setIcon(android.R.drawable.ic_dialog_info).setTitle(R.string.rate_title)
+			        .setIcon(android.R.drawable.ic_dialog_info)
 			        .setMessage(activity.getString(R.string.rate_message, activity.getString(R.string.app_name)))
 			        .setPositiveButton(R.string.rate_now, new DialogInterface.OnClickListener() {
 				        @Override
 				        public void onClick(DialogInterface dialog, int which) {
-					        editor.putInt(PREFS_NB_LAUNCHES, NB_LAUNCHES_RATE_DIALOG_APPEARS + 1);
+					        editor.putInt(PREFS_RATE_DIALOG_IN, -1);
 					        editor.commit();
 					        rateTheApp(activity);
 					        dialog.dismiss();
@@ -60,7 +60,7 @@ public class ApplicationUtils {
 			        }).setNegativeButton(R.string.rate_dont_want, new DialogInterface.OnClickListener() {
 				        @Override
 				        public void onClick(DialogInterface dialog, int which) {
-					        editor.putInt(PREFS_NB_LAUNCHES, NB_LAUNCHES_RATE_DIALOG_APPEARS + 1);
+					        editor.putInt(PREFS_RATE_DIALOG_IN, -1);
 					        editor.commit();
 					        dialog.dismiss();
 					        GoogleAnalyticsHandler.sendEvent(activity, EventCategory.ui_action,
@@ -69,7 +69,7 @@ public class ApplicationUtils {
 			        }).setNeutralButton(R.string.rate_later, new DialogInterface.OnClickListener() {
 				        @Override
 				        public void onClick(DialogInterface dialog, int which) {
-					        editor.putInt(PREFS_NB_LAUNCHES, 1);
+					        editor.putInt(PREFS_RATE_DIALOG_IN, 5);
 					        dialog.dismiss();
 					        GoogleAnalyticsHandler.sendEvent(activity, EventCategory.ui_action,
 					                EventAction.button_press, "rate_app_later");
@@ -82,7 +82,7 @@ public class ApplicationUtils {
 		}
 	}
 
-	public static void rateTheApp(FragmentActivity activity) {
+	public static void rateTheApp(Activity activity) {
 		Intent goToMarket = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.giggs.apps.chaos"));
 		activity.startActivity(goToMarket);
 	}
@@ -112,10 +112,13 @@ public class ApplicationUtils {
 
 		// update buttons background and font
 		Button negativeButton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+		negativeButton.setBackgroundResource(R.drawable.bg_alert_dialog_btn);
 		negativeButton.setTypeface(MyApplication.FONTS.main);
 		Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+		positiveButton.setBackgroundResource(R.drawable.bg_alert_dialog_btn);
 		positiveButton.setTypeface(MyApplication.FONTS.main);
 		Button neutralButton = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+		neutralButton.setBackgroundResource(R.drawable.bg_alert_dialog_btn);
 		neutralButton.setTypeface(MyApplication.FONTS.main);
 	}
 
@@ -133,9 +136,9 @@ public class ApplicationUtils {
 		toast.show();
 	}
 
-	public static void openDialogFragment(FragmentActivity activity, DialogFragment dialog, Bundle bundle) {
-		FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-		Fragment prev = activity.getSupportFragmentManager().findFragmentByTag("dialog");
+	public static void openDialogFragment(Activity activity, DialogFragment dialog, Bundle bundle) {
+		FragmentTransaction ft = activity.getFragmentManager().beginTransaction();
+		Fragment prev = activity.getFragmentManager().findFragmentByTag("dialog");
 		if (prev != null) {
 			ft.remove(prev);
 		}

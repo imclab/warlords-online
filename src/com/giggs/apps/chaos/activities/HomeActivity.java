@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
@@ -18,17 +19,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.giggs.apps.chaos.R;
+import com.giggs.apps.chaos.activities.fragments.CreateGameDialog;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventAction;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventCategory;
 import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.GameUtils.MusicState;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
-import com.giggs.apps.chaos.utils.WWActivity;
+import com.giggs.apps.chaos.utils.MyBaseGameActivity;
+import com.google.analytics.tracking.android.EasyTracker;
 
-public class HomeActivity extends WWActivity implements OnClickListener {
+public class HomeActivity extends MyBaseGameActivity implements OnClickListener {
 
 	private static enum ScreenState {
 		HOME, SETTINGS
@@ -39,8 +43,8 @@ public class HomeActivity extends WWActivity implements OnClickListener {
 
 	private Animation mFadeOutAnimation, mFadeInAnimation;
 	private Button mSoloButton, mMultiplayerButton, mHelpButton, mSettingsButton, mAboutButton, mRateAppButton;
-	private ViewGroup mMainButtonsLayout, mSettingsLayout;
-	private View mBackButton;
+	private ViewGroup mMainButtonsLayout, mSettingsLayout, mLoginLayout;
+	private View mBackButton, mAppNameView;
 	private RadioGroup mRadioMusicvolume;
 	private Dialog mAboutDialog = null;
 	private Animation mButtonsInAnimation;
@@ -56,78 +60,10 @@ public class HomeActivity extends WWActivity implements OnClickListener {
 
 		ApplicationUtils.showRateDialogIfNeeded(this);
 		showMainHomeButtons();
-	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		// init storm effect
-		mStormBackground = (ImageView) findViewById(R.id.stormBackground);
-		mStormEffect = ApplicationUtils.addStormBackgroundAtmosphere(mStormBackground);
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		mStormBackground.removeCallbacks(mStormEffect);
-		if (mAboutDialog != null) {
-			mAboutDialog.dismiss();
-		}
-	}
-
-	@Override
-	public void onClick(View v) {
-		if (v.isShown()) {
-			switch (v.getId()) {
-			case R.id.soloButton:
-				goToSoloGameScreen();
-				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
-				        EventAction.button_press, "play_solo");
-				break;
-			case R.id.multiplayerButton:
-				goToMultiplayerScreen();
-				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
-				        EventAction.button_press, "play_multi");
-				break;
-			case R.id.helpButton:
-				goToHelpScreen();
-				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
-				        EventAction.button_press, "show_help");
-				break;
-			case R.id.settingsButton:
-				showSettings();
-				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
-				        EventAction.button_press, "show_settings");
-				break;
-			case R.id.backButton:
-				onBackPressed();
-				break;
-			case R.id.aboutButton:
-				openAboutDialog();
-				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
-				        EventAction.button_press, "show_about_dialog");
-				break;
-			case R.id.rateButton:
-				ApplicationUtils.rateTheApp(this);
-				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
-				        EventAction.button_press, "rate_app_button");
-				break;
-			}
-		}
-	}
-
-	@Override
-	public void onBackPressed() {
-		switch (mScreenState) {
-		case HOME:
-			super.onBackPressed();
-			break;
-		case SETTINGS:
-			showMainHomeButtons();
-			GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
-			        EventAction.button_press, "back_pressed");
-			break;
-		}
+		// allow user to change the music volume with the phone's hardware
+		// buttons
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	}
 
 	private void setupUI() {
@@ -135,6 +71,7 @@ public class HomeActivity extends WWActivity implements OnClickListener {
 
 		mMainButtonsLayout = (ViewGroup) findViewById(R.id.mainButtonsLayout);
 		mSettingsLayout = (ViewGroup) findViewById(R.id.settingsLayout);
+		mLoginLayout = (ViewGroup) findViewById(R.id.loginLayout);
 
 		mButtonsInAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_in);
 
@@ -155,6 +92,8 @@ public class HomeActivity extends WWActivity implements OnClickListener {
 
 		mBackButton = (Button) findViewById(R.id.backButton);
 		mBackButton.setOnClickListener(this);
+
+		mAppNameView = (View) findViewById(R.id.appName);
 
 		mRadioMusicvolume = (RadioGroup) findViewById(R.id.musicVolume);
 
@@ -187,6 +126,112 @@ public class HomeActivity extends WWActivity implements OnClickListener {
 
 		mRateAppButton = (Button) findViewById(R.id.rateButton);
 		mRateAppButton.setOnClickListener(this);
+
+		// login / logout buttons
+		findViewById(R.id.sign_in_button).setOnClickListener(this);
+		findViewById(R.id.sign_out_button).setOnClickListener(this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// init storm effect
+		mStormBackground = (ImageView) findViewById(R.id.stormBackground);
+		mStormEffect = ApplicationUtils.addStormBackgroundAtmosphere(mStormBackground);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mStormBackground.removeCallbacks(mStormEffect);
+		if (mAboutDialog != null) {
+			mAboutDialog.dismiss();
+		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// analytics
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// analytics
+		EasyTracker.getInstance(this).activityStop(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.isShown()) {
+			switch (v.getId()) {
+			case R.id.soloButton:
+				goToSoloGameScreen();
+				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+				        EventAction.button_press, "play_solo");
+				break;
+			case R.id.multiplayerButton:
+				if (isSignedIn()) {
+					goToMultiplayerScreen();
+				} else {
+					ApplicationUtils.showToast(getApplicationContext(), R.string.log_in_to_play_multi,
+					        Toast.LENGTH_SHORT);
+				}
+				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+				        EventAction.button_press, "play_multi");
+				break;
+			case R.id.helpButton:
+				goToHelpScreen();
+				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+				        EventAction.button_press, "show_help");
+				break;
+			case R.id.settingsButton:
+				showSettings();
+				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+				        EventAction.button_press, "show_settings");
+				break;
+			case R.id.backButton:
+				onBackPressed();
+				break;
+			case R.id.aboutButton:
+				openAboutDialog();
+				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+				        EventAction.button_press, "show_about_dialog");
+				break;
+			case R.id.rateButton:
+				ApplicationUtils.rateTheApp(this);
+				GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+				        EventAction.button_press, "rate_app_button");
+				break;
+			case R.id.sign_in_button:
+				beginUserInitiatedSignIn();
+				break;
+			case R.id.sign_out_button:
+				// sign out.
+				signOut();
+
+				// show sign-in button, hide the sign-out button
+				findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+				findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		switch (mScreenState) {
+		case HOME:
+			super.onBackPressed();
+			break;
+		case SETTINGS:
+			showMainHomeButtons();
+			GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+			        EventAction.button_press, "back_pressed");
+			break;
+		}
 	}
 
 	private void openAboutDialog() {
@@ -211,6 +256,10 @@ public class HomeActivity extends WWActivity implements OnClickListener {
 		mSettingsLayout.setVisibility(View.GONE);
 		mBackButton.startAnimation(mFadeOutAnimation);
 		mBackButton.setVisibility(View.GONE);
+		mAppNameView.startAnimation(mFadeInAnimation);
+		mAppNameView.setVisibility(View.VISIBLE);
+		mLoginLayout.startAnimation(mFadeInAnimation);
+		mLoginLayout.setVisibility(View.VISIBLE);
 	}
 
 	private void showSettings() {
@@ -221,6 +270,10 @@ public class HomeActivity extends WWActivity implements OnClickListener {
 		mSettingsLayout.setVisibility(View.VISIBLE);
 		mBackButton.startAnimation(mFadeInAnimation);
 		mBackButton.setVisibility(View.VISIBLE);
+		mAppNameView.startAnimation(mFadeOutAnimation);
+		mAppNameView.setVisibility(View.GONE);
+		mLoginLayout.startAnimation(mFadeOutAnimation);
+		mLoginLayout.setVisibility(View.GONE);
 	}
 
 	// private void showResumeSoloGameDialog(final Battle savedGame) {
@@ -251,7 +304,7 @@ public class HomeActivity extends WWActivity implements OnClickListener {
 	// }
 
 	private void goToSoloGameScreen() {
-		// TODO
+		ApplicationUtils.openDialogFragment(this, new CreateGameDialog(), null);
 	}
 
 	private void goToMultiplayerScreen() {
@@ -262,4 +315,19 @@ public class HomeActivity extends WWActivity implements OnClickListener {
 		startActivity(new Intent(this, HelpActivity.class));
 		finish();
 	}
+
+	@Override
+	public void onSignInSucceeded() {
+		// show sign-out button, hide the sign-in button
+		findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+		findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onSignInFailed() {
+		// Sign in has failed. So show the user the sign-in button.
+		findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+		findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+	}
+
 }
