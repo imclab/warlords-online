@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
@@ -29,10 +28,10 @@ import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventCategory;
 import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.GameUtils.MusicState;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
-import com.giggs.apps.chaos.utils.MyBaseGameActivity;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.example.games.basegameutils.BaseGameActivity;
 
-public class HomeActivity extends MyBaseGameActivity implements OnClickListener {
+public class HomeActivity extends BaseGameActivity implements OnClickListener {
 
 	private static enum ScreenState {
 		HOME, SETTINGS
@@ -60,10 +59,6 @@ public class HomeActivity extends MyBaseGameActivity implements OnClickListener 
 
 		ApplicationUtils.showRateDialogIfNeeded(this);
 		showMainHomeButtons();
-
-		// allow user to change the music volume with the phone's hardware
-		// buttons
-		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	}
 
 	private void setupUI() {

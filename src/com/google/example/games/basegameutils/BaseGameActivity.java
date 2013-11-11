@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.giggs.apps.chaos.utils.MyActivity;
 import com.google.android.gms.appstate.AppStateClient;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.plus.PlusClient;
@@ -42,7 +43,7 @@ import com.google.android.gms.plus.PlusClient;
  * 
  * @author Bruno Oliveira (Google)
  */
-public abstract class BaseGameActivity extends FragmentActivity implements GameHelper.GameHelperListener {
+public abstract class BaseGameActivity extends MyActivity implements GameHelper.GameHelperListener {
 
 	// The game helper object. This class is mainly a wrapper around this
 	// object.
