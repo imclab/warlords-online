@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_btn_buy_unit"
+    android:orientation="horizontal"
+    android:padding="2dp" >
+
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/name"
+        style="@style/ArmyBuilderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:text="@string/placeholder" />
+
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/price"
+        style="@style/ArmyBuilderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        android:drawableLeft="@drawable/ic_price"
+        android:drawablePadding="3dp"
+        android:gravity="center"
+        android:text="@string/placeholder"
+        android:textColor="@color/gold"
+        android:textSize="12sp" />
+
+</LinearLayout>

@@ -1,8 +1,10 @@
-package com.giggs.apps.chaos.game.model;
+package com.giggs.apps.chaos.game.graphics;
 
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+
+import com.giggs.apps.chaos.game.model.GameElement;
 
 import android.hardware.input.InputManager;
 

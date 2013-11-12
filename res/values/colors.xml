@@ -18,5 +18,6 @@
     <color name="elite">#999999</color>
     <color name="bg_game_gui">#aa000000</color>
     <color name="bg_game_menu">#cc000000</color>
+    <color name="gold">#cc8911</color>
 
 </resources>

@@ -20,105 +20,106 @@ import com.giggs.apps.chaos.views.CustomRadioButton;
 
 public class CreateGameDialog extends DialogFragment {
 
-	private RadioGroup mRadioGroupArmy;
-	private RadioGroup mRadioGroupNbPlayers;
+    private RadioGroup mRadioGroupArmy;
+    private RadioGroup mRadioGroupNbPlayers;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NO_TITLE, android.R.style.Theme_Black_NoTitleBar_Fullscreen); // remove
-		                                                                             // title
-		                                                                             // from
-		                                                                             // dialog
-		                                                                             // fragment
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NO_TITLE, android.R.style.Theme_Black_NoTitleBar_Fullscreen); // remove
+                                                                                     // title
+                                                                                     // from
+                                                                                     // dialog
+                                                                                     // fragment
+    }
 
-	@Override
-	public void onStart() {
-		super.onStart();
+    @Override
+    public void onStart() {
+        super.onStart();
 
-		if (getDialog() == null)
-			return;
+        if (getDialog() == null)
+            return;
 
-		// set the animations to use on showing and hiding the dialog
-		getDialog().getWindow().setWindowAnimations(R.style.DialogAnimation);
-	}
+        // set the animations to use on showing and hiding the dialog
+        getDialog().getWindow().setWindowAnimations(R.style.DialogAnimation);
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.dialog_new_game, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.dialog_new_game, container, false);
 
-		// init armies chooser
-		mRadioGroupArmy = (RadioGroup) view.findViewById(R.id.radioGroupArmy);
-		for (ArmiesData army : ArmiesData.values()) {
-			addArmyRadioButton(army);
-		}
-		// checks first radio button
-		((CompoundButton) mRadioGroupArmy.getChildAt(0)).setChecked(true);
+        // init armies chooser
+        mRadioGroupArmy = (RadioGroup) view.findViewById(R.id.radioGroupArmy);
+        for (ArmiesData army : ArmiesData.values()) {
+            addArmyRadioButton(army);
+        }
+        // checks first radio button
+        ((CompoundButton) mRadioGroupArmy.getChildAt(0)).setChecked(true);
 
-		// init nb players chooser
-		mRadioGroupNbPlayers = (RadioGroup) view.findViewById(R.id.radioGroupNbPlayers);
-		for (int nbPlayers : GameUtils.NB_PLAYERS_IN_GAME) {
-			addNbPlayersRadioButton(nbPlayers);
-		}
-		// checks first radio button
-		((CompoundButton) mRadioGroupNbPlayers.getChildAt(2)).setChecked(true);
+        // init nb players chooser
+        mRadioGroupNbPlayers = (RadioGroup) view.findViewById(R.id.radioGroupNbPlayers);
+        for (int nbPlayers : GameUtils.NB_PLAYERS_IN_GAME) {
+            addNbPlayersRadioButton(nbPlayers);
+        }
+        // checks first radio button
+        ((CompoundButton) mRadioGroupNbPlayers.getChildAt(2)).setChecked(true);
 
-		// cancel button
-		view.findViewById(R.id.cancelButton).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dismiss();
-			}
-		});
+        // cancel button
+        view.findViewById(R.id.cancelButton).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
-		// ok button
-		view.findViewById(R.id.okButton).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				createGame();
-			}
-		});
+        // ok button
+        view.findViewById(R.id.okButton).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createGame();
+            }
+        });
 
-		return view;
-	}
+        return view;
+    }
 
-	/**
-	 * Add a radio button for each available army.
-	 * 
-	 * @param army
-	 */
-	private void addArmyRadioButton(ArmiesData army) {
-		CustomRadioButton radioBtn = (CustomRadioButton) getActivity().getLayoutInflater().inflate(R.layout.radio_army,
-		        null);
-		radioBtn.setId(army.ordinal());
-		radioBtn.setText(army.getName());
-		radioBtn.setCompoundDrawablesWithIntrinsicBounds(army.getFlagImage(), 0, 0, 0);
-		LayoutParams params = new LayoutParams(getActivity(), null);
-		params.setMargins(0, 0, 30, 0);
-		radioBtn.setLayoutParams(params);
-		mRadioGroupArmy.addView(radioBtn);
-	}
+    /**
+     * Add a radio button for each available army.
+     * 
+     * @param army
+     */
+    private void addArmyRadioButton(ArmiesData army) {
+        CustomRadioButton radioBtn = (CustomRadioButton) getActivity().getLayoutInflater().inflate(R.layout.radio_army,
+                null);
+        radioBtn.setId(army.ordinal());
+        radioBtn.setText(army.getName());
+        radioBtn.setCompoundDrawablesWithIntrinsicBounds(army.getFlagImage(), 0, 0, 0);
+        LayoutParams params = new LayoutParams(getActivity(), null);
+        params.setMargins(0, 0, 30, 0);
+        radioBtn.setLayoutParams(params);
+        mRadioGroupArmy.addView(radioBtn);
+    }
 
-	private void addNbPlayersRadioButton(int nbPlayers) {
-		CustomRadioButton radioBtn = (CustomRadioButton) getActivity().getLayoutInflater().inflate(R.layout.radio_army,
-		        null);
-		radioBtn.setId(nbPlayers);
-		radioBtn.setText("" + nbPlayers);
-		radioBtn.setTypeface(MyApplication.FONTS.text);
-		LayoutParams params = new LayoutParams(getActivity(), null);
-		params.setMargins(0, 0, 40, 0);
-		radioBtn.setLayoutParams(params);
-		mRadioGroupNbPlayers.addView(radioBtn);
-	}
+    private void addNbPlayersRadioButton(int nbPlayers) {
+        CustomRadioButton radioBtn = (CustomRadioButton) getActivity().getLayoutInflater().inflate(R.layout.radio_army,
+                null);
+        radioBtn.setId(nbPlayers);
+        radioBtn.setText("" + nbPlayers);
+        radioBtn.setTypeface(MyApplication.FONTS.text);
+        LayoutParams params = new LayoutParams(getActivity(), null);
+        params.setMargins(0, 0, 40, 0);
+        radioBtn.setLayoutParams(params);
+        mRadioGroupNbPlayers.addView(radioBtn);
+    }
 
-	private void createGame() {
-		Intent intent = new Intent(getActivity(), GameActivity.class);
-		Bundle extras = new Bundle();
-		extras.putInt("my_army", mRadioGroupArmy.getCheckedRadioButtonId());
-		extras.putInt("nb_players", mRadioGroupNbPlayers.getCheckedRadioButtonId());
-		intent.putExtras(extras);
-		startActivity(intent);
-	}
+    private void createGame() {
+        Intent intent = new Intent(getActivity(), GameActivity.class);
+        Bundle extras = new Bundle();
+        extras.putInt("my_army", mRadioGroupArmy.getCheckedRadioButtonId());
+        extras.putInt("nb_players", mRadioGroupNbPlayers.getCheckedRadioButtonId());
+        intent.putExtras(extras);
+        startActivity(intent);
+        getActivity().finish();
+    }
 
 }

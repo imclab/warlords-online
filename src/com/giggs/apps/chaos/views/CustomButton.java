@@ -18,6 +18,11 @@ public class CustomButton extends Button {
         initCustomButton();
     }
 
+    public CustomButton(Context context, AttributeSet attrs, int style) {
+        super(context, attrs, style);
+        initCustomButton();
+    }
+
     private void initCustomButton() {
         setTypeface(FONTS.main);
         // disable button default sound when clicked

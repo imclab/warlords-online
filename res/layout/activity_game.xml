@@ -17,4 +17,87 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/gold"
+        style="@style/ArmyBuilderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="3dp"
+        android:drawableLeft="@drawable/ic_price"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:text="@string/placeholder"
+        android:textColor="@color/gold"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/buyLayout"
+        style="@style/ArmyBuilderColumn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="3dp"
+        android:gravity="left|center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <com.giggs.apps.chaos.views.CustomButton
+            android:id="@+id/buyReset"
+            style="@style/ArmyBuilderSmallButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_buy_unit"
+            android:drawableLeft="@drawable/ic_reset" />
+    </LinearLayout>
+
+    <com.giggs.apps.chaos.views.CustomButton
+        android:id="@+id/sendOrders"
+        style="@style/ArmyBuilderSmallButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="3dp"
+        android:background="@drawable/bg_btn_buy_unit"
+        android:drawableLeft="@drawable/ic_parchemin"
+        android:drawablePadding="5dp"
+        android:padding="7dp"
+        android:text="@string/sendOrders" />
+
+    <SlidingDrawer
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:content="@+id/content"
+        android:handle="@+id/handle"
+        android:orientation="horizontal"
+        android:rotation="180" >
+
+        <ImageView
+            android:id="@id/handle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bg_drawer_handle" />
+
+        <ScrollView
+            android:id="@id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_btn_pressed"
+            android:orientation="vertical"
+            android:rotation="180" >
+
+            <LinearLayout
+                android:id="@+id/players"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="15dp" >
+            </LinearLayout>
+        </ScrollView>
+    </SlidingDrawer>
+
 </RelativeLayout>
