@@ -19,5 +19,7 @@
     <color name="bg_game_gui">#aa000000</color>
     <color name="bg_game_menu">#cc000000</color>
     <color name="gold">#cc8911</color>
+    <color name="bg_drawer">#bb000000</color>
+    <color name="cannot_buy_red">#88D10000</color>
 
 </resources>

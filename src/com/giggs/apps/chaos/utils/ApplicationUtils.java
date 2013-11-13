@@ -157,7 +157,7 @@ public class ApplicationUtils {
 			private boolean isThunder = false;
 
 			public void run() {
-				if (Math.random() < 0.05) {
+				if (Math.random() < 0.03) {
 					// thunderstruck !
 					isThunder = true;
 					backgroundView.setColorFilter(Color.argb(STORM_EFFECT_ALPHA, 0, 0, 0));

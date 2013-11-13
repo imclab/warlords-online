@@ -28,15 +28,12 @@ public class BuySprite extends Sprite {
             switch (pSceneTouchEvent.getAction()) {
             case TouchEvent.ACTION_DOWN:
                 // element is selected
-                mIsSelected = true;
+                mInputManager.onBuyIconClicked(mTile);
                 setAlpha(0.5f);
                 break;
             case TouchEvent.ACTION_MOVE:
                 break;
             case TouchEvent.ACTION_UP:
-                if (mIsSelected) {
-                    mInputManager.onBuyIconClicked(mTile);
-                }
                 setAlpha(1.0f);
                 break;
             }

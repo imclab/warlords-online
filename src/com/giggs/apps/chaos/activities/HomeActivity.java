@@ -125,20 +125,21 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
 		// login / logout buttons
 		findViewById(R.id.sign_in_button).setOnClickListener(this);
 		findViewById(R.id.sign_out_button).setOnClickListener(this);
+
+		mStormBackground = (ImageView) findViewById(R.id.stormBackground);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		// init storm effect
-		mStormBackground = (ImageView) findViewById(R.id.stormBackground);
 		mStormEffect = ApplicationUtils.addStormBackgroundAtmosphere(mStormBackground);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		mStormBackground.removeCallbacks(mStormEffect);
+		 mStormBackground.removeCallbacks(mStormEffect);
 		if (mAboutDialog != null) {
 			mAboutDialog.dismiss();
 		}
