@@ -9,16 +9,17 @@ import org.andengine.input.touch.detector.PinchZoomDetector.IPinchZoomDetectorLi
 import org.andengine.input.touch.detector.ScrollDetector;
 import org.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
 import org.andengine.input.touch.detector.SurfaceScrollDetector;
-import org.andengine.util.color.Color;
 
 import android.view.MotionEvent;
 
 import com.giggs.apps.chaos.activities.GameActivity;
-import com.giggs.apps.chaos.game.graphics.GameSprite;
-import com.giggs.apps.chaos.game.model.Player;
+import com.giggs.apps.chaos.game.graphics.UnitSprite;
+import com.giggs.apps.chaos.game.logic.GameLogic;
+import com.giggs.apps.chaos.game.logic.MapLogic;
 import com.giggs.apps.chaos.game.model.map.Tile;
 import com.giggs.apps.chaos.game.model.orders.DefendOrder;
 import com.giggs.apps.chaos.game.model.orders.MoveOrder;
+import com.giggs.apps.chaos.game.model.orders.Order;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class InputManager implements IOnSceneTouchListener, IScrollDetectorListener, IPinchZoomDetectorListener {
@@ -32,7 +33,7 @@ public class InputManager implements IOnSceneTouchListener, IScrollDetectorListe
     public boolean isLongPressTriggered = false;
     private boolean isDragged = false;
 
-    public GameSprite selectedElement = null;
+    public UnitSprite selectedElement = null;
     private GameActivity mGameActivity;
     private float lastX;
     private float lastY;
@@ -133,142 +134,78 @@ public class InputManager implements IOnSceneTouchListener, IScrollDetectorListe
         }
     }
 
-    public void onSelectGameElement(GameSprite gameSprite) {
+    public void onSelectElement(UnitSprite gameSprite) {
         if (selectedElement != null) {
-            selectedElement.detachChild(mGameActivity.selectionCircle);
+            unselectElement(selectedElement);
         }
-        if (gameSprite.isVisible()) {
-            selectedElement = gameSprite;
-            // mGameActivity.selectionCircle.setColor(selectedElement.getGameElement().getSelectionColor());
-            gameSprite.setZIndex(10);
-            mGameActivity.selectionCircle.setZIndex(-10);
-            gameSprite.attachChild(mGameActivity.selectionCircle);
+
+        // add selection circle
+        selectedElement = gameSprite;
+        gameSprite.setZIndex(10);
+        gameSprite.attachChild(mGameActivity.selectionCircle);
+        mGameActivity.selectionCircle.setZIndex(-10);
+
+        // show move options
+        for (Tile tile : GameLogic.getMoveOptions(mGameActivity.battle, selectedElement.getGameElement())) {
+            if (((Unit) gameSprite.getGameElement()).canMove(tile)) {
+                tile.setMoveOption(true);
+            }
         }
     }
 
-    public void giveHideOrder(GameSprite gameSprite) {
-        // if (gameSprite == selectedElement) {
-        // // give defend order
-        // Unit unit = (Unit) selectedElement.getGameElement();
-        // unit.setOrder(new DefendOrder());
-        // }
+    private Tile hoveredTile = null;
+
+    public void onTouchMove(float x, float y) {
+        Tile tile = MapLogic.getTileAtCoordinates(mGameActivity.battle.getMap(), x, y);
+        if (tile.isMoveOption()) {
+            if (hoveredTile != null) {
+                hoveredTile.setHovered(false);
+            }
+
+            hoveredTile = tile;
+            tile.setHovered(true);
+        } else if (hoveredTile != null) {
+            hoveredTile.setHovered(false);
+            hoveredTile = null;
+        }
     }
 
-    public void giveOrderToUnit(float x, float y) {
-        // if (mGameActivity.battle.getPhase() == Phase.combat &&
-        // selectedElement != null) {
-        // if (selectedElement.getGameElement() instanceof Unit) {
-        // Unit unit = (Unit) selectedElement.getGameElement();
-        // GameSprite g = getElementAtCoordinates(x, y);
-        // if (g != null && g.getGameElement() instanceof Unit && g !=
-        // selectedElement
-        // && !((Unit) g.getGameElement()).isDead()
-        // && ((Unit) g.getGameElement()).getArmy() != ((Unit)
-        // selectedElement.getGameElement()).getArmy()) {
-        // unit.setOrder(new FireOrder((Unit) g.getGameElement()));
-        // } else if (unit.canMove()) {
-        // unit.setOrder(new MoveOrder(x, y));
-        // }
-        // }
-        // }
+    public void onActionUp(float x, float y) {
+        if (selectedElement != null) {
+            Tile tile = MapLogic.getTileAtCoordinates(mGameActivity.battle.getMap(), x, y);
+            if (tile.isMoveOption()) {
+                giveMoveOrderToUnit(tile);
+            } else if (tile == selectedElement.getGameElement().getTilePosition()) {
+                giveDefendOrder();
+            }
+            unselectElement(selectedElement);
+        }
     }
 
-    public void updateOrderLine(GameSprite gameSprite, float x, float y) {
-        // if (mGameActivity.battle.getPhase() == Phase.deployment) {
-        // // during deployment phase
-        // TMXTile tmxtile = mGameActivity.tmxLayer.getTMXTileAt(x, y);
-        // if (tmxtile != null
-        // && tmxtile.getTileColumn() >=
-        // mGameActivity.battle.getMe().getXPositionDeployment()
-        // && tmxtile.getTileColumn() <=
-        // mGameActivity.battle.getMe().getXPositionDeployment()
-        // + GameUtils.DEPLOYMENT_ZONE_SIZE - 1) {
-        // gameSprite.setPosition(x - gameSprite.getWidth() / 2, y -
-        // gameSprite.getHeight() / 2);
-        // gameSprite.getGameElement().setTilePosition(
-        // mGameActivity.battle.getMap().getTiles()[tmxtile.getTileRow()][tmxtile.getTileColumn()]);
-        // }
-        // } else {
-        // // get distance
-        // int distance = (int) GameUtils.getDistanceBetween(gameSprite.getX(),
-        // gameSprite.getY(), x, y);
-        //
-        // // during combat phase
-        // mGameActivity.orderLine.setPosition(gameSprite.getX(),
-        // gameSprite.getY(), x, y);
-        // GameSprite g = getElementAtCoordinates(x, y);
-        // if (g != null && g.isVisible() && g != gameSprite &&
-        // g.getGameElement() instanceof Unit
-        // && !((Unit) g.getGameElement()).isDead()
-        // && ((Unit) g.getGameElement()).getArmy() != ((Unit)
-        // selectedElement.getGameElement()).getArmy()) {
-        // // attack
-        // mGameActivity.orderLine.setColor(Color.RED);
-        // mGameActivity.crossHairLine.setColor(Color.RED);
-        // mGameActivity.crossHairLine.setPosition(x -
-        // mGameActivity.crossHairLine.getWidth() / 2, y
-        // - mGameActivity.crossHairLine.getHeight() / 2);
-        // mGameActivity.crossHairLine.setVisible(true);
-        // mGameActivity.crossHairLine.updateDistanceLabel(distance,
-        // mGameActivity.battle,
-        // (Unit) gameSprite.getGameElement(), (Unit) g.getGameElement());
-        // mGameActivity.protection.setVisible(false);
-        // } else if (!((Unit) gameSprite.getGameElement()).canMove()) {
-        // // immobile units
-        // mGameActivity.orderLine.setPosition(gameSprite.getX(),
-        // gameSprite.getY(), x, y);
-        // mGameActivity.orderLine.setColor(Color.RED);
-        // mGameActivity.crossHairLine.setVisible(false);
-        // mGameActivity.protection.setVisible(false);
-        // } else {
-        // // move
-        // if
-        // (mGameActivity.battle.getMap().getTiles()[mGameActivity.tmxLayer.getTMXTileAt(x,
-        // y).getTileRow()][mGameActivity.tmxLayer
-        // .getTMXTileAt(x, y).getTileColumn()].getTerrain() != null) {
-        // // grants protection
-        // mGameActivity.protection.setColor(Color.YELLOW);
-        // mGameActivity.protection.setPosition(x -
-        // mGameActivity.protection.getWidth() / 2, y
-        // - mGameActivity.protection.getHeight() / 2);
-        // mGameActivity.protection.setVisible(true);
-        // } else {
-        // mGameActivity.protection.setVisible(false);
-        // }
-        //
-        // mGameActivity.crossHairLine.setColor(Color.GREEN);
-        // mGameActivity.crossHairLine.setPosition(x -
-        // mGameActivity.crossHairLine.getWidth() / 2, y
-        // - mGameActivity.crossHairLine.getHeight() / 2);
-        // mGameActivity.crossHairLine.updateDistanceLabel(distance,
-        // mGameActivity.battle,
-        // (Unit) gameSprite.getGameElement(), null);
-        // mGameActivity.crossHairLine.setVisible(true);
-        // mGameActivity.orderLine.setColor(Color.GREEN);
-        // }
-        // mGameActivity.orderLine.setVisible(true);
-        // }
-        // }
-        //
-        // public void hideOrderLine() {
-        // mGameActivity.orderLine.setVisible(false);
-        // mGameActivity.crossHairLine.setVisible(false);
-        // mGameActivity.protection.setVisible(false);
+    public void unselectElement(UnitSprite gameSprite) {
+        // remove current selection circle
+        selectedElement.detachChild(mGameActivity.selectionCircle);
+
+        // hide move options
+        for (Tile tile : GameLogic.getMoveOptions(mGameActivity.battle, selectedElement.getGameElement())) {
+            tile.setMoveOption(false);
+        }
+
+        selectedElement = null;
     }
 
-    private static final int HOVER_UNIT_RADIUS_THRESHOLD = 60;
+    public void giveDefendOrder() {
+        Unit unit = (Unit) selectedElement.getGameElement();
+        Order order = new DefendOrder(unit);
+        mGameActivity.battle.getPlayers().get(unit.getArmyIndex()).giveOrder(order, unit.getOrder());
+        unit.setOrder(order);
+    }
 
-    private GameSprite getElementAtCoordinates(float x, float y) {
-        // for (Player p : mGameActivity.battle.getPlayers()) {
-        // for (Unit g : p.getUnits()) {
-        // if (Math.abs(g.getSprite().getX() - x) < HOVER_UNIT_RADIUS_THRESHOLD
-        // && Math.abs(g.getSprite().getY() - y) < HOVER_UNIT_RADIUS_THRESHOLD)
-        // {
-        // return g.getSprite();
-        // }
-        // }
-        // }
-        return null;
+    public void giveMoveOrderToUnit(Tile destination) {
+        Unit unit = (Unit) selectedElement.getGameElement();
+        Order order = new MoveOrder(unit, destination);
+        mGameActivity.battle.getPlayers().get(unit.getArmyIndex()).giveOrder(order, unit.getOrder());
+        unit.setOrder(order);
     }
 
     public void onBuyIconClicked(Tile mTile) {

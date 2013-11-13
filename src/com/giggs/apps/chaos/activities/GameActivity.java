@@ -10,6 +10,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.LayoutGameActivity;
 
 import android.os.Bundle;
@@ -27,10 +28,13 @@ import com.giggs.apps.chaos.game.InputManager;
 import com.giggs.apps.chaos.game.andengine.custom.CustomZoomCamera;
 import com.giggs.apps.chaos.game.graphics.SelectionCircle;
 import com.giggs.apps.chaos.game.graphics.TileSprite;
+import com.giggs.apps.chaos.game.graphics.UnitSprite;
 import com.giggs.apps.chaos.game.logic.GameLogic;
+import com.giggs.apps.chaos.game.logic.MapLogic;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Tile;
+import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class GameActivity extends LayoutGameActivity {
 
@@ -141,12 +145,21 @@ public class GameActivity extends LayoutGameActivity {
                 if (tile.getOwner() >= 0) {
                     tile.updateTileOwner(0, tile.getOwner());
                 }
+
+                // add units
+                for (Unit unit : tile.getContent()) {
+                    addUnitToScene(unit);
+                }
+
+                MapLogic.dispatchUnitsOnTile(tile);
+
             }
         }
         // init fogs of war
         GameLogic.updateFogsOfWar(battle, 0);
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+        startGame();
     }
 
     @Override
@@ -159,6 +172,7 @@ public class GameActivity extends LayoutGameActivity {
         super.onPause();
         mGameGUI.onPause();
         GraphicsFactory.mGfxMap = new HashMap<String, TextureRegion>();
+        GraphicsFactory.mTiledGfxMap = new HashMap<String, TiledTextureRegion>();
         if (mMustSaveGame) {
             // TODO save game
             // SaveGameHelper.saveGame(mDbHelper, battle);
@@ -231,4 +245,13 @@ public class GameActivity extends LayoutGameActivity {
         // finish();
     }
 
+    public void addUnitToScene(Unit unit) {
+        UnitSprite s = new UnitSprite(unit, mInputManager, GameUtils.TILE_SIZE * unit.getTilePosition().getX(),
+                GameUtils.TILE_SIZE * unit.getTilePosition().getY(), GraphicsFactory.mTiledGfxMap.get(unit
+                        .getSpriteName()), getVertexBufferObjectManager());
+        s.setCanBeDragged(unit.getArmyIndex() == battle.getPlayers().get(0).getArmyIndex());
+        unit.setSprite(s);
+        mScene.registerTouchArea(s);
+        mScene.attachChild(s);
+    }
 }

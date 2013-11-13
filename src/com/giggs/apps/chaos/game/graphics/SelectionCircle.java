@@ -8,7 +8,7 @@ public class SelectionCircle extends Sprite {
 
     public SelectionCircle(final TextureRegion pTextureRegion,
             final VertexBufferObjectManager pVertexBufferObjectManager) {
-        super(0, 0, pTextureRegion, pVertexBufferObjectManager);
+        super(-5, 0, pTextureRegion, pVertexBufferObjectManager);
     }
 
     @Override

@@ -72,8 +72,15 @@ public class Player implements Serializable {
         lstTurnOrders = new ArrayList<Order>();
     }
 
-    public void giveOrder(Order order) {
+    public void giveOrder(Order order, Order oldOrder) {
+        if (oldOrder != null) {
+            lstTurnOrders.remove(oldOrder);
+        }
         lstTurnOrders.add(order);
+    }
+
+    public List<Order> getLstTurnOrders() {
+        return lstTurnOrders;
     }
 
 }

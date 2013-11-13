@@ -1,4 +1,4 @@
 Warlords 2
 ====
 
-Great Android Turnbased Strategy Game.
+Great Android Turn-based Strategy Game.

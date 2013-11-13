@@ -2,7 +2,13 @@ package com.giggs.apps.chaos.game.model.units;
 
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.data.TerrainData;
+import com.giggs.apps.chaos.game.logic.GameLogic;
+import com.giggs.apps.chaos.game.logic.GameLogic.ArmorType;
+import com.giggs.apps.chaos.game.logic.GameLogic.WeaponType;
 import com.giggs.apps.chaos.game.model.GameElement;
+import com.giggs.apps.chaos.game.model.map.Tile;
+import com.giggs.apps.chaos.game.model.orders.DefendOrder;
+import com.giggs.apps.chaos.game.model.orders.MoveOrder;
 import com.giggs.apps.chaos.game.model.orders.Order;
 
 public abstract class Unit extends GameElement {
@@ -16,6 +22,12 @@ public abstract class Unit extends GameElement {
     protected final ArmiesData army;
     private final int image;
     private final int price;
+    private final int maxHealth;
+    private final boolean isRangedAttack;
+    private final WeaponType weaponType;
+    private final ArmorType armorType;
+    private final int damage;
+    private final int armor;
 
     protected int experience = 0;
     protected int morale = 100;
@@ -23,12 +35,20 @@ public abstract class Unit extends GameElement {
     private int frags = 0;
     private Order order;
 
-    public Unit(int name, int image, String spriteName, ArmiesData army, int armyIndex, int price) {
+    public Unit(int name, int image, String spriteName, ArmiesData army, int armyIndex, int price, int health,
+            boolean isRangedAttack, WeaponType weaponType, ArmorType armorType, int damage, int armor) {
         super(name, spriteName);
         this.image = image;
         this.army = army;
         this.armyIndex = armyIndex;
         this.price = price;
+        this.maxHealth = health;
+        this.health = health;
+        this.isRangedAttack = isRangedAttack;
+        this.weaponType = weaponType;
+        this.armorType = armorType;
+        this.damage = damage;
+        this.armor = armor;
     }
 
     public ArmiesData getArmy() {
@@ -77,6 +97,13 @@ public abstract class Unit extends GameElement {
 
     public void setOrder(Order order) {
         this.order = order;
+        if (order instanceof DefendOrder) {
+            sprite.defend();
+        } else if (order instanceof MoveOrder) {
+            sprite.walk(GameLogic.getDirectionFromMoveOrder(((MoveOrder) order)));
+        } else if (order == null) {
+            sprite.stand();
+        }
     }
 
     public int getArmyIndex() {
@@ -93,6 +120,42 @@ public abstract class Unit extends GameElement {
         } else {
             return 1;
         }
+    }
+
+    public boolean canMove(Tile tile) {
+        return true;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public boolean isRangedAttack() {
+        return isRangedAttack;
+    }
+
+    public WeaponType getWeaponType() {
+        return weaponType;
+    }
+
+    public ArmorType getArmorType() {
+        return armorType;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public void setTilePosition(Tile tilePosition) {
+        if (this.tilePosition != null) {
+            this.tilePosition.getContent().remove(this);
+        }
+        this.tilePosition = tilePosition;
+        this.tilePosition.getContent().add(this);
     }
 
 }

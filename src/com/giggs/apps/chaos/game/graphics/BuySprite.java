@@ -24,6 +24,11 @@ public class BuySprite extends Sprite {
     @Override
     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX,
             final float pTouchAreaLocalY) {
+        // zoom has priority
+        if (pSceneTouchEvent.getMotionEvent().getPointerCount() > 1) {
+            return false;
+        }
+
         if (isVisible()) {
             switch (pSceneTouchEvent.getAction()) {
             case TouchEvent.ACTION_DOWN:
