@@ -17,6 +17,7 @@ public class Battle implements Serializable {
     private Map map;
     private List<Player> players = new ArrayList<Player>();
     private int turnCount = 0;
+    private boolean isWinter = false;
 
     public Map getMap() {
         return map;
@@ -48,6 +49,14 @@ public class Battle implements Serializable {
 
     public void setTurnCount(int turnCount) {
         this.turnCount = turnCount;
+    }
+
+    public boolean isWinter() {
+        return isWinter;
+    }
+
+    public void setWinter(boolean isWinter) {
+        this.isWinter = isWinter;
     }
 
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.andengine.util.color.Color;
 
-import com.giggs.apps.chaos.game.graphics.GameSprite;
+import com.giggs.apps.chaos.game.graphics.UnitSprite;
 import com.giggs.apps.chaos.game.model.map.Tile;
 
 public abstract class GameElement implements Serializable {
@@ -16,18 +16,18 @@ public abstract class GameElement implements Serializable {
     protected final int name;
     private final String spriteName;
     protected transient Tile tilePosition;
-    protected transient GameSprite sprite;
+    protected transient UnitSprite sprite;
     private Rank rank;
 
     public static enum Rank {
         neutral, enemy, ally
     }
 
-    public GameSprite getSprite() {
+    public UnitSprite getSprite() {
         return sprite;
     }
 
-    public void setSprite(GameSprite sprite) {
+    public void setSprite(UnitSprite sprite) {
         this.sprite = sprite;
     }
 
@@ -42,14 +42,6 @@ public abstract class GameElement implements Serializable {
 
     public Tile getTilePosition() {
         return tilePosition;
-    }
-
-    public void setTilePosition(Tile tilePosition) {
-        if (this.tilePosition != null) {
-            // this.tilePosition.setContent(null);
-        }
-        this.tilePosition = tilePosition;
-        // this.tilePosition.setContent(this);
     }
 
     public String getSpriteName() {

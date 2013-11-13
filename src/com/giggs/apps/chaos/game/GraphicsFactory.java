@@ -7,13 +7,16 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import android.content.Context;
 
 import com.giggs.apps.chaos.game.data.TerrainData;
+import com.giggs.apps.chaos.game.data.UnitsData;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.Player;
+import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class GraphicsFactory {
 
@@ -23,6 +26,7 @@ public class GraphicsFactory {
 
     private BitmapTextureAtlas mTexture;
     public static HashMap<String, TextureRegion> mGfxMap = new HashMap<String, TextureRegion>();
+    public static HashMap<String, TiledTextureRegion> mTiledGfxMap = new HashMap<String, TiledTextureRegion>();
 
     public GraphicsFactory(Context context, VertexBufferObjectManager vertexBufferObjectManager,
             TextureManager textureManager) {
@@ -41,12 +45,17 @@ public class GraphicsFactory {
 
         // load all units graphics
         for (Player player : battle.getPlayers()) {
+            for (Unit unit : UnitsData.getUnits(player.getArmy(), player.getArmyIndex())) {
+                loadTiledTextureGfxFromAssets(126, 168, unit.getSpriteName());
+            }
         }
 
         // stuff to load
         loadGfxFromAssets(256, 256, "control_zone.png");
         loadGfxFromAssets(128, 128, "selection.png");
         loadGfxFromAssets(64, 64, "buy.png");
+        loadGfxFromAssets(50, 80, "move_order.png");
+        loadGfxFromAssets(70, 70, "defend_order.png");
     }
 
     private void loadGfxFromAssets(int textureWidth, int textureHeight, String imageName) {
@@ -66,6 +75,16 @@ public class GraphicsFactory {
                     imageResource, 0, 0);
             mTexture.load();
             mGfxMap.put(imageName, textureRegion);
+        }
+    }
+
+    private void loadTiledTextureGfxFromAssets(int textureWidth, int textureHeight, String spriteName) {
+        if (mGfxMap.get(spriteName) == null) {
+            mTexture = new BitmapTextureAtlas(mTextureManager, textureWidth, textureHeight, TextureOptions.DEFAULT);
+            TiledTextureRegion tiledTexture = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mTexture,
+                    mContext.getAssets(), spriteName, 0, 0, 3, 4);
+            mTexture.load();
+            mTiledGfxMap.put(spriteName, tiledTexture);
         }
     }
 

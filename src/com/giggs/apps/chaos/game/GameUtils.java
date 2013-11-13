@@ -25,4 +25,12 @@ public class GameUtils {
 
     public static final int TILE_SIZE = 256;// in pixels
 
+    public static enum Direction {
+        north, east, south, west
+    }
+
+    public static final int NUMBER_CHARACTERS_IN_ROW = 3;
+
+    public static final int MAX_UNITS_PER_TILE = 3;
+
 }

@@ -25,6 +25,7 @@ import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventAction;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventCategory;
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.data.UnitsData;
+import com.giggs.apps.chaos.game.logic.GameLogic;
 import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Tile;
 import com.giggs.apps.chaos.game.model.units.Unit;
@@ -111,7 +112,7 @@ public class GameGUI {
         mSendOrdersButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendOrders();
+                confirmSendOrders();
             }
         });
 
@@ -399,20 +400,29 @@ public class GameGUI {
         mGoldAmount.setText("" + goldAmount);
     }
 
-    private void sendOrders() {
+    private void confirmSendOrders() {
         // show confirm dialog if no orders for this turn
-        Dialog dialog = new CustomAlertDialog(mActivity.getApplicationContext(), R.style.Dialog,
-                mActivity.getString(R.string.confirm_no_orders), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == R.id.okButton) {
-                            // send orders to the troops !
-                            // TODO
+        if (mActivity.battle.getPlayers().get(0).getLstTurnOrders().size() == 0) {
+            Dialog dialog = new CustomAlertDialog(mActivity, R.style.Dialog,
+                    mActivity.getString(R.string.confirm_no_orders), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == R.id.okButton) {
+                                // send orders to the troops !
+                                sendOrders();
+                            }
+                            dialog.dismiss();
                         }
-                        dialog.dismiss();
-                    }
-                });
-        dialog.show();
+                    });
+            dialog.show();
+        } else {
+            sendOrders();
+        }
+    }
+
+    private void sendOrders() {
+        // TODO multi
+        GameLogic.runTurn(mActivity, mActivity.battle);
     }
 
     private void openChatSession() {

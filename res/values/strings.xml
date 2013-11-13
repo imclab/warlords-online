@@ -56,6 +56,8 @@
     <string name="confirm_no_orders">You have not given any order this turn. Would you confirm sending orders ?</string>
     <string name="tag_buy_button">buy_button</string>
     <string name="tag_control_zone">control_zone</string>
+    <string name="tag_move_order">move_order</string>
+    <string name="tag_defend_order">defend_order</string>
     <string name="go">Go !</string>
     <string name="loading_game">Loading</string>
     <string name="loading_dots">. . .</string>
