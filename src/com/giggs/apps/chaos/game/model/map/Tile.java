@@ -74,8 +74,10 @@ public class Tile {
         }
 
         // update owner's control zone color
-        sprite.getChildByTag(R.string.tag_control_zone).setVisible(true);
-        sprite.getChildByTag(R.string.tag_control_zone).setColor(GameUtils.PLAYER_COLORS[newOwner]);
+        if (sprite.getChildByTag(R.string.tag_control_zone) != null) {
+            sprite.getChildByTag(R.string.tag_control_zone).setVisible(true);
+            sprite.getChildByTag(R.string.tag_control_zone).setColor(GameUtils.PLAYER_COLORS[newOwner]);
+        }
     }
 
     public boolean isVisible() {
@@ -102,7 +104,7 @@ public class Tile {
 
         // update content visibility
         for (Unit unit : content) {
-            unit.getSprite().setVisible(isVisible);
+            // unit.getSprite().setVisible(isVisible);
         }
     }
 
@@ -129,6 +131,22 @@ public class Tile {
         } else {
             updateColor();
         }
+    }
+
+    public void updateWeather(boolean isWinter) {
+        sprite.updateWeather(isWinter);
+    }
+
+    public int getGoldAmountGathered() {
+        switch (terrain) {
+        case farm:
+            return 100;
+        case castle:
+            return 100;
+        case fort:
+            return 50;
+        }
+        return 0;
     }
 
 }

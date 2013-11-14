@@ -79,8 +79,16 @@ public class Player implements Serializable {
         lstTurnOrders.add(order);
     }
 
+    public void removeOrder(Order order) {
+        lstTurnOrders.remove(order);
+    }
+
     public List<Order> getLstTurnOrders() {
         return lstTurnOrders;
+    }
+
+    public void updateGold(int modifier) {
+        gold += modifier;
     }
 
 }

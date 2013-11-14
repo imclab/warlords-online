@@ -12,12 +12,12 @@ import com.giggs.apps.chaos.game.model.map.Tile;
 
 public class TileSprite extends Sprite {
 
-    private InputManager mInputManager;
+    private Tile tile;
 
     public TileSprite(float pX, float pY, TextureRegion pTextureRegion,
             VertexBufferObjectManager pSpriteVertexBufferObject, Scene mScene, InputManager inputManager, Tile tile) {
         super(pX, pY, pTextureRegion, pSpriteVertexBufferObject);
-        this.mInputManager = inputManager;
+        this.tile = tile;
 
         // add control zone
         if (tile.getTerrain().canBeControlled()) {
@@ -40,4 +40,13 @@ public class TileSprite extends Sprite {
 
     }
 
+    public void updateWeather(boolean isWinter) {
+        if (isWinter) {
+            setTextureRegion(GraphicsFactory.mGfxMap.get(tile.getTerrain().getSpriteName().replace(".png", "")
+                    + "_winter.png"));
+        } else {
+            setTextureRegion(GraphicsFactory.mGfxMap.get(tile.getTerrain().getSpriteName()));
+        }
+
+    }
 }

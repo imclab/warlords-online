@@ -190,10 +190,10 @@ public class GameActivity extends LayoutGameActivity {
 
     private void startGame() {
         mGameStartTime = System.currentTimeMillis();
-        mGameGUI.displayBigLabel(R.string.go, R.color.bg_btn_green);
+        mGameGUI.displayBigLabel(getString(R.string.turn_count, 1), R.color.white);
     }
 
-    private void endGame(final Player winningPlayer) {
+    public void endGame(final Player winningPlayer) {
         if (mGameStartTime > 0L) {
             GoogleAnalyticsHandler.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_time,
                     (System.currentTimeMillis() - mGameStartTime) / 1000);
@@ -246,6 +246,7 @@ public class GameActivity extends LayoutGameActivity {
     }
 
     public void addUnitToScene(Unit unit) {
+        // TODO stats
         UnitSprite s = new UnitSprite(unit, mInputManager, GameUtils.TILE_SIZE * unit.getTilePosition().getX(),
                 GameUtils.TILE_SIZE * unit.getTilePosition().getY(), GraphicsFactory.mTiledGfxMap.get(unit
                         .getSpriteName()), getVertexBufferObjectManager());
@@ -253,5 +254,11 @@ public class GameActivity extends LayoutGameActivity {
         unit.setSprite(s);
         mScene.registerTouchArea(s);
         mScene.attachChild(s);
+    }
+
+    public void removeUnit(Unit unit) {
+        // TODO stats
+        unit.getTilePosition().getContent().remove(unit);
+        mScene.detachChild(unit.getSprite());
     }
 }

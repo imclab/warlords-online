@@ -39,6 +39,8 @@ public class GraphicsFactory {
 		// load map graphics
 		for (TerrainData terrain : TerrainData.values()) {
 			loadGfxFromAssets(256, 256, terrain.getSpriteName());
+			// add winter tiles
+			loadGfxFromAssets(256, 256, terrain.getSpriteName().replace(".png", "") + "_winter.png");
 		}
 
 		// load all units graphics

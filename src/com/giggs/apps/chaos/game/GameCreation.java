@@ -116,8 +116,8 @@ public class GameCreation {
 
         // add initial units
         Player player = lstPlayers.get((int) (Math.random() * lstPlayers.size()));
-        List<Unit> initalUnits = UnitsData.getInitialUnits(player.getArmy(), player.getArmyIndex());
-        for (Unit u : initalUnits) {
+        List<Unit> initialUnits = UnitsData.getInitialUnits(player.getArmy(), player.getArmyIndex());
+        for (Unit u : initialUnits) {
             u.setTilePosition(castleTile);
         }
         castleTile.setOwner(player.getArmyIndex());

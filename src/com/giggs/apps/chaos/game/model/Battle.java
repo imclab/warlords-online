@@ -16,7 +16,7 @@ public class Battle implements Serializable {
     private long id = 0L;
     private Map map;
     private List<Player> players = new ArrayList<Player>();
-    private int turnCount = 0;
+    private int turnCount = 1;
     private boolean isWinter = false;
 
     public Map getMap() {

@@ -53,6 +53,8 @@
     <string name="choose_nb_players">Select the number of players</string>
 
     <!-- Game -->
+        <string name="turn_count">Turn %s</string>
+   
     <string name="confirm_no_orders">You have not given any order this turn.\nDo you confirm sending orders ?</string>
     <string name="tag_buy_button">buy_button</string>
     <string name="tag_control_zone">control_zone</string>

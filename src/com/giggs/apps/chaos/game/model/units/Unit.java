@@ -1,5 +1,6 @@
 package com.giggs.apps.chaos.game.model.units;
 
+import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.logic.GameLogic;
@@ -151,11 +152,41 @@ public abstract class Unit extends GameElement {
     }
 
     public void setTilePosition(Tile tilePosition) {
+        this.tilePosition = tilePosition;
+        this.tilePosition.getContent().add(this);
+    }
+
+    public void updateTilePosition(Tile tilePosition) {
         if (this.tilePosition != null) {
             this.tilePosition.getContent().remove(this);
         }
         this.tilePosition = tilePosition;
         this.tilePosition.getContent().add(this);
+
+        sprite.setPosition(GameUtils.TILE_SIZE * tilePosition.getX(), GameUtils.TILE_SIZE * tilePosition.getY());
+    }
+
+    public void updateMorale(int modifier) {
+        morale += modifier;
+        morale = Math.min(morale, 100);
+        morale = Math.max(morale, 0);
+        sprite.updateMorale(morale);
+    }
+
+    public void updateExperience(int modifier) {
+        experience += modifier;
+        experience = Math.min(experience, 100);
+        experience = Math.max(experience, 0);
+        sprite.updateExperience(experience);
+    }
+
+    public boolean updateHealth(int modifier) {
+        health += modifier;
+        health = Math.min(health, maxHealth);
+        health = Math.max(health, 0);
+        sprite.updateHealth(health);
+
+        return health == 0;
     }
 
 }
