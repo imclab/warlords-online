@@ -32,6 +32,29 @@
         android:textColor="@color/gold"
         android:textSize="14sp" />
 
+    <com.giggs.apps.chaos.views.CustomButton
+        android:id="@+id/sendOrders"
+        style="@style/ArmyBuilderSmallButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="3dp"
+        android:background="@drawable/bg_btn_buy_unit"
+        android:drawableLeft="@drawable/ic_parchemin"
+        android:drawablePadding="5dp"
+        android:padding="7dp"
+        android:text="@string/sendOrders" />
+
+    <com.giggs.apps.chaos.views.CustomTextView
+        style="@style/ArmyBuilderColumn"
+        android:layout_width="150px"
+        android:layout_height="150px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="3dp"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/buyLayout"
         style="@style/ArmyBuilderColumn"
@@ -51,20 +74,6 @@
             android:background="@drawable/bg_btn_buy_unit"
             android:drawableLeft="@drawable/ic_reset" />
     </LinearLayout>
-
-    <com.giggs.apps.chaos.views.CustomButton
-        android:id="@+id/sendOrders"
-        style="@style/ArmyBuilderSmallButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="3dp"
-        android:background="@drawable/bg_btn_buy_unit"
-        android:drawableLeft="@drawable/ic_parchemin"
-        android:drawablePadding="5dp"
-        android:padding="7dp"
-        android:text="@string/sendOrders" />
 
     <SlidingDrawer
         android:id="@+id/drawer"

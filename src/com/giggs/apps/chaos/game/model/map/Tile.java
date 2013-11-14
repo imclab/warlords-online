@@ -104,7 +104,7 @@ public class Tile {
 
         // update content visibility
         for (Unit unit : content) {
-            // unit.getSprite().setVisible(isVisible);
+            unit.getSprite().setVisible(isVisible);
         }
     }
 

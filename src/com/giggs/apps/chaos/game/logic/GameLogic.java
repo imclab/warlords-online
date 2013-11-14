@@ -43,6 +43,16 @@ public class GameLogic {
             updateWeather(battle, true);
         }
 
+        // units are resting
+        for (int y = 0; y < battle.getMap().getHeight(); y++) {
+            for (int x = 0; x < battle.getMap().getWidth(); x++) {
+                Tile tile = battle.getMap().getTiles()[y][x];
+                for (Unit unit : tile.getContent()) {
+                    unit.initTurn();
+                }
+            }
+        }
+
         // process buy orders
         for (Player player : battle.getPlayers()) {
             for (Order order : player.getLstTurnOrders()) {
@@ -83,7 +93,8 @@ public class GameLogic {
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
                 Tile tile = battle.getMap().getTiles()[y][x];
-                if (tile.getContent().size() > 0 && tile.getContent().get(0).getArmyIndex() != tile.getOwner()) {
+                if (tile.getTerrain().canBeControlled() && tile.getContent().size() > 0
+                        && tile.getContent().get(0).getArmyIndex() != tile.getOwner()) {
                     tile.updateTileOwner(battle.getPlayers().get(0).getArmyIndex(), tile.getContent().get(0)
                             .getArmyIndex());
                 }
@@ -96,6 +107,7 @@ public class GameLogic {
             player.setDefeated(true);
         }
         int nbPlayersInGame = 0;
+        int myGoldBeforeTurn = battle.getPlayers().get(0).getGold();
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
                 Tile tile = battle.getMap().getTiles()[y][x];
@@ -103,7 +115,8 @@ public class GameLogic {
                 if (tile.getOwner() >= 0) {
                     Player player = battle.getPlayers().get(tile.getOwner());
 
-                    player.updateGold(tile.getGoldAmountGathered());
+                    player.updateGold((int) (tile.getGoldAmountGathered() * (battle.isWinter() ? GameUtils.WINTER_GATHERING_MODIFIER
+                            : 1.0f)));
 
                     // this player is still alive !
                     if (player.isDefeated()) {
@@ -149,9 +162,6 @@ public class GameLogic {
             }
         }
 
-        // update fogs of war
-        updateFogsOfWar(battle, 0);
-
         // dispatch units properly on tiles
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
@@ -160,13 +170,23 @@ public class GameLogic {
             }
         }
 
+        // update fogs of war
+        updateFogsOfWar(battle, 0);
+
         // init players for new turn
         for (Player player : battle.getPlayers()) {
             player.initNewTurn();
         }
-
+        // dispatch units properly on tiles
+        for (int y = 0; y < battle.getMap().getHeight(); y++) {
+            for (int x = 0; x < battle.getMap().getWidth(); x++) {
+                Tile tile = battle.getMap().getTiles()[y][x];
+                MapLogic.dispatchUnitsOnTile(tile);
+            }
+        }
         // update my gold amount
         gameActivity.mGameGUI.updateGoldAmount(battle.getPlayers().get(0).getGold());
+        gameActivity.mGameGUI.updateEconomyBalance(battle.getPlayers().get(0).getGold() - myGoldBeforeTurn);
 
         // check if game is ended
         if (nbPlayersInGame < 2) {

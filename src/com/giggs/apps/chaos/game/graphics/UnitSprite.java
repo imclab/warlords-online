@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.andengine.entity.primitive.Line;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
@@ -18,7 +17,7 @@ import com.giggs.apps.chaos.game.InputManager;
 import com.giggs.apps.chaos.game.model.GameElement;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
-public class UnitSprite extends AnimatedSprite {
+public class UnitSprite extends Sprite {
 
     private final GameElement mGameElement;
     private InputManager mInputManager;
@@ -33,24 +32,18 @@ public class UnitSprite extends AnimatedSprite {
 
     public UnitSprite(GameElement gameElement, InputManager inputManager, float pX, float pY,
             ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager mVertexBufferObjectManager) {
-        super(pX, pY, pTiledTextureRegion, mVertexBufferObjectManager);
+        super(pX, pY, GraphicsFactory.mGfxMap.get("transparent.png"), mVertexBufferObjectManager);
         mGameElement = gameElement;
         mInputManager = inputManager;
         // add characters
         for (int n = 0; n < 1 + ((Unit) getGameElement()).getHealth() / 101; n++) {
             CharacterSprite characterSprite = new CharacterSprite((n % GameUtils.NUMBER_CHARACTERS_IN_ROW) * UNIT_SIZE
                     / GameUtils.NUMBER_CHARACTERS_IN_ROW, (n / GameUtils.NUMBER_CHARACTERS_IN_ROW) * UNIT_SIZE
-                    / GameUtils.NUMBER_CHARACTERS_IN_ROW, getTiledTextureRegion(), getVertexBufferObjectManager());
+                    / GameUtils.NUMBER_CHARACTERS_IN_ROW, pTiledTextureRegion, getVertexBufferObjectManager());
             lstCharacters.add(characterSprite);
             attachChild(characterSprite);
         }
         setSize(UNIT_SIZE, UNIT_SIZE);
-
-        // add flag
-        Sprite flagSprite = new Sprite(-15, -15, GraphicsFactory.mGfxMap.get("flag_"
-                + ((Unit) getGameElement()).getArmyIndex()), getVertexBufferObjectManager());
-        flagSprite.setScale(0.7f);
-        attachChild(flagSprite);
 
         // add orders
         Sprite moveOrderSprite = new Sprite(UNIT_SIZE * 0.3f, UNIT_SIZE * 0.2f,
@@ -74,6 +67,12 @@ public class UnitSprite extends AnimatedSprite {
         experienceLine.setLineWidth(6.0f);
         experienceLine.setScaleX(0.0f);
         attachChild(experienceLine);
+
+        // add flag
+        Sprite flagSprite = new Sprite(0, 0, GraphicsFactory.mGfxMap.get("flag_"
+                + ((Unit) getGameElement()).getArmyIndex()), getVertexBufferObjectManager());
+        flagSprite.setScale(0.7f);
+        // attachChild(flagSprite);
 
         stand();
     }

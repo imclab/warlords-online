@@ -23,7 +23,6 @@ import com.giggs.apps.chaos.activities.HomeActivity;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventAction;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventCategory;
-import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.data.UnitsData;
 import com.giggs.apps.chaos.game.logic.GameLogic;
 import com.giggs.apps.chaos.game.model.Player;
@@ -45,6 +44,7 @@ public class GameGUI {
     private TextView mGoldAmount;
     private Button mSendOrdersButton;
     private Animation mGoldDeficitAnimation;
+    private TextView economyBalanceTV;
 
     public GameGUI(GameActivity activity) {
         this.mActivity = activity;
@@ -89,8 +89,11 @@ public class GameGUI {
         // init units buy buttons
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(15, 0, 0, 0);
-        for (final Unit unit : UnitsData.getUnits(ArmiesData.HUMAN, 0)) {
+        List<Unit> lstAvailableUnits = UnitsData.getUnits(mActivity.battle.getPlayers().get(0).getArmy(), 0);
+        for (int n = 0; n < lstAvailableUnits.size(); n++) {
+            final Unit unit = lstAvailableUnits.get(n);
             View button = mActivity.getLayoutInflater().inflate(R.layout.buy_unit_button, null);
+            button.setTag(n);
             // set name
             TextView unitName = (TextView) button.findViewById(R.id.name);
             unitName.setText(unit.getName());
@@ -101,7 +104,18 @@ public class GameGUI {
             button.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mActivity.battle.getPlayers().get(0).getLstTurnOrders().add(new BuyOrder(selectedTile, unit));
+                    // remove order
+                    for (Order order : mActivity.battle.getPlayers().get(0).getLstTurnOrders()) {
+                        if (order instanceof BuyOrder && ((BuyOrder) order).getTile() == selectedTile) {
+                            mActivity.battle.getPlayers().get(0).removeOrder(order);
+                        }
+                    }
+                    mActivity.battle
+                            .getPlayers()
+                            .get(0)
+                            .getLstTurnOrders()
+                            .add(new BuyOrder(selectedTile, UnitsData.getUnits(unit.getArmy(),
+                                    mActivity.battle.getPlayers().get(0).getArmyIndex()).get((Integer) v.getTag())));
                     // TODO add image on selected tile
                     hideBuyOptions();
                 }
@@ -146,6 +160,13 @@ public class GameGUI {
                         openChatSession();
                     }
                 });
+            }
+
+            // show economy
+            if (player.getArmyIndex() == 0) {
+                economyBalanceTV = (TextView) layout.findViewById(R.id.economy);
+                economyBalanceTV.setVisibility(View.VISIBLE);
+                updateEconomyBalance(0);
             }
 
             // defeated players
@@ -446,4 +467,12 @@ public class GameGUI {
 
     }
 
+    public void updateEconomyBalance(int balance) {
+        economyBalanceTV.setText((balance < 0 ? "" : "+") + balance);
+        if (balance >= 0) {
+            economyBalanceTV.setTextColor(mActivity.getResources().getColor(R.color.green));
+        } else {
+            economyBalanceTV.setTextColor(mActivity.getResources().getColor(R.color.red));
+        }
+    }
 }

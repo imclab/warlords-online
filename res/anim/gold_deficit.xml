@@ -4,9 +4,9 @@
     android:fromXScale="1.0"
     android:fromYScale="1.0"
     android:interpolator="@android:anim/linear_interpolator"
-    android:pivotX="50%p"
-    android:pivotY="50%p"
+    android:pivotX="50%"
+    android:pivotY="50%"
     android:repeatCount="infinite"
     android:repeatMode="reverse"
-    android:toXScale="1.2"
-    android:toYScale="1.2" />
+    android:toXScale="1.28"
+    android:toYScale="1.28" />

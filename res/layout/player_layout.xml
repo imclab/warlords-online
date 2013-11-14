@@ -26,4 +26,17 @@
         android:src="@drawable/ic_mail"
         android:visibility="gone" />
 
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/economy"
+        style="@style/SettingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:drawableLeft="@drawable/ic_coin"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:padding="6dp"
+        android:text="@string/placeholder"
+        android:visibility="gone" />
+
 </LinearLayout>

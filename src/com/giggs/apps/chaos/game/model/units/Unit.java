@@ -189,4 +189,14 @@ public abstract class Unit extends GameElement {
         return health == 0;
     }
 
+    public void initTurn() {
+        if (tilePosition.getTerrain() == TerrainData.castle || tilePosition.getTerrain() == TerrainData.fort) {
+            updateHealth(150);
+            updateMorale(25);
+        } else if (tilePosition.getTerrain() == TerrainData.farm) {
+            updateMorale(25);
+        } else {
+            updateMorale(10);
+        }
+    }
 }

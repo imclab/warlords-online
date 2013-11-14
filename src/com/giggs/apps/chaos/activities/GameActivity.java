@@ -6,12 +6,14 @@ import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.LayoutGameActivity;
+import org.andengine.util.color.Color;
 
 import android.os.Bundle;
 
@@ -54,6 +56,7 @@ public class GameActivity extends LayoutGameActivity {
     public Sprite selectionCircle;
 
     public Battle battle;
+    private Rectangle minimap;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -122,8 +125,17 @@ public class GameActivity extends LayoutGameActivity {
         this.mCamera.setCenter(GameUtils.TILE_SIZE * battle.getMap().getWidth() / 2, GameUtils.TILE_SIZE
                 * battle.getMap().getWidth() / 2);
 
+        // add selection circle
         selectionCircle = new SelectionCircle(GraphicsFactory.mGfxMap.get("selection.png"),
                 getVertexBufferObjectManager());
+
+        // add minimap
+        // minimap = new Rectangle(0, 0, 30, 30,
+        // getVertexBufferObjectManager());
+        // minimap.setColor(Color.WHITE);
+        // minimap.setAlpha(0.6f);
+        // mScene.registerTouchArea(minimap);
+        // mScene.attachChild(minimap);
 
         pOnCreateSceneCallback.onCreateSceneFinished(mScene);
     }
@@ -145,16 +157,20 @@ public class GameActivity extends LayoutGameActivity {
                 if (tile.getOwner() >= 0) {
                     tile.updateTileOwner(0, tile.getOwner());
                 }
+            }
+        }
 
-                // add units
+        // add initial units
+        for (int y = 0; y < battle.getMap().getHeight(); y++) {
+            for (int x = 0; x < battle.getMap().getWidth(); x++) {
+                Tile tile = battle.getMap().getTiles()[y][x];
                 for (Unit unit : tile.getContent()) {
                     addUnitToScene(unit);
                 }
-
                 MapLogic.dispatchUnitsOnTile(tile);
-
             }
         }
+
         // init fogs of war
         GameLogic.updateFogsOfWar(battle, 0);
 
@@ -258,7 +274,7 @@ public class GameActivity extends LayoutGameActivity {
 
     public void removeUnit(Unit unit) {
         // TODO stats
-        unit.getTilePosition().getContent().remove(unit);
         mScene.detachChild(unit.getSprite());
+        unit.getTilePosition().getContent().remove(unit);
     }
 }
