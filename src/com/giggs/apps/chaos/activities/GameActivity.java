@@ -6,7 +6,6 @@ import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -55,7 +54,6 @@ public class GameActivity extends LayoutGameActivity {
     public Sprite selectionCircle;
 
     public Battle battle;
-    private Rectangle minimap;
 
     @Override
     public EngineOptions onCreateEngineOptions() {

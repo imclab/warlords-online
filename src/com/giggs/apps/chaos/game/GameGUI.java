@@ -76,14 +76,16 @@ public class GameGUI {
         mBuyReset.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // remove order
-                for (Order order : mActivity.battle.getPlayers().get(0).getLstTurnOrders()) {
-                    if (order instanceof BuyOrder && ((BuyOrder) order).getTile() == selectedTile) {
-                        mActivity.battle.getPlayers().get(0).removeOrder(order);
+                if (selectedTile != null) {
+                    // remove order
+                    for (Order order : mActivity.battle.getPlayers().get(0).getLstTurnOrders()) {
+                        if (order instanceof BuyOrder && ((BuyOrder) order).getTile() == selectedTile) {
+                            mActivity.battle.getPlayers().get(0).removeOrder(order);
+                        }
                     }
+                    selectedTile.getSprite().updateUnitProduction(null);
+                    hideBuyOptions();
                 }
-                selectedTile.getSprite().updateUnitProduction(null);
-                hideBuyOptions();
             }
         });
         // init units buy buttons
@@ -104,21 +106,23 @@ public class GameGUI {
             button.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // remove order
-                    for (Order order : mActivity.battle.getPlayers().get(0).getLstTurnOrders()) {
-                        if (order instanceof BuyOrder && ((BuyOrder) order).getTile() == selectedTile) {
-                            mActivity.battle.getPlayers().get(0).removeOrder(order);
+                    if (selectedTile != null) {
+                        // remove order
+                        for (Order order : mActivity.battle.getPlayers().get(0).getLstTurnOrders()) {
+                            if (order instanceof BuyOrder && ((BuyOrder) order).getTile() == selectedTile) {
+                                mActivity.battle.getPlayers().get(0).removeOrder(order);
+                            }
                         }
+                        mActivity.battle
+                                .getPlayers()
+                                .get(0)
+                                .getLstTurnOrders()
+                                .add(new BuyOrder(selectedTile, UnitsData.getUnits(unit.getArmy(),
+                                        mActivity.battle.getPlayers().get(0).getArmyIndex()).get((Integer) v.getTag())));
+                        selectedTile.getSprite().updateUnitProduction(
+                                GraphicsFactory.mGfxMap.get(unit.getSpriteName().replace(".png", "") + "_image.png"));
+                        hideBuyOptions();
                     }
-                    mActivity.battle
-                            .getPlayers()
-                            .get(0)
-                            .getLstTurnOrders()
-                            .add(new BuyOrder(selectedTile, UnitsData.getUnits(unit.getArmy(),
-                                    mActivity.battle.getPlayers().get(0).getArmyIndex()).get((Integer) v.getTag())));
-                    selectedTile.getSprite().updateUnitProduction(
-                            GraphicsFactory.mGfxMap.get(unit.getSpriteName().replace(".png", "") + "_image.png"));
-                    hideBuyOptions();
                 }
             });
             button.setLayoutParams(layoutParams);

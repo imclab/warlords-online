@@ -21,7 +21,7 @@ public class GameCreation {
         List<Player> lstPlayers = new ArrayList<Player>();
         for (int n = 0; n < nbPlayers; n++) {
             int army = n > 0 ? (int) (Math.random() * ArmiesData.values().length) : myArmy;
-            Player p = new Player("" + n, "Bobby", ArmiesData.values()[0], n, n > 0);
+            Player p = new Player("" + n, "Bobby", ArmiesData.values()[army], n, n > 0);
             lstPlayers.add(p);
         }
         battle.setPlayers(lstPlayers);

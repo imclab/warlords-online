@@ -38,6 +38,8 @@ public class GameLogic {
             { 1.5f, 1, 0.5f, 0.5f, 2 }, { 1.5f, 1.5f, 1.5f, 1.5f, 0.1f } };
 
     public static void runTurn(GameActivity gameActivity, Battle battle) {
+        gameActivity.getEngine().stop();
+
         // update turn count
         battle.setTurnCount(battle.getTurnCount() + 1);
 
@@ -271,6 +273,8 @@ public class GameLogic {
         // show new turn count
         gameActivity.mGameGUI.displayBigLabel(gameActivity.getString(R.string.turn_count, battle.getTurnCount()),
                 R.color.white);
+
+        gameActivity.getEngine().start();
     }
 
     private static void processBattle(GameActivity gameActivity, Battle battle, Tile tile) {

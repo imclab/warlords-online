@@ -21,8 +21,8 @@ public abstract class Unit extends GameElement {
      */
     private static final long serialVersionUID = -1514358997270651189L;
 
-    private final int armyIndex;
     protected final ArmiesData army;
+    private final int armyIndex;
     private final int image;
     private final int price;
     private final int maxHealth;
@@ -218,4 +218,5 @@ public abstract class Unit extends GameElement {
             }
         }
     }
+
 }

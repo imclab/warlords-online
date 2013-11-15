@@ -46,7 +46,7 @@ public class GraphicsFactory {
         // load all units graphics
         for (Player player : battle.getPlayers()) {
             for (Unit unit : UnitsData.getUnits(player.getArmy(), player.getArmyIndex())) {
-                loadTiledTextureGfxFromAssets(126, 168, unit.getSpriteName());
+                loadTiledTextureGfxFromAssets(126, 200, unit.getSpriteName());
                 loadGfxFromAssets(80, 80, unit.getSpriteName().replace(".png", "") + "_image.png", 0, 0);
             }
         }
