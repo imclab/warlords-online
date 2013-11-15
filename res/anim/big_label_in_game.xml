@@ -2,10 +2,10 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:fillAfter="true"
     android:fillBefore="true"
-    android:startOffset="400" >
+    android:startOffset="200" >
 
     <scale
-        android:duration="800"
+        android:duration="600"
         android:fromXScale="0"
         android:fromYScale="0"
         android:pivotX="50%"
@@ -18,7 +18,7 @@
         android:duration="500"
         android:fromYDelta="0%"
         android:interpolator="@android:anim/accelerate_interpolator"
-        android:startOffset="1500"
+        android:startOffset="1200"
         android:toYDelta="-100%p" />
 
 </set>

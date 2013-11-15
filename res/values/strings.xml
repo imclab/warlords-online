@@ -52,9 +52,35 @@
     <string name="choose_army">Choose your army</string>
     <string name="choose_nb_players">Select the number of players</string>
 
+    <!-- Armies -->
+    <string name="human_army">Human</string>
+    <string name="human_soldier">Infantry</string>
+    <string name="human_bowman">Bowmen</string>
+    <string name="human_knight">Knights</string>
+    <string name="human_monk">Monks</string>
+    <string name="undead_army">Undead</string>
+    <string name="undead_skeleton">Skeletons</string>
+    <string name="undead_bowman">Bowmen</string>
+    <string name="undead_necromancer">Necromancers</string>
+    <string name="undead_zombie">Zombies</string>
+    <string name="orcs_army">Orc</string>
+    <string name="orcs_goblin">Goblins</string>
+    <string name="orcs_orc">Orcs</string>
+    <string name="orcs_troll">Trolls</string>
+    <string name="orcs_ogre">Ogres</string>
+    <string name="chaos_army">Chaos</string>
+    <string name="chaos_warrior">Warriors</string>
+    <string name="chaos_wizards">Wizards</string>
+    <string name="chaos_demons">Demons</string>
+    <string name="chaos_damned_soul">Damned Souls</string>
+    <string name="dwarf_army">Dwarf</string>
+    <string name="dwarf_warrior">Warriors</string>
+    <string name="dwarf_crossbowman">Crossbowmen</string>
+    <string name="dwarf_giant_killer">Giant killers</string>
+    <string name="dwarf_rune_master">Rune masters</string>
+
     <!-- Game -->
-        <string name="turn_count">Turn %s</string>
-   
+    <string name="turn_count">Turn %s</string>
     <string name="confirm_no_orders">You have not given any order this turn.\nDo you confirm sending orders ?</string>
     <string name="tag_buy_button">buy_button</string>
     <string name="tag_control_zone">control_zone</string>
@@ -140,11 +166,8 @@
     <string name="removeGameQuestion">Remove this game ?</string>
     <string name="trainUnits">Hire units</string>
     <string name="unit">unit</string>
-    <string name="infantry">Infantry</string>
     <string name="infantryDescription">Basic unit with average skills. Essential to conquer places and to protect bowmen.</string>
-    <string name="bowmen">Bowmen</string>
     <string name="bowmenDescription">Defensive range unit. Deadly when associated to other units, less efficient alone or in the forest.</string>
-    <string name="knights">Knights</string>
     <string name="knightsDescription">Powerful contact unit, to be placed in the center of the battles. Expensive to supply, be sure to have stable income.</string>
     <string name="chooseGameType">Type of Map</string>
     <string name="randomMap">Random Map</string>

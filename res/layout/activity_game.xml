@@ -10,14 +10,6 @@
         android:layout_height="match_parent" />
 
     <com.giggs.apps.chaos.views.CustomTextView
-        android:id="@+id/bigLabel"
-        style="@style/SplashScreenTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
-
-    <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/gold"
         style="@style/ArmyBuilderText"
         android:layout_width="wrap_content"
@@ -74,6 +66,14 @@
             android:background="@drawable/bg_btn_buy_unit"
             android:drawableLeft="@drawable/ic_reset" />
     </LinearLayout>
+
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/bigLabel"
+        style="@style/SplashScreenTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
     <SlidingDrawer
         android:id="@+id/drawer"

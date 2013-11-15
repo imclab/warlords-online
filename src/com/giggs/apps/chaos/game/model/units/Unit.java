@@ -4,8 +4,10 @@ import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.logic.GameLogic;
+import com.giggs.apps.chaos.game.logic.MapLogic;
 import com.giggs.apps.chaos.game.logic.GameLogic.ArmorType;
 import com.giggs.apps.chaos.game.logic.GameLogic.WeaponType;
+import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.GameElement;
 import com.giggs.apps.chaos.game.model.map.Tile;
 import com.giggs.apps.chaos.game.model.orders.DefendOrder;
@@ -197,6 +199,23 @@ public abstract class Unit extends GameElement {
             updateMorale(25);
         } else {
             updateMorale(10);
+        }
+    }
+
+    public void attack(Unit target) {
+        int damage = GameLogic.getDamage(this, target);
+        target.updateHealth(-damage);
+        target.updateMorale(-damage / 10);
+        frags += damage;
+    }
+
+    public void flee(Battle battle) {
+        for (Tile tile : MapLogic.getAdjacentTiles(battle.getMap(), tilePosition, 1, false)) {
+            if (canMove(tile)
+                    && (tile.getContent().size() == 0 || tile.getContent().get(0).getArmyIndex() == armyIndex
+                            && tile.getContent().size() < GameUtils.MAX_UNITS_PER_TILE)) {
+                updateTilePosition(tile);
+            }
         }
     }
 }

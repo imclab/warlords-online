@@ -69,10 +69,10 @@ public class UnitSprite extends Sprite {
         attachChild(experienceLine);
 
         // add flag
-        Sprite flagSprite = new Sprite(0, 0, GraphicsFactory.mGfxMap.get("flag_"
-                + ((Unit) getGameElement()).getArmyIndex()), getVertexBufferObjectManager());
-        flagSprite.setScale(0.7f);
-        // attachChild(flagSprite);
+        Sprite flagSprite = new Sprite(-20, -30, GraphicsFactory.mGfxMap.get("blason_"
+                + (((Unit) getGameElement()).getArmyIndex() + 1) + ".png"), getVertexBufferObjectManager());
+        flagSprite.setScale(0.5f);
+        attachChild(flagSprite);
 
         stand();
     }
@@ -159,16 +159,21 @@ public class UnitSprite extends Sprite {
     }
 
     public void updateMorale(int newMorale) {
-        moraleLine.setScaleX(newMorale / 100);
+        moraleLine.setScaleX(newMorale / 100.0f);
     }
 
     public void updateExperience(int newExperience) {
-        experienceLine.setScaleX(newExperience / 100);
+        experienceLine.setScaleX(newExperience / 100.0f);
     }
 
     public void updateHealth(int health) {
         for (int n = 0; n < lstCharacters.size(); n++) {
-            lstCharacters.get(n).setVisible(health / 100 >= n);
+            if (health < 100) {
+                // when only one character left, show the centered one
+                lstCharacters.get(n).setVisible(n == 1);
+            } else {
+                lstCharacters.get(n).setVisible(health / 100.0f >= n);
+            }
         }
     }
 }

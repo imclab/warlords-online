@@ -6,15 +6,15 @@ import com.giggs.apps.chaos.game.logic.GameLogic.ArmorType;
 import com.giggs.apps.chaos.game.logic.GameLogic.WeaponType;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
-public class Soldier extends Unit {
+public class Monk extends Unit {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1018681662969655381L;
 
-    public Soldier(int armyIndex) {
-        super(R.string.human_soldier, R.drawable.un_infantry, "human_soldier.png", ArmiesData.HUMAN, armyIndex, 50, 900,
-                false, WeaponType.normal, ArmorType.medium, 50, 5);
+    public Monk(int armyIndex) {
+        super(R.string.human_monk, R.drawable.un_knight, "human_monk.png", ArmiesData.HUMAN, armyIndex, 80, 500, false,
+                WeaponType.magic, ArmorType.unarmored, 40, 3);
     }
 }

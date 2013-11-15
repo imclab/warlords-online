@@ -13,7 +13,6 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.LayoutGameActivity;
-import org.andengine.util.color.Color;
 
 import android.os.Bundle;
 
@@ -272,9 +271,14 @@ public class GameActivity extends LayoutGameActivity {
         mScene.attachChild(s);
     }
 
-    public void removeUnit(Unit unit) {
+    public void removeUnit(final Unit unit) {
         // TODO stats
-        mScene.detachChild(unit.getSprite());
+        this.runOnUpdateThread(new Runnable() {
+            @Override
+            public void run() {
+                mScene.detachChild(unit.getSprite());
+            }
+        });
         unit.getTilePosition().getContent().remove(unit);
     }
 }

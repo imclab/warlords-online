@@ -39,4 +39,7 @@ public class GameUtils {
 
     public static final int MAX_UNITS_PER_TILE = 3;
 
+    public static final int MORALE_THRESHOLD_ROUTED = 35;
+
+    public static final int EXPERIENCE_POINTS_PER_BATTLE_ROUND = 3;
 }

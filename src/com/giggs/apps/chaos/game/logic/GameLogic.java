@@ -1,7 +1,12 @@
 package com.giggs.apps.chaos.game.logic;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
+import android.annotation.SuppressLint;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.activities.GameActivity;
 import com.giggs.apps.chaos.game.GameUtils;
@@ -13,10 +18,12 @@ import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Map;
 import com.giggs.apps.chaos.game.model.map.Tile;
 import com.giggs.apps.chaos.game.model.orders.BuyOrder;
+import com.giggs.apps.chaos.game.model.orders.DefendOrder;
 import com.giggs.apps.chaos.game.model.orders.MoveOrder;
 import com.giggs.apps.chaos.game.model.orders.Order;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
+@SuppressLint("UseSparseArrays")
 public class GameLogic {
 
     public static enum WeaponType {
@@ -79,15 +86,71 @@ public class GameLogic {
                         buyOrder.getUnit().setTilePosition(tile);
                         gameActivity.addUnitToScene(buyOrder.getUnit());
                     }
+                    tile.getSprite().updateUnitProduction(null);
                 } else if (order instanceof MoveOrder) {
                     MoveOrder moveOrder = (MoveOrder) order;
+                    // check units crossing
+                    double random = Math.random();
+                    for (Unit u : ((MoveOrder) order).getDestination().getContent()) {
+                        if (u.getOrder() != null && u.getOrder() instanceof MoveOrder
+                                && ((MoveOrder) u.getOrder()).getDestination() == moveOrder.getOrigin()) {
+                            // resolve units crossing
+                            if (random < 0.5) {
+                                u.setOrder(null);
+                            } else {
+                                for (Unit allyUnit : moveOrder.getOrigin().getContent()) {
+                                    if (allyUnit.getOrder() != null
+                                            && allyUnit.getOrder() instanceof MoveOrder
+                                            && ((MoveOrder) allyUnit.getOrder()).getDestination() == moveOrder
+                                                    .getDestination()) {
+                                        u.setOrder(null);
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
                     moveOrder.getUnit().updateTilePosition(moveOrder.getDestination());
                 }
             }
         }
 
         // process battles
-        // TODO
+        for (int y = 0; y < battle.getMap().getHeight(); y++) {
+            for (int x = 0; x < battle.getMap().getWidth(); x++) {
+                Tile tile = battle.getMap().getTiles()[y][x];
+                if (tile.getContent().size() > 1) {
+                    for (int n = 1; n < tile.getContent().size(); n++) {
+                        if (tile.getContent().get(0).getArmyIndex() != tile.getContent().get(n).getArmyIndex()) {
+                            processBattle(gameActivity, battle, tile);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // check if over-numbered
+        for (int y = 0; y < battle.getMap().getHeight(); y++) {
+            for (int x = 0; x < battle.getMap().getWidth(); x++) {
+                Tile tile = battle.getMap().getTiles()[y][x];
+                if (tile.getContent().size() > GameUtils.MAX_UNITS_PER_TILE) {
+                    for (Unit u : tile.getContent()) {
+                        if (u.getOrder() != null && u.getOrder() instanceof MoveOrder) {
+                            MoveOrder m = (MoveOrder) u.getOrder();
+                            if (m.getOrigin().getContent().size() == 0
+                                    || m.getOrigin().getContent().get(0).getArmyIndex() == u.getArmyIndex()
+                                    && m.getOrigin().getContent().size() < GameUtils.MAX_UNITS_PER_TILE) {
+                                u.setTilePosition(m.getOrigin());
+                                if (tile.getContent().size() <= GameUtils.MAX_UNITS_PER_TILE) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         // update places' owners
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
@@ -135,6 +198,10 @@ public class GameLogic {
             }
         }
 
+        // update my gold amount
+        gameActivity.mGameGUI.updateGoldAmount(battle.getPlayers().get(0).getGold());
+        gameActivity.mGameGUI.updateEconomyBalance(battle.getPlayers().get(0).getGold() - myGoldBeforeTurn);
+
         // check economic crisis !
         for (Player player : battle.getPlayers()) {
             if (player.getGold() < 0) {
@@ -144,9 +211,11 @@ public class GameLogic {
                         Tile tile = battle.getMap().getTiles()[y][x];
                         if (tile.getContent().size() > 0
                                 && tile.getContent().get(0).getArmyIndex() == player.getArmyIndex()) {
-                            for (Unit unit : tile.getContent()) {
+                            List<Unit> content = new ArrayList<Unit>(tile.getContent());
+                            for (int n = 0; n < content.size(); n++) {
                                 // units are not paid anymore, they lose morale
                                 // !
+                                Unit unit = content.get(n);
                                 unit.updateMorale(player.getGold() / 4);
                                 if (unit.getMorale() < 40) {
                                     // units are deserting...
@@ -159,6 +228,7 @@ public class GameLogic {
                         }
                     }
                 }
+                player.setGold(0);
             }
         }
 
@@ -184,9 +254,6 @@ public class GameLogic {
                 MapLogic.dispatchUnitsOnTile(tile);
             }
         }
-        // update my gold amount
-        gameActivity.mGameGUI.updateGoldAmount(battle.getPlayers().get(0).getGold());
-        gameActivity.mGameGUI.updateEconomyBalance(battle.getPlayers().get(0).getGold() - myGoldBeforeTurn);
 
         // check if game is ended
         if (nbPlayersInGame < 2) {
@@ -204,6 +271,94 @@ public class GameLogic {
         // show new turn count
         gameActivity.mGameGUI.displayBigLabel(gameActivity.getString(R.string.turn_count, battle.getTurnCount()),
                 R.color.white);
+    }
+
+    private static void processBattle(GameActivity gameActivity, Battle battle, Tile tile) {
+
+        // split in armies
+        HashMap<Integer, List<Unit>> lstArmies = new HashMap<Integer, List<Unit>>();
+        for (Unit u : tile.getContent()) {
+            if (lstArmies.get(u.getArmyIndex()) == null) {
+                lstArmies.put(u.getArmyIndex(), new ArrayList<Unit>());
+            }
+            lstArmies.get(u.getArmyIndex()).add(u);
+        }
+
+        int nbRounds = 0;
+
+        do {
+            nbRounds++;
+
+            // ranged attacks have initiative
+            for (Unit unit : tile.getContent()) {
+                if (unit.isRangedAttack()) {
+                    unit.attack(getTarget(lstArmies, unit));
+                }
+            }
+
+            // then contact units
+            for (Unit unit : tile.getContent()) {
+                if (!unit.isRangedAttack()) {
+                    unit.attack(getTarget(lstArmies, unit));
+                }
+            }
+
+            // check if an army is defeated
+            HashMap<Integer, List<Unit>> lstArmiesCopy = new HashMap<Integer, List<Unit>>(lstArmies);
+            Iterator<Entry<Integer, List<Unit>>> it = lstArmiesCopy.entrySet().iterator();
+            while (it.hasNext()) {
+                Entry<Integer, List<Unit>> entry = it.next();
+                List<Unit> army = entry.getValue();
+
+                // calculate average morale and remove dead units
+                int totalMorale = 0;
+                for (int n = 0; n < army.size(); n++) {
+                    Unit unit = army.get(n);
+                    totalMorale += unit.getMorale();
+                    if (unit.getHealth() == 0) {
+                        gameActivity.removeUnit(unit);
+                        army.remove(n);
+                        n--;
+                    }
+                }
+                if (army.size() == 0 || totalMorale / army.size() < GameUtils.MORALE_THRESHOLD_ROUTED) {
+                    // an army is defeated
+                    for (Unit unit : army) {
+                        giveBattleReward(unit, false, nbRounds);
+                        unit.flee(battle);
+                    }
+                    lstArmies.remove(entry.getKey());
+                }
+            }
+
+        } while (lstArmies.size() > 1);
+
+        // give rewards for the winners
+        if (lstArmies.size() == 1) {
+            for (Unit unit : lstArmies.get(lstArmies.keySet().iterator().next())) {
+                giveBattleReward(unit, true, nbRounds);
+            }
+        }
+    }
+
+    private static void giveBattleReward(Unit unit, boolean isVictory, int nbRounds) {
+        unit.updateExperience((int) (GameUtils.EXPERIENCE_POINTS_PER_BATTLE_ROUND * nbRounds * (isVictory ? 2.0f : 1.0f)));
+        if (isVictory) {
+            // morale bonus for winners
+            unit.updateMorale(20);
+        }
+    }
+
+    private static Unit getTarget(HashMap<Integer, List<Unit>> lstArmies, Unit unit) {
+        // get opposing armies
+        HashMap<Integer, List<Unit>> opposingArmies = new HashMap<Integer, List<Unit>>(lstArmies);
+        opposingArmies.remove(unit.getArmyIndex());
+
+        // pick a random opponent unit
+        Integer armyIndex = (Integer) opposingArmies.keySet().toArray()[(int) ((opposingArmies.size() - 1) * Math
+                .random())];
+        return opposingArmies.get(armyIndex).get((int) ((opposingArmies.get(armyIndex).size() - 1) * Math.random()));
+
     }
 
     private static void updateWeather(Battle battle, boolean isWinter) {
@@ -274,6 +429,25 @@ public class GameLogic {
         } else {
             return Direction.south;
         }
+    }
+
+    public static int getDamage(Unit attacker, Unit target) {
+        float attackFactor = WEAPONS_EFFICIENCY[attacker.getWeaponType().ordinal()][target.getArmorType().ordinal()];
+        int damage = (int) Math.max(0,
+                attacker.getDamage() * attackFactor * (1 + 0.2 * Math.random()) - target.getArmor());
+
+        // terrain modifier
+        if (target.getTilePosition().getTerrain() == TerrainData.castle
+                || target.getTilePosition().getTerrain() == TerrainData.fort) {
+            damage *= 0.7;
+        }
+
+        // order modifier
+        if (target.getOrder() != null && target.getOrder() instanceof DefendOrder) {
+            damage *= 0.8;
+        }
+
+        return damage;
     }
 
 }

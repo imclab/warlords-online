@@ -82,7 +82,7 @@ public class GameGUI {
                         mActivity.battle.getPlayers().get(0).removeOrder(order);
                     }
                 }
-                // TODO remove image on selected tile
+                selectedTile.getSprite().updateUnitProduction(null);
                 hideBuyOptions();
             }
         });
@@ -116,7 +116,8 @@ public class GameGUI {
                             .getLstTurnOrders()
                             .add(new BuyOrder(selectedTile, UnitsData.getUnits(unit.getArmy(),
                                     mActivity.battle.getPlayers().get(0).getArmyIndex()).get((Integer) v.getTag())));
-                    // TODO add image on selected tile
+                    selectedTile.getSprite().updateUnitProduction(
+                            GraphicsFactory.mGfxMap.get(unit.getSpriteName().replace(".png", "") + "_image.png"));
                     hideBuyOptions();
                 }
             });
@@ -146,7 +147,6 @@ public class GameGUI {
             // set name
             TextView playerName = (TextView) layout.findViewById(R.id.name);
             playerName.setText(player.getName());
-            // TODO add proper AI icon, add color
             playerName.setCompoundDrawablesWithIntrinsicBounds(GameUtils.PLAYER_BLASONS[player.getArmyIndex()], 0,
                     (player.isAI() ? R.drawable.ic_wooden_sword : 0), 0);
 
@@ -259,138 +259,6 @@ public class GameGUI {
         }
     }
 
-    // public void updateSelectedElementLayout(final GameSprite selectedElement)
-    // {
-    // runOnUiThread(new Runnable() {
-    // @Override
-    // public void run() {
-    // if (selectedElement == null) {
-    // mSelectedUnitLayout.setVisibility(View.GONE);
-    // crosshair.setVisible(false);
-    // return;
-    // }
-    // Unit unit = (Unit) selectedElement.getGameElement();
-    //
-    // // hide enemies info
-    // updateUnitInfoVisibility(unit.getArmy() == battle.getMe().getArmy());
-    //
-    // // name
-    // if (unit instanceof Soldier) {
-    // // display real name
-    // ((TextView) mSelectedUnitLayout.findViewById(R.id.unitName))
-    // .setText(((Soldier) unit).getRealName());
-    // } else {
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitName)).setText(unit.getName());
-    // }
-    //
-    // // health
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitName)).setTextColor(getResources().getColor(
-    // unit.getHealth().getColor()));
-    //
-    // // experience
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitExperience)).setText(unit.getExperience().name());
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitExperience)).setTextColor(getResources()
-    // .getColor(unit.getExperience().getColor()));
-    //
-    // // weapons
-    // // main weapon
-    // Weapon mainWeapon = unit.getWeapons().get(0);
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitMainWeaponName)).setText(mainWeapon.getName());
-    // ((TextView) mSelectedUnitLayout.findViewById(R.id.unitMainWeaponName))
-    // .setCompoundDrawablesWithIntrinsicBounds(mainWeapon.getImage(), 0, 0, 0);
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitMainWeaponAP)).setBackgroundResource(mainWeapon
-    // .getAPColorEfficiency());
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitMainWeaponAT)).setBackgroundResource(mainWeapon
-    // .getATColorEfficiency());
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitMainWeaponAmmo)).setText(""
-    // + mainWeapon.getAmmoAmount());
-    //
-    // // secondary weapon
-    // if (unit.getWeapons().size() > 1) {
-    // ((ViewGroup) mSelectedUnitLayout.findViewById(R.id.unitSecondaryWeapon))
-    // .setVisibility(View.VISIBLE);
-    // Weapon secondaryWeapon = unit.getWeapons().get(1);
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitSecondaryWeaponName)).setText(secondaryWeapon
-    // .getName());
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitSecondaryWeaponName))
-    // .setCompoundDrawablesWithIntrinsicBounds(secondaryWeapon.getImage(), 0,
-    // 0, 0);
-    // ((TextView) mSelectedUnitLayout.findViewById(R.id.unitSecondaryWeaponAP))
-    // .setBackgroundResource(secondaryWeapon.getAPColorEfficiency());
-    // ((TextView) mSelectedUnitLayout.findViewById(R.id.unitSecondaryWeaponAT))
-    // .setBackgroundResource(secondaryWeapon.getATColorEfficiency());
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitSecondaryWeaponAmmo)).setText(""
-    // + secondaryWeapon.getAmmoAmount());
-    // } else {
-    // ((ViewGroup)
-    // mSelectedUnitLayout.findViewById(R.id.unitSecondaryWeapon)).setVisibility(View.GONE);
-    // }
-    // // frags
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitFrags)).setText(getString(R.string.frags_number,
-    // unit.getFrags()));
-    //
-    // // current action
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitAction)).setText(unit.getCurrentAction().name());
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitAction)).setVisibility(unit.isDead()
-    // ? View.GONE
-    // : View.VISIBLE);
-    //
-    // mSelectedUnitLayout.setVisibility(View.VISIBLE);
-    //
-    // Order o = unit.getOrder();
-    // if (unit.getRank() == Rank.ally && o != null) {
-    // if (o instanceof FireOrder) {
-    // FireOrder f = (FireOrder) o;
-    // crosshair.setColor(Color.RED);
-    // crosshair.setPosition(f.getTarget().getSprite().getX() -
-    // crosshair.getWidth() / 2, f
-    // .getTarget().getSprite().getY()
-    // - crosshair.getHeight() / 2);
-    // crosshair.setVisible(true);
-    // } else if (o instanceof MoveOrder) {
-    // MoveOrder f = (MoveOrder) o;
-    // crosshair.setColor(Color.GREEN);
-    // crosshair.setPosition(f.getxDestination() - crosshair.getWidth() / 2,
-    // f.getyDestination()
-    // - crosshair.getHeight() / 2);
-    // crosshair.setVisible(true);
-    // } else {
-    // crosshair.setVisible(false);
-    // }
-    // } else {
-    // crosshair.setVisible(false);
-    // }
-    //
-    // }
-    // });
-    // }
-
-    // private void updateUnitInfoVisibility(boolean isAlly) {
-    // int visibility = isAlly ? View.VISIBLE : View.GONE;
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitExperience)).setVisibility(visibility);
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitMainWeaponAmmo)).setVisibility(visibility);
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitSecondaryWeaponAmmo)).setVisibility(visibility);
-    // ((TextView)
-    // mSelectedUnitLayout.findViewById(R.id.unitFrags)).setVisibility(visibility);
-    // }
-
     private Tile selectedTile = null;
 
     public void showBuyOptions(Tile tile) {
@@ -475,4 +343,5 @@ public class GameGUI {
             economyBalanceTV.setTextColor(mActivity.getResources().getColor(R.color.red));
         }
     }
+
 }

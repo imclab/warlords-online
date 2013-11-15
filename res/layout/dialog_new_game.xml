@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="15dp" >
+                android:padding="10dp" >
             </RadioGroup>
 
             <com.giggs.apps.chaos.views.CustomTextView
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="15dp" >
+                android:padding="10dp" >
             </RadioGroup>
 
             <LinearLayout

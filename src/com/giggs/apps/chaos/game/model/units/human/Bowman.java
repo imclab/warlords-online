@@ -6,15 +6,15 @@ import com.giggs.apps.chaos.game.logic.GameLogic.ArmorType;
 import com.giggs.apps.chaos.game.logic.GameLogic.WeaponType;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
-public class Soldier extends Unit {
+public class Bowman extends Unit {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1018681662969655381L;
 
-    public Soldier(int armyIndex) {
-        super(R.string.human_soldier, R.drawable.un_infantry, "human_soldier.png", ArmiesData.HUMAN, armyIndex, 50, 900,
-                false, WeaponType.normal, ArmorType.medium, 50, 5);
+    public Bowman(int armyIndex) {
+        super(R.string.human_bowman, R.drawable.un_bowmen, "human_bowman.png", ArmiesData.HUMAN, armyIndex, 60, 600, true,
+                WeaponType.piercing, ArmorType.light, 60, 2);
     }
 }

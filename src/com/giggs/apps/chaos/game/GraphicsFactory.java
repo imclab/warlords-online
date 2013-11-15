@@ -38,42 +38,45 @@ public class GraphicsFactory {
 
         // load map graphics
         for (TerrainData terrain : TerrainData.values()) {
-            loadGfxFromAssets(256, 256, terrain.getSpriteName());
+            loadGfxFromAssets(256, 256, terrain.getSpriteName(), 0, 0);
             // add winter tiles
-            loadGfxFromAssets(256, 256, terrain.getSpriteName().replace(".png", "") + "_winter.png");
+            loadGfxFromAssets(256, 256, terrain.getSpriteName().replace(".png", "") + "_winter.png", 0, 0);
         }
 
         // load all units graphics
         for (Player player : battle.getPlayers()) {
             for (Unit unit : UnitsData.getUnits(player.getArmy(), player.getArmyIndex())) {
                 loadTiledTextureGfxFromAssets(126, 168, unit.getSpriteName());
+                loadGfxFromAssets(80, 80, unit.getSpriteName().replace(".png", "") + "_image.png", 0, 0);
             }
         }
 
         // load flags
         for (int n = 0; n < battle.getPlayers().size(); n++) {
-            loadGfxFromResources(72, 80, GameUtils.PLAYER_BLASONS[n], "flag_" + n);
+            loadGfxFromAssets(72, 80, "blason_" + (n + 1) + ".png", 0, 0);
         }
 
         // stuff to load
-        loadGfxFromAssets(256, 256, "control_zone.png");
-        loadGfxFromAssets(128, 128, "selection.png");
-        loadGfxFromAssets(64, 64, "buy.png");
-        loadGfxFromAssets(50, 80, "move_order.png");
-        loadGfxFromAssets(70, 70, "defend_order.png");
-        loadGfxFromAssets(2, 2, "transparent.png");
+        loadGfxFromAssets(256, 256, "control_zone.png", 0, 0);
+        loadGfxFromAssets(128, 128, "selection.png", 0, 0);
+        loadGfxFromAssets(64, 64, "buy.png", 0, 0);
+        loadGfxFromAssets(50, 80, "move_order.png", 0, 0);
+        loadGfxFromAssets(70, 70, "defend_order.png", 0, 0);
+        loadGfxFromAssets(2, 2, "transparent.png", 0, 0);
     }
 
-    private void loadGfxFromAssets(int textureWidth, int textureHeight, String imageName) {
+    private void loadGfxFromAssets(int textureWidth, int textureHeight, String imageName, int x, int y) {
         if (mGfxMap.get(imageName) == null) {
             mTexture = new BitmapTextureAtlas(mTextureManager, textureWidth, textureHeight, TextureOptions.DEFAULT);
             TextureRegion textureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mTexture, mContext,
-                    imageName, 0, 0);
+                    imageName, x, y);
             mTexture.load();
             mGfxMap.put(imageName, textureRegion);
         }
     }
 
+    // can't manage to make it work : invisible sprite...
+    @SuppressWarnings("unused")
     private void loadGfxFromResources(int textureWidth, int textureHeight, int imageResource, String imageName) {
         if (mGfxMap.get(imageName) == null) {
             mTexture = new BitmapTextureAtlas(mTextureManager, textureWidth, textureHeight, TextureOptions.DEFAULT);

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.giggs.apps.chaos.game.model.units.Unit;
+import com.giggs.apps.chaos.game.model.units.human.Bowman;
+import com.giggs.apps.chaos.game.model.units.human.Knight;
+import com.giggs.apps.chaos.game.model.units.human.Monk;
 import com.giggs.apps.chaos.game.model.units.human.Soldier;
 
 public class UnitsData {
@@ -24,6 +27,9 @@ public class UnitsData {
         switch (army) {
         case HUMAN:
             lstUnits.add(new Soldier(armyIndex));
+            lstUnits.add(new Bowman(armyIndex));
+            lstUnits.add(new Knight(armyIndex));
+            lstUnits.add(new Monk(armyIndex));
             break;
         }
         return lstUnits;
