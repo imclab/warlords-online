@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.GridLayout;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.LayoutParams;
 
@@ -15,22 +16,18 @@ import com.giggs.apps.chaos.MyApplication;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.activities.GameActivity;
 import com.giggs.apps.chaos.game.GameUtils;
-import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.views.CustomRadioButton;
 
 public class CreateGameDialog extends DialogFragment {
 
-	private RadioGroup mRadioGroupArmy;
+	private GridLayout mRadioGroupArmy;
 	private RadioGroup mRadioGroupNbPlayers;
+	private int selectedArmy = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setStyle(STYLE_NO_TITLE, android.R.style.Theme_Black_NoTitleBar_Fullscreen); // remove
-		                                                                             // title
-		                                                                             // from
-		                                                                             // dialog
-		                                                                             // fragment
 	}
 
 	@Override
@@ -49,12 +46,24 @@ public class CreateGameDialog extends DialogFragment {
 		View view = inflater.inflate(R.layout.dialog_new_game, container, false);
 
 		// init armies chooser
-		mRadioGroupArmy = (RadioGroup) view.findViewById(R.id.radioGroupArmy);
-		for (ArmiesData army : ArmiesData.values()) {
-			addArmyRadioButton(army);
+		mRadioGroupArmy = (GridLayout) view.findViewById(R.id.radioGroupArmy);
+		for (int n = 0; n < mRadioGroupArmy.getChildCount(); n++) {
+			if (n == 0) {
+				((CustomRadioButton) mRadioGroupArmy.getChildAt(n)).setChecked(true);
+			}
+			mRadioGroupArmy.getChildAt(n).setTag(n);
+			mRadioGroupArmy.getChildAt(n).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					selectedArmy = (Integer) v.getTag();
+					for (int n = 0; n < mRadioGroupArmy.getChildCount(); n++) {
+						CustomRadioButton view = (CustomRadioButton) mRadioGroupArmy.getChildAt(n);
+						view.setChecked(false);
+					}
+					((CustomRadioButton) v).setChecked(true);
+				}
+			});
 		}
-		// checks first radio button
-		((CompoundButton) mRadioGroupArmy.getChildAt(0)).setChecked(true);
 
 		// init nb players chooser
 		mRadioGroupNbPlayers = (RadioGroup) view.findViewById(R.id.radioGroupNbPlayers);
@@ -83,26 +92,9 @@ public class CreateGameDialog extends DialogFragment {
 		return view;
 	}
 
-	/**
-	 * Add a radio button for each available army.
-	 * 
-	 * @param army
-	 */
-	private void addArmyRadioButton(ArmiesData army) {
-		CustomRadioButton radioBtn = (CustomRadioButton) getActivity().getLayoutInflater().inflate(R.layout.radio_army,
-		        null);
-		radioBtn.setId(100 + army.ordinal());
-		radioBtn.setText(army.getName());
-		radioBtn.setCompoundDrawablesWithIntrinsicBounds(army.getFlagImage(), 0, 0, 0);
-		LayoutParams params = new LayoutParams(getActivity(), null);
-		params.setMargins(0, 0, 30, 0);
-		radioBtn.setLayoutParams(params);
-		mRadioGroupArmy.addView(radioBtn);
-	}
-
 	private void addNbPlayersRadioButton(int nbPlayers) {
-		CustomRadioButton radioBtn = (CustomRadioButton) getActivity().getLayoutInflater().inflate(R.layout.radio_army,
-		        null);
+		CustomRadioButton radioBtn = (CustomRadioButton) getActivity().getLayoutInflater().inflate(
+		        R.layout.radio_nb_players, null);
 		radioBtn.setId(nbPlayers);
 		radioBtn.setText("" + nbPlayers);
 		radioBtn.setTypeface(MyApplication.FONTS.text);
@@ -115,7 +107,7 @@ public class CreateGameDialog extends DialogFragment {
 	private void createGame() {
 		Intent intent = new Intent(getActivity(), GameActivity.class);
 		Bundle extras = new Bundle();
-		extras.putInt("my_army", mRadioGroupArmy.getCheckedRadioButtonId() - 100);
+		extras.putInt("my_army", selectedArmy);
 		extras.putInt("nb_players", mRadioGroupNbPlayers.getCheckedRadioButtonId());
 		intent.putExtras(extras);
 		startActivity(intent);

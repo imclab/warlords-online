@@ -31,14 +31,49 @@
                 android:background="@drawable/bg_army_column"
                 android:text="@string/choose_army" />
 
-            <RadioGroup
+            <GridLayout
                 android:id="@+id/radioGroupArmy"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:alignmentMode="alignBounds"
+                android:columnCount="3"
                 android:gravity="center"
-                android:orientation="horizontal"
                 android:padding="10dp" >
-            </RadioGroup>
+
+                <com.giggs.apps.chaos.views.CustomRadioButton
+                    style="@style/DifficultyRadioButton"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginRight="6dp"
+                    android:drawableLeft="@drawable/human_soldier_image"
+                    android:text="@string/human_army" />
+
+                <com.giggs.apps.chaos.views.CustomRadioButton
+                    style="@style/DifficultyRadioButton"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginRight="6dp"
+                    android:drawableLeft="@drawable/orcs_orc_image"
+                    android:text="@string/orcs_army" />
+
+                <com.giggs.apps.chaos.views.CustomRadioButton
+                    style="@style/DifficultyRadioButton"
+                    android:layout_gravity="fill_horizontal"
+                    android:drawableLeft="@drawable/undead_skeleton_image"
+                    android:text="@string/undead_army" />
+
+                <com.giggs.apps.chaos.views.CustomRadioButton
+                    style="@style/DifficultyRadioButton"
+                    android:layout_gravity="fill_horizontal"
+                    android:drawableLeft="@drawable/chaos_demon_image"
+                    android:text="@string/chaos_army" />
+
+                <com.giggs.apps.chaos.views.CustomRadioButton
+                    style="@style/DifficultyRadioButton"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginRight="6dp"
+                    android:drawableLeft="@drawable/dwarf_warrior_image"
+                    android:text="@string/dwarf_army" />
+            </GridLayout>
 
             <com.giggs.apps.chaos.views.CustomTextView
                 style="@style/ArmyBuilderSubTitle"
@@ -60,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:orientation="horizontal" >
 

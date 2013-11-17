@@ -14,7 +14,7 @@ public class Knight extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Knight(int armyIndex) {
-        super(R.string.human_knight, R.drawable.un_knight, "human_knight.png", ArmiesData.HUMAN, armyIndex, 100, 900, false,
+        super(R.string.human_knight, R.drawable.human_knight_image, "human_knight.png", ArmiesData.HUMAN, armyIndex, 100, 900, false,
                 WeaponType.normal, ArmorType.heavy, 90, 10);
     }
 }

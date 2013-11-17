@@ -14,7 +14,7 @@ public class Demon extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Demon(int armyIndex) {
-        super(R.string.chaos_demons, R.drawable.un_demon, "chaos_demon.png", ArmiesData.CHAOS, armyIndex, 100, 900, false,
+        super(R.string.chaos_demons, R.drawable.chaos_demon_image, "chaos_demon.png", ArmiesData.CHAOS, armyIndex, 100, 900, false,
                 WeaponType.normal, ArmorType.heavy, 90, 10);
     }
 }

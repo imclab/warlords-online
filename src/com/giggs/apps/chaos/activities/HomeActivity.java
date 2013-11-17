@@ -139,7 +139,7 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		 mStormBackground.removeCallbacks(mStormEffect);
+		mStormBackground.removeCallbacks(mStormEffect);
 		if (mAboutDialog != null) {
 			mAboutDialog.dismiss();
 		}

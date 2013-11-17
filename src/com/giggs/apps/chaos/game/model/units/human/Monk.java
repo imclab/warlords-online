@@ -14,7 +14,7 @@ public class Monk extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Monk(int armyIndex) {
-        super(R.string.human_monk, R.drawable.un_knight, "human_monk.png", ArmiesData.HUMAN, armyIndex, 80, 500, false,
+        super(R.string.human_monk, R.drawable.human_monk_image, "human_monk.png", ArmiesData.HUMAN, armyIndex, 80, 500, false,
                 WeaponType.magic, ArmorType.unarmored, 40, 3);
     }
 }

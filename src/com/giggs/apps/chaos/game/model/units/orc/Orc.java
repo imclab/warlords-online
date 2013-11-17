@@ -14,7 +14,7 @@ public class Orc extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Orc(int armyIndex) {
-        super(R.string.orcs_orc, R.drawable.un_orc, "orcs_orc.png", ArmiesData.ORCS, armyIndex, 70, 900, false,
+        super(R.string.orcs_orc, R.drawable.orcs_orc_image, "orcs_orc.png", ArmiesData.ORCS, armyIndex, 70, 900, false,
                 WeaponType.normal, ArmorType.medium, 80, 8);
     }
 }

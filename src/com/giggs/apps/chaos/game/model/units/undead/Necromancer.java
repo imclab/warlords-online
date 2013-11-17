@@ -14,7 +14,7 @@ public class Necromancer extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Necromancer(int armyIndex) {
-        super(R.string.undead_necromancer, R.drawable.un_necromancer, "undead_necromancer.png", ArmiesData.UNDEAD,
+        super(R.string.undead_necromancer, R.drawable.undead_necromancer_image, "undead_necromancer.png", ArmiesData.UNDEAD,
                 armyIndex, 120, 500, true, WeaponType.magic, ArmorType.unarmored, 80, 2);
     }
 }

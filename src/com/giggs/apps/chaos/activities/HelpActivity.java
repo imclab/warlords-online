@@ -55,33 +55,33 @@ public class HelpActivity extends MyActivity {
                     content.addView(getRow(R.drawable.ic_helmet, R.string.battleTitle1, R.string.battle1));
                     content.addView(getRow(R.drawable.ic_double_axe, R.string.battleTitle2, R.string.battle2));
                     content.addView(getRow(R.drawable.ti_castle, R.string.battleTitle3, R.string.battle3));
-                    content.addView(getRow(R.drawable.un_bowmen, R.string.battleTitle4, R.string.battle4));
-                    break;
-                case 3:
-                    content.addView(getRow(R.drawable.ic_double_axe, R.string.human, R.string.humanHelp));
-                    content.addView(getRow(R.drawable.un_infantry, R.string.human_soldier, R.string.infantryHelp));
-                    content.addView(getRow(R.drawable.un_bowmen, R.string.human_bowman, R.string.bowmenHelp));
-                    content.addView(getRow(R.drawable.un_knight, R.string.human_monk, R.string.knightsHelp));
-                    break;
-                case 4:
-                    content.addView(getRow(R.drawable.ic_double_axe, R.string.undead, R.string.undeadHelp));
-                    content.addView(getRow(R.drawable.un_skeleton, R.string.skeleton, R.string.skeletonHelp));
-                    content.addView(getRow(R.drawable.un_skbowmen, R.string.skeletonBowmen, R.string.skeletonBowmenHelp));
-                    content.addView(getRow(R.drawable.un_necromancer, R.string.necromancers, R.string.necromancerHelp));
-                    break;
-                case 5:
-                    content.addView(getRow(R.drawable.ic_double_axe, R.string.chaos, R.string.chaosHelp));
-                    content.addView(getRow(R.drawable.un_chaos_warriors, R.string.chaosWarriors,
-                            R.string.chaosWarriorsHelp));
-                    content.addView(getRow(R.drawable.un_chaos_wizards, R.string.chaosWizards,
-                            R.string.chaosWizardsHelp));
-                    content.addView(getRow(R.drawable.un_demon, R.string.chaosDemons, R.string.demonsHelp));
-                    break;
-                case 6:
-                    content.addView(getRow(R.drawable.ic_double_axe, R.string.orcsArmy, R.string.orcsArmyHelp));
-                    content.addView(getRow(R.drawable.un_goblin, R.string.goblins, R.string.goblinsHelp));
-                    content.addView(getRow(R.drawable.un_orc, R.string.orcs, R.string.orcsHelp));
-                    content.addView(getRow(R.drawable.un_troll, R.string.trolls, R.string.trollsHelp));
+//                    content.addView(getRow(R.drawable.un_bowmen, R.string.battleTitle4, R.string.battle4));
+//                    break;
+//                case 3:
+//                    content.addView(getRow(R.drawable.ic_double_axe, R.string.human, R.string.humanHelp));
+//                    content.addView(getRow(R.drawable.un_infantry, R.string.human_soldier, R.string.infantryHelp));
+//                    content.addView(getRow(R.drawable.un_bowmen, R.string.human_bowman, R.string.bowmenHelp));
+//                    content.addView(getRow(R.drawable.un_knight, R.string.human_monk, R.string.knightsHelp));
+//                    break;
+//                case 4:
+//                    content.addView(getRow(R.drawable.ic_double_axe, R.string.undead, R.string.undeadHelp));
+//                    content.addView(getRow(R.drawable.un_skeleton, R.string.skeleton, R.string.skeletonHelp));
+//                    content.addView(getRow(R.drawable.un_skbowmen, R.string.skeletonBowmen, R.string.skeletonBowmenHelp));
+//                    content.addView(getRow(R.drawable.un_necromancer, R.string.necromancers, R.string.necromancerHelp));
+//                    break;
+//                case 5:
+//                    content.addView(getRow(R.drawable.ic_double_axe, R.string.chaos, R.string.chaosHelp));
+//                    content.addView(getRow(R.drawable.un_chaos_warriors, R.string.chaosWarriors,
+//                            R.string.chaosWarriorsHelp));
+//                    content.addView(getRow(R.drawable.un_chaos_wizards, R.string.chaosWizards,
+//                            R.string.chaosWizardsHelp));
+//                    content.addView(getRow(R.drawable.un_demon, R.string.chaosDemons, R.string.demonsHelp));
+//                    break;
+//                case 6:
+//                    content.addView(getRow(R.drawable.ic_double_axe, R.string.orcsArmy, R.string.orcsArmyHelp));
+//                    content.addView(getRow(R.drawable.un_goblin, R.string.goblins, R.string.goblinsHelp));
+//                    content.addView(getRow(R.drawable.un_orc, R.string.orcs, R.string.orcsHelp));
+//                    content.addView(getRow(R.drawable.un_troll, R.string.trolls, R.string.trollsHelp));
                     break;
                 }
                 mHelpDetailsDialog.show();
@@ -127,10 +127,10 @@ public class HelpActivity extends MyActivity {
         addHelpCategory(R.string.tutorial, R.drawable.ic_book);
         addHelpCategory(R.string.terrainTiles, R.drawable.ic_map);
         addHelpCategory(R.string.artOfWar, R.drawable.ic_axe);
-        addHelpCategory(R.string.human, R.drawable.un_infantry);
-        addHelpCategory(R.string.undead, R.drawable.un_skeleton);
-        addHelpCategory(R.string.chaos, R.drawable.un_chaos_wizards);
-        addHelpCategory(R.string.orcsArmy, R.drawable.un_orc);
+//        addHelpCategory(R.string.human, R.drawable.un_infantry);
+//        addHelpCategory(R.string.undead, R.drawable.un_skeleton);
+//        addHelpCategory(R.string.chaos, R.drawable.un_chaos_wizards);
+//        addHelpCategory(R.string.orcsArmy, R.drawable.un_orc);
         HelpSimpleAdapter mSchedule = new HelpSimpleAdapter(this.getBaseContext(), mHelpCategoryList,
                 R.layout.help_category, new String[] { "title", "image" }, new int[] { R.id.text, R.id.image });
         helpCategoryListView.setAdapter(mSchedule);

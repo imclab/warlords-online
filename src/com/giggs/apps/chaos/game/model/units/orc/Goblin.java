@@ -14,7 +14,7 @@ public class Goblin extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Goblin(int armyIndex) {
-        super(R.string.orcs_goblin, R.drawable.un_goblin, "orcs_goblin.png", ArmiesData.ORCS, armyIndex, 30, 600,
+        super(R.string.orcs_goblin, R.drawable.orcs_goblin_image, "orcs_goblin.png", ArmiesData.ORCS, armyIndex, 30, 600,
                 false, WeaponType.normal, ArmorType.light, 20, 2);
     }
 }

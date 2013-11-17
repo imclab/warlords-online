@@ -14,7 +14,7 @@ public class Warrior extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Warrior(int armyIndex) {
-        super(R.string.chaos_warrior, R.drawable.un_chaos_warriors, "chaos_warrior.png", ArmiesData.CHAOS, armyIndex, 70, 600,
+        super(R.string.chaos_warrior, R.drawable.chaos_warrior_image, "chaos_warrior.png", ArmiesData.CHAOS, armyIndex, 70, 600,
                 false, WeaponType.normal, ArmorType.heavy, 70, 7);
     }
 }

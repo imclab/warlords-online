@@ -14,7 +14,7 @@ public class Bowman extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Bowman(int armyIndex) {
-        super(R.string.human_bowman, R.drawable.un_bowmen, "human_bowman.png", ArmiesData.HUMAN, armyIndex, 60, 600, true,
+        super(R.string.human_bowman, R.drawable.human_bowman_image, "human_bowman.png", ArmiesData.HUMAN, armyIndex, 60, 600, true,
                 WeaponType.piercing, ArmorType.light, 60, 2);
     }
 }
