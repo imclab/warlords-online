@@ -1,5 +1,6 @@
 package com.giggs.apps.chaos.game.model.map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +10,17 @@ import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.graphics.TileSprite;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
-public class Tile {
+public class Tile implements Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4833559440300774703L;
     private final int x, y;
     private TerrainData terrain;
     private List<Unit> content = new ArrayList<Unit>();
     private int owner = -1;
-    private TileSprite sprite;
+    private transient TileSprite sprite;
     private boolean isVisible;
 
     private boolean isMoveOption = false;

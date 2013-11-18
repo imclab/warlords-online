@@ -8,6 +8,9 @@ import com.giggs.apps.chaos.game.model.units.chaos.DamnedSoul;
 import com.giggs.apps.chaos.game.model.units.chaos.Demon;
 import com.giggs.apps.chaos.game.model.units.chaos.Warrior;
 import com.giggs.apps.chaos.game.model.units.chaos.Wizard;
+import com.giggs.apps.chaos.game.model.units.dwarf.CrossBowman;
+import com.giggs.apps.chaos.game.model.units.dwarf.GiantKiller;
+import com.giggs.apps.chaos.game.model.units.dwarf.RuneMaster;
 import com.giggs.apps.chaos.game.model.units.human.Bowman;
 import com.giggs.apps.chaos.game.model.units.human.Knight;
 import com.giggs.apps.chaos.game.model.units.human.Monk;
@@ -41,6 +44,10 @@ public class UnitsData {
             lstUnits.add(new Warrior(armyIndex));
             lstUnits.add(new Warrior(armyIndex));
             break;
+        case DWARF:
+            lstUnits.add(new com.giggs.apps.chaos.game.model.units.dwarf.Warrior(armyIndex));
+            lstUnits.add(new com.giggs.apps.chaos.game.model.units.dwarf.Warrior(armyIndex));
+            break;
         }
         return lstUnits;
     }
@@ -71,6 +78,12 @@ public class UnitsData {
             lstUnits.add(new Wizard(armyIndex));
             lstUnits.add(new Demon(armyIndex));
             lstUnits.add(new DamnedSoul(armyIndex));
+            break;
+        case DWARF:
+            lstUnits.add(new com.giggs.apps.chaos.game.model.units.dwarf.Warrior(armyIndex));
+            lstUnits.add(new CrossBowman(armyIndex));
+            lstUnits.add(new GiantKiller(armyIndex));
+            lstUnits.add(new RuneMaster(armyIndex));
             break;
         }
         return lstUnits;

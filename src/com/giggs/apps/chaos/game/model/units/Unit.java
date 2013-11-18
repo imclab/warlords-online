@@ -202,11 +202,12 @@ public abstract class Unit extends GameElement {
         }
     }
 
-    public void attack(Unit target) {
+    public boolean attack(Unit target) {
         int damage = GameLogic.getDamage(this, target);
         target.updateHealth(-damage);
         target.updateMorale(-damage / 10);
         frags += damage;
+        return target.getHealth() == 0;
     }
 
     public void flee(Battle battle) {

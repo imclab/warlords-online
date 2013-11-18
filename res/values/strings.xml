@@ -37,8 +37,8 @@
     <string name="campaign">Campaign</string>
     <string name="battle_mode">Battle Mode</string>
     <string name="back">Back</string>
-    <string name="resume_saved_battle">You have a saved game located in %s, do you want to finish it ?\nIt will be lost if you start another battle.</string>
-    <string name="log_in_to_play_multi">You have to be logged in \nto play online !</string>
+    <string name="resume_saved_battle">You have a %s-players game unfinished, do you want to finish it ?\nIt will be lost if you start another battle.</string>
+    <string name="log_in_to_play_multi">You must log in\nto play online !</string>
     <string name="logout">Sign out</string>
 
     <!-- Settings -->

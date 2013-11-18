@@ -19,10 +19,11 @@ public class Player implements Serializable {
     private final ArmiesData army;
     private final int armyIndex;
     private final boolean isAI;
+    private final GameStats gameStats = new GameStats();
 
     private int gold = 0;
     private boolean isDefeated = false;
-    private List<Order> lstTurnOrders = new ArrayList<Order>();
+    private transient List<Order> lstTurnOrders = new ArrayList<Order>();
 
     public Player(String id, String name, ArmiesData army, int armyIndex, boolean isAI) {
         this.id = id;
@@ -69,18 +70,18 @@ public class Player implements Serializable {
     }
 
     public void initNewTurn() {
-        lstTurnOrders = new ArrayList<Order>();
+        setLstTurnOrders(new ArrayList<Order>());
     }
 
     public void giveOrder(Order order, Order oldOrder) {
         if (oldOrder != null) {
-            lstTurnOrders.remove(oldOrder);
+            getLstTurnOrders().remove(oldOrder);
         }
-        lstTurnOrders.add(order);
+        getLstTurnOrders().add(order);
     }
 
     public void removeOrder(Order order) {
-        lstTurnOrders.remove(order);
+        getLstTurnOrders().remove(order);
     }
 
     public List<Order> getLstTurnOrders() {
@@ -89,6 +90,14 @@ public class Player implements Serializable {
 
     public void updateGold(int modifier) {
         gold += modifier;
+    }
+
+    public GameStats getGameStats() {
+        return gameStats;
+    }
+
+    public void setLstTurnOrders(List<Order> lstTurnOrders) {
+        this.lstTurnOrders = lstTurnOrders;
     }
 
 }

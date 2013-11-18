@@ -59,4 +59,8 @@ public class Battle implements Serializable {
         this.isWinter = isWinter;
     }
 
+    public Player getMeSoloMode() {
+        return players.get(0);
+    }
+
 }

@@ -12,7 +12,6 @@ public class BuySprite extends Sprite {
 
     private InputManager mInputManager;
     private Tile mTile;
-    private boolean mIsSelected;
 
     public BuySprite(float pX, float pY, TextureRegion pTextureRegion,
             VertexBufferObjectManager pSpriteVertexBufferObject, InputManager inputManager, Tile tile) {

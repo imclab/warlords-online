@@ -87,6 +87,8 @@ public class GameLogic {
                         // add unit
                         buyOrder.getUnit().setTilePosition(tile);
                         gameActivity.addUnitToScene(buyOrder.getUnit());
+                        // game stats
+                        player.getGameStats().incrementNbUnitsCreated(1);
                     }
                     tile.getSprite().updateUnitProduction(null);
                 } else if (order instanceof MoveOrder) {
@@ -172,7 +174,10 @@ public class GameLogic {
             player.setDefeated(true);
         }
         int nbPlayersInGame = 0;
-        int myGoldBeforeTurn = battle.getPlayers().get(0).getGold();
+        int[] goldsBeforeTurn = new int[battle.getPlayers().size()];
+        for (Player player : battle.getPlayers()) {
+            goldsBeforeTurn[player.getArmyIndex()] = player.getGold();
+        }
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
                 Tile tile = battle.getMap().getTiles()[y][x];
@@ -180,11 +185,15 @@ public class GameLogic {
                 if (tile.getOwner() >= 0) {
                     Player player = battle.getPlayers().get(tile.getOwner());
 
-                    player.updateGold((int) (tile.getGoldAmountGathered() * (battle.isWinter() ? GameUtils.WINTER_GATHERING_MODIFIER
-                            : 1.0f)));
+                    int goldAmount = (int) (tile.getGoldAmountGathered() * (battle.isWinter() ? GameUtils.WINTER_GATHERING_MODIFIER
+                            : 1.0f));
+                    player.updateGold(goldAmount);
+
+                    // game stats
+                    player.getGameStats().incrementGold(goldAmount);
 
                     // this player is still alive !
-                    if (player.isDefeated()) {
+                    if (player.isDefeated() && tile.getTerrain() == TerrainData.castle) {
                         player.setDefeated(false);
                         nbPlayersInGame++;
                     }
@@ -202,7 +211,8 @@ public class GameLogic {
 
         // update my gold amount
         gameActivity.mGameGUI.updateGoldAmount(battle.getPlayers().get(0).getGold());
-        gameActivity.mGameGUI.updateEconomyBalance(battle.getPlayers().get(0).getGold() - myGoldBeforeTurn);
+        gameActivity.mGameGUI.updateEconomyBalance(battle.getPlayers().get(0).getGold()
+                - goldsBeforeTurn[battle.getPlayers().get(0).getArmyIndex()]);
 
         // check economic crisis !
         for (Player player : battle.getPlayers()) {
@@ -235,11 +245,22 @@ public class GameLogic {
         }
 
         // dispatch units properly on tiles
+        float[] populations = new float[battle.getPlayers().size()];
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
                 Tile tile = battle.getMap().getTiles()[y][x];
                 MapLogic.dispatchUnitsOnTile(tile);
+                for (Unit u : tile.getContent()) {
+                    // game stats
+                    populations[u.getArmyIndex()] += (float) (u.getHealth() / u.getMaxHealth());
+                }
             }
+        }
+
+        // game stats
+        for (Player player : battle.getPlayers()) {
+            player.getGameStats().getPopulation().add(populations[player.getArmyIndex()]);
+            player.getGameStats().getEconomy().add(player.getGold() - goldsBeforeTurn[player.getArmyIndex()]);
         }
 
         // update fogs of war
@@ -296,14 +317,22 @@ public class GameLogic {
             // ranged attacks have initiative
             for (Unit unit : tile.getContent()) {
                 if (unit.isRangedAttack()) {
-                    unit.attack(getTarget(lstArmies, unit));
+                    boolean isKilled = unit.attack(getTarget(lstArmies, unit));
+                    if (isKilled) {
+                        // game stats
+                        battle.getPlayers().get(unit.getArmyIndex()).getGameStats().incrementNbUnitsKilled(1);
+                    }
                 }
             }
 
             // then contact units
             for (Unit unit : tile.getContent()) {
                 if (!unit.isRangedAttack()) {
-                    unit.attack(getTarget(lstArmies, unit));
+                    boolean isKilled = unit.attack(getTarget(lstArmies, unit));
+                    if (isKilled) {
+                        // game stats
+                        battle.getPlayers().get(unit.getArmyIndex()).getGameStats().incrementNbUnitsKilled(1);
+                    }
                 }
             }
 
@@ -339,9 +368,12 @@ public class GameLogic {
 
         // give rewards for the winners
         if (lstArmies.size() == 1) {
-            for (Unit unit : lstArmies.get(lstArmies.keySet().iterator().next())) {
+            List<Unit> lstUnits = lstArmies.get(lstArmies.keySet().iterator().next());
+            for (Unit unit : lstUnits) {
                 giveBattleReward(unit, true, nbRounds);
             }
+            // game stats
+            battle.getPlayers().get(lstUnits.get(0).getArmyIndex()).getGameStats().incrementBattlesWon();
         }
     }
 
