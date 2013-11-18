@@ -69,6 +69,12 @@
         <item name="android:textColorLink">@color/link</item>
     </style>
 
+    <!-- BATTLE REPORT -->
+    <style name="BattleReportHeader" parent="@style/SettingsLabel">
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
     <!-- BATTLE CHOOSER -->
     <style name="BattleChooserTitle" parent="@style/ArmyBuilderTitle">
         <item name="android:background">@drawable/bg_title</item>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="3dp" >
+
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/name"
+        style="@style/BattleReportHeader"
+        android:gravity="center"
+        android:text="@string/placeholder" />
+
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/gold"
+        style="@style/BattleReportHeader"
+        android:gravity="center"
+        android:text="@string/placeholder" />
+
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/unitsCreated"
+        style="@style/BattleReportHeader"
+        android:gravity="center"
+        android:text="@string/placeholder" />
+
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/unitsKilled"
+        style="@style/BattleReportHeader"
+        android:gravity="center"
+        android:text="@string/placeholder" />
+
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/battlesWon"
+        style="@style/BattleReportHeader"
+        android:gravity="center"
+        android:text="@string/placeholder" />
+
+</TableRow>

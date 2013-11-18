@@ -289,7 +289,6 @@ public class GameActivity extends LayoutGameActivity {
         // stop engine
         mEngine.stop();
 
-        mMustSaveGame = false;
         Intent intent = new Intent(GameActivity.this, BattleReportActivity.class);
         startActivity(intent);
         finish();

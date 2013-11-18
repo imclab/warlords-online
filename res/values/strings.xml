@@ -52,6 +52,16 @@
     <string name="choose_army">Choose your army</string>
     <string name="choose_nb_players">Select the number of players</string>
 
+    <!-- Battle Report -->
+    <string name="leave_report">Leave report</string>
+    <string name="players">Players</string>
+    <string name="gold_gathered">Gold gathered</string>
+    <string name="units_created">Units created</string>
+    <string name="units_killed">Units killed</string>
+    <string name="battles_won">Battles won</string>
+    <string name="population_graph_title">Population Graph</string>
+    <string name="economy_graph_title">Economy Graph</string>
+
     <!-- Armies -->
     <string name="human_army">Human</string>
     <string name="human_soldier">Infantry</string>
@@ -152,7 +162,6 @@
     <string name="players8">8 players !</string>
     <string name="standardMap">Standard map</string>
     <string name="perTurn">/ turn</string>
-    <string name="players">Players</string>
     <string name="confirmJoin">Do you really want to join this game ?</string>
     <string name="cancel">Cancel</string>
     <string name="networkIssue">Cannot contact the server...</string>

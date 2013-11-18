@@ -215,6 +215,7 @@ public class GameGUI {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == R.id.okButton) {
+                            mActivity.battle.getMeSoloMode().setDefeated(true);
                             GoogleAnalyticsHandler.sendEvent(mActivity.getApplicationContext(),
                                     EventCategory.ui_action, EventAction.button_press, "surrender_game");
                             mActivity.goToReport(false);
@@ -337,7 +338,6 @@ public class GameGUI {
 
     private void openChatSession() {
         // TODO Auto-generated method stub
-
     }
 
     public void updateEconomyBalance(final int balance) {
