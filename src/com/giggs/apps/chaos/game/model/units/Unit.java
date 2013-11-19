@@ -22,14 +22,14 @@ public abstract class Unit extends GameElement {
     private static final long serialVersionUID = -1514358997270651189L;
 
     protected final ArmiesData army;
-    private final int armyIndex;
+    protected final int armyIndex;
     private final int image;
     private final int price;
     private final int maxHealth;
     private final boolean isRangedAttack;
     private final WeaponType weaponType;
     private final ArmorType armorType;
-    private final int damage;
+    private final int attack;
     private final int armor;
 
     protected int experience = 0;
@@ -39,7 +39,7 @@ public abstract class Unit extends GameElement {
     private Order order;
 
     public Unit(int name, int image, String spriteName, ArmiesData army, int armyIndex, int price, int health,
-            boolean isRangedAttack, WeaponType weaponType, ArmorType armorType, int damage, int armor) {
+            boolean isRangedAttack, WeaponType weaponType, ArmorType armorType, int attack, int armor) {
         super(name, spriteName);
         this.image = image;
         this.army = army;
@@ -50,7 +50,7 @@ public abstract class Unit extends GameElement {
         this.isRangedAttack = isRangedAttack;
         this.weaponType = weaponType;
         this.armorType = armorType;
-        this.damage = damage;
+        this.attack = attack;
         this.armor = armor;
     }
 
@@ -145,8 +145,8 @@ public abstract class Unit extends GameElement {
         return armorType;
     }
 
-    public int getDamage() {
-        return damage;
+    public int getAttack() {
+        return attack;
     }
 
     public int getArmor() {
@@ -203,21 +203,79 @@ public abstract class Unit extends GameElement {
     }
 
     public boolean attack(Unit target) {
-        int damage = GameLogic.getDamage(this, target);
-        target.updateHealth(-damage);
-        target.updateMorale(-damage / 10);
+        int damage = getDamage(target);
+        target.applyDamage(damage);
         frags += damage;
         return target.getHealth() == 0;
     }
 
-    public void flee(Battle battle) {
-        for (Tile tile : MapLogic.getAdjacentTiles(battle.getMap(), tilePosition, 1, false)) {
-            if (canMove(tile)
-                    && (tile.getContent().size() == 0 || tile.getContent().get(0).getArmyIndex() == armyIndex
-                            && tile.getContent().size() < GameUtils.MAX_UNITS_PER_TILE)) {
-                updateTilePosition(tile);
-            }
-        }
+    public void applyDamage(int damage) {
+        updateHealth(-damage);
+        updateMorale(-damage / 10);
     }
 
+    public boolean flee(Battle battle) {
+        if (order != null && order instanceof MoveOrder) {
+            MoveOrder moveOrder = (MoveOrder) order;
+            if (canFleeHere(moveOrder.getOrigin())) {
+                updateTilePosition(moveOrder.getOrigin());
+                return true;
+            }
+        }
+        for (Tile tile : MapLogic.getAdjacentTiles(battle.getMap(), tilePosition, 1, false)) {
+            if (canFleeHere(tile)) {
+                updateTilePosition(tile);
+                return true;
+            }
+        }
+        // cannot go anywhere...
+        return false;
+    }
+
+    public boolean canFleeHere(Tile tile) {
+        return canMove(tile)
+                && (tile.getContent().size() == 0 || tile.getContent().get(0).getArmyIndex() == armyIndex
+                        && tile.getContent().size() < GameUtils.MAX_UNITS_PER_TILE);
+    }
+
+    public int getDamage(Unit target) {
+        float attackFactor = GameLogic.WEAPONS_EFFICIENCY[weaponType.ordinal()][target.getArmorType().ordinal()];
+        int damage = (int) Math.max(
+                0,
+                attack * attackFactor * health / maxHealth * morale / 100 * (1 + 0.2 * Math.random())
+                        - target.getArmor() * 5);
+
+        // terrain modifier
+        if (target.getTilePosition().getTerrain() == TerrainData.castle
+                || target.getTilePosition().getTerrain() == TerrainData.fort) {
+            damage *= 0.5;
+
+            // ranged attacks are very effective when defending strong positions
+            if (isRangedAttack && (order == null || order instanceof DefendOrder)) {
+                damage *= 1.3;
+            }
+        }
+
+        // orcs are agressive !
+        if (army == ArmiesData.ORCS && order != null && order instanceof MoveOrder) {
+            damage *= 1.15;
+        }
+
+        // order modifier
+        if (target.getOrder() != null && target.getOrder() instanceof DefendOrder) {
+            if (target.getArmy() == ArmiesData.ORCS) {
+                damage *= 0.85;
+            } else if (target.getArmy() == ArmiesData.DWARF) {
+                damage *= 0.6;
+            } else {
+                damage *= 0.7;
+            }
+        }
+
+        if (target.getArmy() == ArmiesData.DWARF && target.getTilePosition().getTerrain() == TerrainData.mountain) {
+            damage *= 0.8;
+        }
+
+        return damage;
+    }
 }

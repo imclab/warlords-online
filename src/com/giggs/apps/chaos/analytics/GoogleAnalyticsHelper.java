@@ -5,7 +5,7 @@ import android.content.Context;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
 
-public class GoogleAnalyticsHandler {
+public class GoogleAnalyticsHelper {
 
     public static enum EventCategory {
         ui_action, in_game

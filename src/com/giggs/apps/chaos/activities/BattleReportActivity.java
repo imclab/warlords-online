@@ -1,5 +1,7 @@
 package com.giggs.apps.chaos.activities;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.database.DatabaseHelper;
 import com.giggs.apps.chaos.game.GameUtils;
+import com.giggs.apps.chaos.game.SaveGameHelper;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.GameStats;
 import com.giggs.apps.chaos.game.model.Player;
@@ -56,11 +59,17 @@ public class BattleReportActivity extends BaseGameActivity {
         mDbHelper = new DatabaseHelper(getApplicationContext());
 
         // get battle info
-        battle = mDbHelper.getBattleDao().get(null, null, null, null).get(0);
+        List<Battle> lstSavedGames = mDbHelper.getBattleDao().get(null, null, null, null);
+        // we never know !
+        if (lstSavedGames.size() == 0) {
+            leaveReport();
+            return;
+        }
+        battle = lstSavedGames.get(0);
         mIsVictory = !battle.getPlayers().get(0).isDefeated();
 
         // erase saved games from database
-        // SaveGameHelper.deleteSavedBattles(mDbHelper);
+        SaveGameHelper.deleteSavedBattles(mDbHelper);
 
         setContentView(R.layout.activity_battle_report);
         setupUI();
@@ -125,13 +134,6 @@ public class BattleReportActivity extends BaseGameActivity {
             graphViewEconomy.addSeries(new GraphViewSeries(player.getName(), new GraphViewSeriesStyle(
                     GameUtils.PLAYER_COLORS[player.getArmyIndex()].getARGBPackedInt(), 5), dataEconomy));
         }
-        // format axis labels
-        // CustomLabelFormatter labelFormatter = new CustomLabelFormatter() {
-        // @Override
-        // public String formatLabel(double value, boolean isValueX) {
-        // return "" + (int) value;
-        // }
-        // };
         String[] horizontalLabels = new String[] { "", "", "time" };
         graphViewPop.setHorizontalLabels(horizontalLabels);
         graphViewPop.setVerticalLabels(new String[] { "high", "", "low" });

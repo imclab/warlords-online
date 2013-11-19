@@ -19,11 +19,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.giggs.apps.chaos.R;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventAction;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventCategory;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.TimingCategory;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.TimingName;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventAction;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventCategory;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.TimingCategory;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.TimingName;
 import com.giggs.apps.chaos.database.DatabaseHelper;
 import com.giggs.apps.chaos.game.GameCreation;
 import com.giggs.apps.chaos.game.GameGUI;
@@ -33,6 +33,7 @@ import com.giggs.apps.chaos.game.InputManager;
 import com.giggs.apps.chaos.game.SaveGameHelper;
 import com.giggs.apps.chaos.game.andengine.custom.CustomZoomCamera;
 import com.giggs.apps.chaos.game.data.ArmiesData;
+import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.graphics.SelectionCircle;
 import com.giggs.apps.chaos.game.graphics.TileSprite;
 import com.giggs.apps.chaos.game.graphics.UnitSprite;
@@ -84,9 +85,9 @@ public class GameActivity extends LayoutGameActivity {
             int nbPlayers = extras.getInt("nb_players", 4);
             battle = GameCreation.createSoloGame(nbPlayers, myArmy);
             SaveGameHelper.deleteSavedBattles(mDbHelper);
-            GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.nb_players, ""
+            GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.nb_players, ""
                     + nbPlayers);
-            GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.in_game,
+            GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game,
                     EventAction.solo_player_army, ArmiesData.values()[myArmy].name());
         } else {
             // load game
@@ -114,10 +115,9 @@ public class GameActivity extends LayoutGameActivity {
         mGameElementFactory = new GraphicsFactory(this, getVertexBufferObjectManager(), getTextureManager());
         mGameElementFactory.initGraphics(battle);
 
-        mGameGUI.hideLoadingScreen();
         pOnCreateResourcesCallback.onCreateResourcesFinished();
 
-        GoogleAnalyticsHandler.sendTiming(getApplicationContext(), TimingCategory.resources, TimingName.load_game,
+        GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.resources, TimingName.load_game,
                 (System.currentTimeMillis() - startLoadingTime) / 1000);
     }
 
@@ -186,18 +186,28 @@ public class GameActivity extends LayoutGameActivity {
                     unit.setTile(tile);
                     addUnitToScene(unit);
                 }
+                if (tile.getTerrain() == TerrainData.farm) {
+                    battle.getMap().getFarms().add(tile);
+                } else if (tile.getTerrain() == TerrainData.castle) {
+                    battle.getMap().getCastles().add(tile);
+                } else if (tile.getTerrain() == TerrainData.fort) {
+                    battle.getMap().getForts().add(tile);
+                }
                 MapLogic.dispatchUnitsOnTile(tile);
             }
         }
+
+        // init fogs of war
+        GameLogic.updateFogsOfWar(battle, 0);
+
+        wait(500);
+        mGameGUI.hideLoadingScreen();
 
         if (battle.getId() >= 0L) {
             initLoadedGame();
         } else {
             initNewGame();
         }
-
-        // init fogs of war
-        GameLogic.updateFogsOfWar(battle, 0);
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
@@ -273,13 +283,13 @@ public class GameActivity extends LayoutGameActivity {
 
     public void endGame(final Player winningPlayer) {
         if (mGameStartTime > 0L) {
-            GoogleAnalyticsHandler.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_time,
+            GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_time,
                     (System.currentTimeMillis() - mGameStartTime) / 1000);
         }
 
-        GoogleAnalyticsHandler.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_nb_turn,
+        GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_nb_turn,
                 battle.getTurnCount());
-        GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.against_AI,
+        GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.against_AI,
                 winningPlayer == battle.getMeSoloMode() ? "victory" : "defeat");
 
         mGameGUI.displayVictoryLabel(winningPlayer == battle.getMeSoloMode());
@@ -293,4 +303,5 @@ public class GameActivity extends LayoutGameActivity {
         startActivity(intent);
         finish();
     }
+
 }

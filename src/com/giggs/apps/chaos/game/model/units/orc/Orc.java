@@ -17,4 +17,5 @@ public class Orc extends Unit {
         super(R.string.orcs_orc, R.drawable.orcs_orc_image, "orcs_orc.png", ArmiesData.ORCS, armyIndex, 70, 900, false,
                 WeaponType.normal, ArmorType.medium, 80, 8);
     }
+
 }

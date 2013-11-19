@@ -154,4 +154,12 @@ public class Tile implements Serializable {
         return 0;
     }
 
+    public boolean isEnemyOnIt(int myArmyIndex) {
+        return content.size() > 0 && content.get(0).getArmyIndex() != myArmyIndex;
+    }
+    
+    public boolean isAllyOnIt(int myArmyIndex) {
+        return content.size() > 0 && content.get(0).getArmyIndex() == myArmyIndex;
+    }
+
 }

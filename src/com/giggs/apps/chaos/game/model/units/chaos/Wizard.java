@@ -17,4 +17,5 @@ public class Wizard extends Unit {
         super(R.string.chaos_wizards, R.drawable.chaos_wizard_image, "chaos_wizard.png", ArmiesData.CHAOS, armyIndex,
                 110, 500, true, WeaponType.magic, ArmorType.unarmored, 80, 2);
     }
+
 }

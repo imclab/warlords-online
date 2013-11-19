@@ -14,7 +14,25 @@ public class Demon extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Demon(int armyIndex) {
-        super(R.string.chaos_demons, R.drawable.chaos_demon_image, "chaos_demon.png", ArmiesData.CHAOS, armyIndex, 100, 900, false,
-                WeaponType.normal, ArmorType.heavy, 90, 10);
+        super(R.string.chaos_demons, R.drawable.chaos_demon_image, "chaos_demon.png", ArmiesData.CHAOS, armyIndex, 100,
+                900, false, WeaponType.normal, ArmorType.heavy, 90, 10);
     }
+
+    @Override
+    public int getDamage(Unit target) {
+        int damage = super.getDamage(target);
+        // critical hit !
+        if (Math.random() < 0.15) {
+            damage *= 2;
+        }
+        return damage;
+    }
+
+    @Override
+    public void initTurn() {
+        // demons regeneration
+        updateHealth(100);
+        super.initTurn();
+    }
+
 }

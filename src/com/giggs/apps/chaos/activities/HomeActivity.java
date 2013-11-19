@@ -25,9 +25,9 @@ import android.widget.Toast;
 
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.activities.fragments.CreateGameDialog;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventAction;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventCategory;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventAction;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventCategory;
 import com.giggs.apps.chaos.database.DatabaseHelper;
 import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.GameUtils.MusicState;
@@ -120,7 +120,7 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
                 }
                 editor.putInt(GameUtils.GAME_PREFS_KEY_MUSIC_VOLUME, newMusicState.ordinal());
                 editor.commit();
-                GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+                GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.ui_action,
                         EventAction.button_press, "music_" + newMusicState.name());
             }
         });
@@ -169,6 +169,11 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onClick(View v) {
         if (v.isShown()) {
             switch (v.getId()) {
@@ -179,7 +184,7 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
                 } else {
                     goToSoloGameScreen();
                 }
-                GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+                GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.ui_action,
                         EventAction.button_press, "play_solo");
                 break;
             case R.id.multiplayerButton:
@@ -189,17 +194,17 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
                     ApplicationUtils.showToast(getApplicationContext(), R.string.log_in_to_play_multi,
                             Toast.LENGTH_SHORT);
                 }
-                GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+                GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.ui_action,
                         EventAction.button_press, "play_multi");
                 break;
             case R.id.helpButton:
                 goToHelpScreen();
-                GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+                GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.ui_action,
                         EventAction.button_press, "show_help");
                 break;
             case R.id.settingsButton:
                 showSettings();
-                GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+                GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.ui_action,
                         EventAction.button_press, "show_settings");
                 break;
             case R.id.backButton:
@@ -207,12 +212,12 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
                 break;
             case R.id.aboutButton:
                 openAboutDialog();
-                GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+                GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.ui_action,
                         EventAction.button_press, "show_about_dialog");
                 break;
             case R.id.rateButton:
                 ApplicationUtils.rateTheApp(this);
-                GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
+                GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.ui_action,
                         EventAction.button_press, "rate_app_button");
                 break;
             case R.id.sign_in_button:
@@ -238,8 +243,8 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
             break;
         case SETTINGS:
             showMainHomeButtons();
-            GoogleAnalyticsHandler.sendEvent(getApplicationContext(), EventCategory.ui_action,
-                    EventAction.button_press, "back_pressed");
+            GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.ui_action, EventAction.button_press,
+                    "back_pressed");
             break;
         }
     }

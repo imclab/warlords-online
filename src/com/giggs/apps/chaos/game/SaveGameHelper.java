@@ -6,11 +6,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.util.List;
 
 import com.giggs.apps.chaos.database.DatabaseHelper;
 import com.giggs.apps.chaos.game.model.Battle;
-import com.giggs.apps.chaos.game.model.Player;
 
 public class SaveGameHelper {
 
@@ -45,7 +43,6 @@ public class SaveGameHelper {
         try {
             ByteArrayInputStream bais = new ByteArrayInputStream(blob);
             ObjectInputStream in = new ObjectInputStream(bais);
-            @SuppressWarnings("unchecked")
             Battle battle = (Battle) in.readObject();
             in.close();
             return battle;

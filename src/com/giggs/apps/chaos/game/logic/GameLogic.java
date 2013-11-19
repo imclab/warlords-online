@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import android.annotation.SuppressLint;
+
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.activities.GameActivity;
+import com.giggs.apps.chaos.game.AI;
 import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.GameUtils.Direction;
+import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.GameElement;
@@ -18,10 +21,10 @@ import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Map;
 import com.giggs.apps.chaos.game.model.map.Tile;
 import com.giggs.apps.chaos.game.model.orders.BuyOrder;
-import com.giggs.apps.chaos.game.model.orders.DefendOrder;
 import com.giggs.apps.chaos.game.model.orders.MoveOrder;
 import com.giggs.apps.chaos.game.model.orders.Order;
 import com.giggs.apps.chaos.game.model.units.Unit;
+import com.giggs.apps.chaos.game.model.units.orc.Goblin;
 
 @SuppressLint("UseSparseArrays")
 public class GameLogic {
@@ -62,7 +65,14 @@ public class GameLogic {
             }
         }
 
-        // process buy orders
+        // AI
+        for (Player player : battle.getPlayers()) {
+            if (player.isAI() && !player.isDefeated()) {
+                AI.generateTurnOrders(battle, player);
+            }
+        }
+
+        // process orders
         for (Player player : battle.getPlayers()) {
             for (Order order : player.getLstTurnOrders()) {
                 if (order instanceof BuyOrder) {
@@ -142,9 +152,7 @@ public class GameLogic {
                     for (Unit u : tile.getContent()) {
                         if (u.getOrder() != null && u.getOrder() instanceof MoveOrder) {
                             MoveOrder m = (MoveOrder) u.getOrder();
-                            if (m.getOrigin().getContent().size() == 0
-                                    || m.getOrigin().getContent().get(0).getArmyIndex() == u.getArmyIndex()
-                                    && m.getOrigin().getContent().size() < GameUtils.MAX_UNITS_PER_TILE) {
+                            if (u.canFleeHere(m.getOrigin())) {
                                 u.setTilePosition(m.getOrigin());
                                 if (tile.getContent().size() <= GameUtils.MAX_UNITS_PER_TILE) {
                                     break;
@@ -152,18 +160,6 @@ public class GameLogic {
                             }
                         }
                     }
-                }
-            }
-        }
-
-        // update places' owners
-        for (int y = 0; y < battle.getMap().getHeight(); y++) {
-            for (int x = 0; x < battle.getMap().getWidth(); x++) {
-                Tile tile = battle.getMap().getTiles()[y][x];
-                if (tile.getTerrain().canBeControlled() && tile.getContent().size() > 0
-                        && tile.getContent().get(0).getArmyIndex() != tile.getOwner()) {
-                    tile.updateTileOwner(battle.getPlayers().get(0).getArmyIndex(), tile.getContent().get(0)
-                            .getArmyIndex());
                 }
             }
         }
@@ -181,6 +177,14 @@ public class GameLogic {
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
                 Tile tile = battle.getMap().getTiles()[y][x];
+
+                // update places' owners
+                if (tile.getTerrain().canBeControlled() && tile.getContent().size() > 0
+                        && tile.getContent().get(0).getArmyIndex() != tile.getOwner()) {
+                    tile.updateTileOwner(battle.getPlayers().get(0).getArmyIndex(), tile.getContent().get(0)
+                            .getArmyIndex());
+                }
+
                 // gather resources
                 if (tile.getOwner() >= 0) {
                     Player player = battle.getPlayers().get(tile.getOwner());
@@ -200,8 +204,14 @@ public class GameLogic {
                 }
                 // supply units
                 for (Unit unit : tile.getContent()) {
-                    battle.getPlayers().get(unit.getArmyIndex())
-                            .updateGold(-unit.getPrice() * unit.getHealth() / unit.getMaxHealth());
+                    if (unit instanceof Goblin
+                            && (unit.getTilePosition().getTerrain() == TerrainData.forest || unit.getTilePosition()
+                                    .getTerrain() == TerrainData.mountain)) {
+                        // goblins are auto-supplied in mountains and forests !
+                    } else {
+                        battle.getPlayers().get(unit.getArmyIndex())
+                                .updateGold(-unit.getPrice() * unit.getHealth() / unit.getMaxHealth());
+                    }
 
                     // reset unit order
                     unit.setOrder(null);
@@ -215,6 +225,7 @@ public class GameLogic {
                 - goldsBeforeTurn[battle.getPlayers().get(0).getArmyIndex()]);
 
         // check economic crisis !
+        float[] populations = new float[battle.getPlayers().size()];
         for (Player player : battle.getPlayers()) {
             if (player.getGold() < 0) {
                 // player is in deficit
@@ -237,23 +248,18 @@ public class GameLogic {
                                     }
                                 }
                             }
+
+                        }
+
+                        // dispatch units properly on tiles
+                        MapLogic.dispatchUnitsOnTile(tile);
+                        for (Unit u : tile.getContent()) {
+                            // game stats
+                            populations[u.getArmyIndex()] += (float) (u.getHealth() / u.getMaxHealth());
                         }
                     }
                 }
                 player.setGold(0);
-            }
-        }
-
-        // dispatch units properly on tiles
-        float[] populations = new float[battle.getPlayers().size()];
-        for (int y = 0; y < battle.getMap().getHeight(); y++) {
-            for (int x = 0; x < battle.getMap().getWidth(); x++) {
-                Tile tile = battle.getMap().getTiles()[y][x];
-                MapLogic.dispatchUnitsOnTile(tile);
-                for (Unit u : tile.getContent()) {
-                    // game stats
-                    populations[u.getArmyIndex()] += (float) (u.getHealth() / u.getMaxHealth());
-                }
             }
         }
 
@@ -269,13 +275,6 @@ public class GameLogic {
         // init players for new turn
         for (Player player : battle.getPlayers()) {
             player.initNewTurn();
-        }
-        // dispatch units properly on tiles
-        for (int y = 0; y < battle.getMap().getHeight(); y++) {
-            for (int x = 0; x < battle.getMap().getWidth(); x++) {
-                Tile tile = battle.getMap().getTiles()[y][x];
-                MapLogic.dispatchUnitsOnTile(tile);
-            }
         }
 
         // check if game is ended
@@ -354,11 +353,15 @@ public class GameLogic {
                         n--;
                     }
                 }
-                if (army.size() == 0 || totalMorale / army.size() < GameUtils.MORALE_THRESHOLD_ROUTED) {
+                if (army.size() == 0 || army.get(0).getArmy() != ArmiesData.UNDEAD
+                        && totalMorale / army.size() < GameUtils.MORALE_THRESHOLD_ROUTED) {
                     // an army is defeated
                     for (Unit unit : army) {
                         giveBattleReward(unit, false, nbRounds);
-                        unit.flee(battle);
+                        boolean canFlee = unit.flee(battle);
+                        if (!canFlee) {
+                            gameActivity.removeUnit(unit);
+                        }
                     }
                     lstArmies.remove(entry.getKey());
                 }
@@ -465,25 +468,6 @@ public class GameLogic {
         } else {
             return Direction.south;
         }
-    }
-
-    public static int getDamage(Unit attacker, Unit target) {
-        float attackFactor = WEAPONS_EFFICIENCY[attacker.getWeaponType().ordinal()][target.getArmorType().ordinal()];
-        int damage = (int) Math.max(0,
-                attacker.getDamage() * attackFactor * (1 + 0.2 * Math.random()) - target.getArmor());
-
-        // terrain modifier
-        if (target.getTilePosition().getTerrain() == TerrainData.castle
-                || target.getTilePosition().getTerrain() == TerrainData.fort) {
-            damage *= 0.7;
-        }
-
-        // order modifier
-        if (target.getOrder() != null && target.getOrder() instanceof DefendOrder) {
-            damage *= 0.8;
-        }
-
-        return damage;
     }
 
 }

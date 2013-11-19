@@ -1,6 +1,8 @@
 package com.giggs.apps.chaos.game.model.map;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Map implements Serializable {
 
@@ -24,6 +26,25 @@ public class Map implements Serializable {
 
     public int getHeight() {
         return tiles.length;
+    }
+
+    /**
+     * Used for AI
+     */
+    private final List<Tile> castles = new ArrayList<Tile>();
+    private final List<Tile> forts = new ArrayList<Tile>();
+    private final List<Tile> farms = new ArrayList<Tile>();
+
+    public List<Tile> getCastles() {
+        return castles;
+    }
+
+    public List<Tile> getForts() {
+        return forts;
+    }
+
+    public List<Tile> getFarms() {
+        return farms;
     }
 
 }

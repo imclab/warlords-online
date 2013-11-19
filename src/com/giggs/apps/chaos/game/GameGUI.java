@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
@@ -21,9 +21,9 @@ import android.widget.TextView;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.activities.GameActivity;
 import com.giggs.apps.chaos.activities.HomeActivity;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventAction;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventCategory;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventAction;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventCategory;
 import com.giggs.apps.chaos.game.data.UnitsData;
 import com.giggs.apps.chaos.game.logic.GameLogic;
 import com.giggs.apps.chaos.game.model.Player;
@@ -216,8 +216,8 @@ public class GameGUI {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == R.id.okButton) {
                             mActivity.battle.getMeSoloMode().setDefeated(true);
-                            GoogleAnalyticsHandler.sendEvent(mActivity.getApplicationContext(),
-                                    EventCategory.ui_action, EventAction.button_press, "surrender_game");
+                            GoogleAnalyticsHelper.sendEvent(mActivity.getApplicationContext(), EventCategory.ui_action,
+                                    EventAction.button_press, "surrender_game");
                             mActivity.goToReport(false);
                         }
                         dialog.dismiss();
@@ -241,7 +241,7 @@ public class GameGUI {
             public void onClick(View v) {
                 mActivity.startActivity(new Intent(mActivity, HomeActivity.class));
                 mActivity.finish();
-                GoogleAnalyticsHandler.sendEvent(mActivity.getApplicationContext(), EventCategory.ui_action,
+                GoogleAnalyticsHelper.sendEvent(mActivity.getApplicationContext(), EventCategory.ui_action,
                         EventAction.button_press, "exit_game");
             }
         });

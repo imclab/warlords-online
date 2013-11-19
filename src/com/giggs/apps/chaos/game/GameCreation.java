@@ -38,7 +38,7 @@ public class GameCreation {
         Tile[][] tiles = new Tile[mapSize][mapSize];
 
         // create terrain
-        buildRandomMap(tiles);
+        buildRandomMap(map, tiles);
         map.setTiles(tiles);
 
         // setup player zones
@@ -47,7 +47,7 @@ public class GameCreation {
         return map;
     }
 
-    private static void buildRandomMap(Tile[][] tiles) {
+    private static void buildRandomMap(Map map, Tile[][] tiles) {
         int terrainQuantitySum = 0;
         for (TerrainData terrain : TerrainData.values()) {
             terrainQuantitySum += terrain.getQuantityFactor();

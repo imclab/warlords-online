@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true"><shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="@color/white" />
+
+            <corners android:radius="2dp" />
+
+            <gradient android:endColor="@android:color/black" android:gradientRadius="50" android:startColor="@color/cannot_buy_red" android:type="radial" />
+        </shape></item>
+    <item><shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="@color/bg_btn_main_pressed" />
+
+            <corners android:radius="2dp" />
+
+            <gradient android:endColor="@color/bg_btn_pressed" android:gradientRadius="50" android:startColor="@color/cannot_buy_red" android:type="radial" />
+        </shape></item>
+
+</selector>
