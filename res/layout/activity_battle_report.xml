@@ -2,8 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_home" >
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_home"
+        android:tint="#66000000" />
 
     <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/victoryLabel"
@@ -11,13 +18,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:alpha="0.5"
+        android:alpha="0.3"
         android:textSize="100sp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/leaveReportButton"
+        android:layout_alignParentTop="true"
         android:layout_margin="5dp" >
 
         <LinearLayout
@@ -25,48 +32,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <com.giggs.apps.chaos.views.CustomTextView
-                style="@style/BattleReportHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="@string/population_graph_title" />
-
-            <LinearLayout
-                android:id="@+id/popGraph"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@drawable/bg_army_column"
-                android:orientation="horizontal" >
-            </LinearLayout>
-
-            <com.giggs.apps.chaos.views.CustomTextView
-                style="@style/BattleReportHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:paddingTop="30dp"
-                android:text="@string/economy_graph_title" />
-
-            <LinearLayout
-                android:id="@+id/economyGraph"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@drawable/bg_army_column"
-                android:orientation="horizontal" >
-            </LinearLayout>
-
             <TableLayout
                 android:id="@+id/playersStats"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/bg_army_column"
                 android:padding="10dp"
                 android:showDividers="middle"
                 android:stretchColumns="*" >
 
-                <TableRow android:padding="3dp" >
+                <TableRow
+                    android:background="@color/bg_btn_pressed"
+                    android:padding="3dp" >
 
                     <com.giggs.apps.chaos.views.CustomTextView
                         style="@style/BattleReportHeader"
@@ -104,6 +82,39 @@
                         android:text="@string/battles_won" />
                 </TableRow>
             </TableLayout>
+
+            <com.giggs.apps.chaos.views.CustomTextView
+                style="@style/BattleReportHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/population_graph_title" />
+
+            <LinearLayout
+                android:id="@+id/popGraph"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/bg_army_column"
+                android:orientation="horizontal"
+                android:padding="5dp" >
+            </LinearLayout>
+
+            <com.giggs.apps.chaos.views.CustomTextView
+                style="@style/BattleReportHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingTop="30dp"
+                android:text="@string/economy_graph_title" />
+
+            <LinearLayout
+                android:id="@+id/economyGraph"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/bg_army_column"
+                android:orientation="horizontal"
+                android:padding="5dp" >
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

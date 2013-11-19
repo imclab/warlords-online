@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.database.DatabaseHelper;
+import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.GameStats;
 import com.giggs.apps.chaos.game.model.Player;
@@ -19,6 +20,7 @@ import com.google.example.games.basegameutils.BaseGameActivity;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
+import com.jjoe64.graphview.GraphViewSeries.GraphViewSeriesStyle;
 import com.jjoe64.graphview.LineGraphView;
 
 public class BattleReportActivity extends BaseGameActivity {
@@ -90,6 +92,9 @@ public class BattleReportActivity extends BaseGameActivity {
             TableRow statsRow = (TableRow) getLayoutInflater().inflate(R.layout.player_stats_row, null);
             TextView playerName = (TextView) statsRow.findViewById(R.id.name);
             playerName.setText("" + player.getName());
+            playerName.setCompoundDrawablesWithIntrinsicBounds(player.getArmy().getImage(), 0, 0, 0);
+            int playerColor = GameUtils.PLAYER_COLORS[player.getArmyIndex()].getARGBPackedInt();
+            playerName.setTextColor(playerColor);
             TextView goldGathered = (TextView) statsRow.findViewById(R.id.gold);
             goldGathered.setText("" + player.getGameStats().getGold());
             TextView unitsCreated = (TextView) statsRow.findViewById(R.id.unitsCreated);
@@ -115,11 +120,23 @@ public class BattleReportActivity extends BaseGameActivity {
                 dataPop[n] = new GraphViewData(n + 1, player.getGameStats().getPopulation().get(n));
                 dataEconomy[n] = new GraphViewData(n + 1, player.getGameStats().getEconomy().get(n));
             }
-            graphViewPop.addSeries(new GraphViewSeries(dataPop));
-            graphViewEconomy.addSeries(new GraphViewSeries(dataEconomy));
-            ;
+            graphViewPop.addSeries(new GraphViewSeries(player.getName(), new GraphViewSeriesStyle(
+                    GameUtils.PLAYER_COLORS[player.getArmyIndex()].getARGBPackedInt(), 5), dataPop));
+            graphViewEconomy.addSeries(new GraphViewSeries(player.getName(), new GraphViewSeriesStyle(
+                    GameUtils.PLAYER_COLORS[player.getArmyIndex()].getARGBPackedInt(), 5), dataEconomy));
         }
+        // format axis labels
+        // CustomLabelFormatter labelFormatter = new CustomLabelFormatter() {
+        // @Override
+        // public String formatLabel(double value, boolean isValueX) {
+        // return "" + (int) value;
+        // }
+        // };
+        String[] horizontalLabels = new String[] { "", "", "time" };
+        graphViewPop.setHorizontalLabels(horizontalLabels);
+        graphViewPop.setVerticalLabels(new String[] { "high", "", "low" });
         popGraphLayout.addView(graphViewPop);
+        graphViewEconomy.setHorizontalLabels(horizontalLabels);
         economyGraphLayout.addView(graphViewEconomy);
     }
 
