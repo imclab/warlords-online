@@ -25,7 +25,6 @@ import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventAction;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventCategory;
 import com.giggs.apps.chaos.game.data.UnitsData;
-import com.giggs.apps.chaos.game.logic.GameLogic;
 import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Tile;
 import com.giggs.apps.chaos.game.model.orders.BuyOrder;
@@ -82,6 +81,7 @@ public class GameGUI {
                     for (Order order : mActivity.battle.getMeSoloMode().getLstTurnOrders()) {
                         if (order instanceof BuyOrder && ((BuyOrder) order).getTile() == selectedTile) {
                             mActivity.battle.getMeSoloMode().removeOrder(order);
+                            break;
                         }
                     }
                     selectedTile.getSprite().updateUnitProduction(null);
@@ -148,7 +148,7 @@ public class GameGUI {
         // setup players layout
         ViewGroup playersLayout = (ViewGroup) mActivity.findViewById(R.id.players);
         for (Player player : mActivity.battle.getPlayers()) {
-            View layout = mActivity.getLayoutInflater().inflate(R.layout.player_layout, null);
+            View layout = mActivity.getLayoutInflater().inflate(R.layout.in_game_player_layout, null);
             // set name
             TextView playerName = (TextView) layout.findViewById(R.id.name);
             playerName.setText(player.getName());
@@ -333,7 +333,7 @@ public class GameGUI {
     private void sendOrders() {
         // TODO multi
         hideBuyOptions();
-        GameLogic.runTurn(mActivity, mActivity.battle);
+        mActivity.runTurn();
     }
 
     private void openChatSession() {

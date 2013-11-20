@@ -4,9 +4,9 @@ import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.logic.GameLogic;
-import com.giggs.apps.chaos.game.logic.MapLogic;
 import com.giggs.apps.chaos.game.logic.GameLogic.ArmorType;
 import com.giggs.apps.chaos.game.logic.GameLogic.WeaponType;
+import com.giggs.apps.chaos.game.logic.MapLogic;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.GameElement;
 import com.giggs.apps.chaos.game.model.map.Tile;
@@ -100,12 +100,14 @@ public abstract class Unit extends GameElement {
 
     public void setOrder(Order order) {
         this.order = order;
-        if (order instanceof DefendOrder) {
-            sprite.defend();
-        } else if (order instanceof MoveOrder) {
-            sprite.walk(GameLogic.getDirectionFromMoveOrder(((MoveOrder) order)));
-        } else if (order == null) {
-            sprite.stand();
+        if (sprite != null) {
+            if (order instanceof DefendOrder) {
+                sprite.defend();
+            } else if (order instanceof MoveOrder) {
+                sprite.walk(GameLogic.getDirectionFromMoveOrder(((MoveOrder) order)));
+            } else if (order == null) {
+                sprite.stand();
+            }
         }
     }
 
@@ -165,28 +167,36 @@ public abstract class Unit extends GameElement {
         this.tilePosition = tilePosition;
         this.tilePosition.getContent().add(this);
 
-        sprite.setPosition(GameUtils.TILE_SIZE * tilePosition.getX(), GameUtils.TILE_SIZE * tilePosition.getY());
+        if (sprite != null) {
+            sprite.setPosition(GameUtils.TILE_SIZE * tilePosition.getX(), GameUtils.TILE_SIZE * tilePosition.getY());
+        }
     }
 
     public void updateMorale(int modifier) {
         morale += modifier;
         morale = Math.min(morale, 100);
         morale = Math.max(morale, 0);
-        sprite.updateMorale(morale);
+        if (sprite != null) {
+            sprite.updateMorale(morale);
+        }
     }
 
     public void updateExperience(int modifier) {
         experience += modifier;
         experience = Math.min(experience, 100);
         experience = Math.max(experience, 0);
-        sprite.updateExperience(experience);
+        if (sprite != null) {
+            sprite.updateExperience(experience);
+        }
     }
 
     public boolean updateHealth(int modifier) {
         health += modifier;
         health = Math.min(health, maxHealth);
         health = Math.max(health, 0);
-        sprite.updateHealth(health);
+        if (sprite != null) {
+            sprite.updateHealth(health);
+        }
 
         return health == 0;
     }

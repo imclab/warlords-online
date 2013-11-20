@@ -23,7 +23,7 @@ public class UnitSprite extends Sprite {
     private InputManager mInputManager;
     private boolean mIsSelected = false;
 
-    private static final int UNIT_SIZE = 90;
+    private static final int UNIT_SIZE = 100;
 
     private boolean canBeDragged;
     private Line experienceLine;

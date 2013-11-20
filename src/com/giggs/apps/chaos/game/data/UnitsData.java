@@ -63,7 +63,7 @@ public class UnitsData {
             break;
         case UNDEAD:
             lstUnits.add(new Skeleton(armyIndex));
-            lstUnits.add(new Bowman(armyIndex));
+            lstUnits.add(new com.giggs.apps.chaos.game.model.units.undead.Bowman(armyIndex));
             lstUnits.add(new Zombie(armyIndex));
             lstUnits.add(new Necromancer(armyIndex));
             break;

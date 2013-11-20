@@ -33,7 +33,6 @@ import com.giggs.apps.chaos.game.InputManager;
 import com.giggs.apps.chaos.game.SaveGameHelper;
 import com.giggs.apps.chaos.game.andengine.custom.CustomZoomCamera;
 import com.giggs.apps.chaos.game.data.ArmiesData;
-import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.graphics.SelectionCircle;
 import com.giggs.apps.chaos.game.graphics.TileSprite;
 import com.giggs.apps.chaos.game.graphics.UnitSprite;
@@ -83,7 +82,7 @@ public class GameActivity extends LayoutGameActivity {
             // new game
             int myArmy = extras.getInt("my_army", 0);
             int nbPlayers = extras.getInt("nb_players", 4);
-            battle = GameCreation.createSoloGame(nbPlayers, myArmy);
+            battle = GameCreation.createSoloGame(nbPlayers, myArmy, 0, null);
             SaveGameHelper.deleteSavedBattles(mDbHelper);
             GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.nb_players, ""
                     + nbPlayers);
@@ -178,20 +177,13 @@ public class GameActivity extends LayoutGameActivity {
             }
         }
 
-        // add initial units
+        // add initial units to scene
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
                 Tile tile = battle.getMap().getTiles()[y][x];
                 for (Unit unit : tile.getContent()) {
                     unit.setTile(tile);
                     addUnitToScene(unit);
-                }
-                if (tile.getTerrain() == TerrainData.farm) {
-                    battle.getMap().getFarms().add(tile);
-                } else if (tile.getTerrain() == TerrainData.castle) {
-                    battle.getMap().getCastles().add(tile);
-                } else if (tile.getTerrain() == TerrainData.fort) {
-                    battle.getMap().getForts().add(tile);
                 }
                 MapLogic.dispatchUnitsOnTile(tile);
             }
@@ -200,7 +192,7 @@ public class GameActivity extends LayoutGameActivity {
         // init fogs of war
         GameLogic.updateFogsOfWar(battle, 0);
 
-        wait(500);
+        wait(300);
         mGameGUI.hideLoadingScreen();
 
         if (battle.getId() >= 0L) {
@@ -278,7 +270,6 @@ public class GameActivity extends LayoutGameActivity {
                 mScene.detachChild(unit.getSprite());
             }
         });
-        unit.getTilePosition().getContent().remove(unit);
     }
 
     public void endGame(final Player winningPlayer) {
@@ -302,6 +293,52 @@ public class GameActivity extends LayoutGameActivity {
         Intent intent = new Intent(GameActivity.this, BattleReportActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void runTurn() {
+        getEngine().stop();
+
+        // update battle
+        int winnerIndex = GameLogic.runTurn(battle);
+
+        // add new units, remove dead ones
+        for (Unit u : battle.getUnitsToAdd()) {
+            addUnitToScene(u);
+        }
+        battle.setUnitsToAdd(new ArrayList<Unit>());
+        for (Unit u : battle.getUnitsToRemove()) {
+            removeUnit(u);
+        }
+        battle.setUnitsToRemove(new ArrayList<Unit>());
+
+        // dispatch units properly on tiles
+        for (int y = 0; y < battle.getMap().getHeight(); y++) {
+            for (int x = 0; x < battle.getMap().getWidth(); x++) {
+                Tile tile = battle.getMap().getTiles()[y][x];
+                MapLogic.dispatchUnitsOnTile(tile);
+            }
+        }
+        
+        // update fogs of war
+        GameLogic.updateFogsOfWar(battle, 0);
+
+        getEngine().start();
+
+        // update my gold amount
+        mGameGUI.updateGoldAmount(battle.getMeSoloMode().getGold());
+        mGameGUI.updateEconomyBalance(battle.getMeSoloMode().getGameStats().getEconomy()
+                .get(battle.getMeSoloMode().getGameStats().getEconomy().size() - 1));
+
+        if (winnerIndex >= 0) {
+            endGame(battle.getPlayers().get(winnerIndex));
+            return;
+        } else if (winnerIndex == GameLogic.SOLO_PLAYER_DEFEAT) {
+            endGame(null);
+        } else {
+            // game continues !
+            // show new turn count
+            mGameGUI.displayBigLabel(getString(R.string.turn_count, battle.getTurnCount()), R.color.white);
+        }
     }
 
 }

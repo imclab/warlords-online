@@ -81,7 +81,7 @@ public class Player implements Serializable {
     }
 
     public void removeOrder(Order order) {
-        getLstTurnOrders().remove(order);
+        lstTurnOrders.remove(order);
     }
 
     public List<Order> getLstTurnOrders() {

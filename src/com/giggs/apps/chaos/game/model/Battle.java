@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.giggs.apps.chaos.game.model.map.Map;
+import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class Battle implements Serializable {
 
@@ -18,6 +19,9 @@ public class Battle implements Serializable {
     private List<Player> players = new ArrayList<Player>();
     private int turnCount = 1;
     private boolean isWinter = false;
+
+    public List<Unit> unitsToAdd = new ArrayList<Unit>();
+    public List<Unit> unitsToRemove = new ArrayList<Unit>();
 
     public Map getMap() {
         return map;
@@ -61,6 +65,22 @@ public class Battle implements Serializable {
 
     public Player getMeSoloMode() {
         return players.get(0);
+    }
+
+    public List<Unit> getUnitsToAdd() {
+        return unitsToAdd;
+    }
+
+    public void setUnitsToAdd(List<Unit> unitsToAdd) {
+        this.unitsToAdd = unitsToAdd;
+    }
+
+    public List<Unit> getUnitsToRemove() {
+        return unitsToRemove;
+    }
+
+    public void setUnitsToRemove(List<Unit> unitsToRemove) {
+        this.unitsToRemove = unitsToRemove;
     }
 
 }

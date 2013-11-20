@@ -21,8 +21,8 @@ public class GameUtils {
             new Color(1.0f, 1.0f, 0.0f, ControlZone.INITIAL_ALPHA),
             new Color(0.0f, 0.0f, 0.0f, ControlZone.INITIAL_ALPHA),
             new Color(1.0f, 1.0f, 1.0f, ControlZone.INITIAL_ALPHA),
-            new Color(0.0f, 0.5f, 1.0f, ControlZone.INITIAL_ALPHA),
-            new Color(0.5f, 0.0f, 1.0f, ControlZone.INITIAL_ALPHA) };
+            new Color(0.5f, 0.0f, 1.0f, ControlZone.INITIAL_ALPHA),
+            new Color(0.0f, 0.5f, 1.0f, ControlZone.INITIAL_ALPHA)};
 
     public static final int[] PLAYER_BLASONS = { R.drawable.blason_1, R.drawable.blason_2, R.drawable.blason_3,
             R.drawable.blason_4, R.drawable.blason_5, R.drawable.blason_6, R.drawable.blason_7, R.drawable.blason_8 };
@@ -42,4 +42,9 @@ public class GameUtils {
     public static final int MORALE_THRESHOLD_ROUTED = 35;
 
     public static final int EXPERIENCE_POINTS_PER_BATTLE_ROUND = 3;
+
+    public static final String[] AI_NAMES = { "Guildenstern", "Fractal", "Reindeer", "Lord Bobby", "Sigmund Fruit",
+            "Ban Anna", "Optimus Lime", "Al Pacho", "Lemon Alisa", "Goliath", "Spongebob", "Nautilus", "Asterion",
+            "Tron" };
+
 }
