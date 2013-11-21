@@ -15,7 +15,7 @@ public class Goblin extends Unit {
 
     public Goblin(int armyIndex) {
         super(R.string.orcs_goblin, R.drawable.orcs_goblin_image, "orcs_goblin.png", ArmiesData.ORCS, armyIndex, 30,
-                600, false, WeaponType.normal, ArmorType.light, 20, 2);
+                600, false, WeaponType.piercing, ArmorType.light, 30, 2);
     }
 
 }

@@ -75,8 +75,8 @@ public class UnitsData {
             break;
         case CHAOS:
             lstUnits.add(new Warrior(armyIndex));
-            lstUnits.add(new Wizard(armyIndex));
             lstUnits.add(new Demon(armyIndex));
+            lstUnits.add(new Wizard(armyIndex));
             lstUnits.add(new DamnedSoul(armyIndex));
             break;
         case DWARF:

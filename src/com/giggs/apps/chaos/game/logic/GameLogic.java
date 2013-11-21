@@ -65,7 +65,7 @@ public class GameLogic {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
                 Tile tile = battle.getMap().getTiles()[y][x];
                 for (Unit unit : tile.getContent()) {
-                    unit.initTurn();
+                    unit.initTurn(battle.getMap());
                 }
             }
         }
@@ -107,8 +107,8 @@ public class GameLogic {
                                 battle.getPlayers().get(u.getArmyIndex()).removeOrder(u.getOrder());
                                 u.setOrder(null);
                             } else {
+                                canMove = false;
                                 for (Unit allyUnit : moveOrder.getOrigin().getContent()) {
-                                    canMove = false;
                                     if (allyUnit.getOrder() != null
                                             && allyUnit.getOrder() instanceof MoveOrder
                                             && ((MoveOrder) allyUnit.getOrder()).getDestination() == moveOrder
@@ -254,7 +254,7 @@ public class GameLogic {
                                     boolean isDead = unit.updateHealth(-7 * (50 - unit.getMorale()));
                                     if (isDead) {
                                         battle.getUnitsToRemove().add(unit);
-                                        unit.getTilePosition().getContent().remove(unit);
+                                        tile.getContent().remove(unit);
                                     }
                                 }
                             }
@@ -270,13 +270,17 @@ public class GameLogic {
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
                 Tile tile = battle.getMap().getTiles()[y][x];
-                for (Unit u : tile.getContent()) {
+                List<Unit> content = new ArrayList<Unit>(tile.getContent());
+                for (int n = 0; n < content.size(); n++) {
+                    Unit unit = content.get(n);
                     // game stats
-                    populations[u.getArmyIndex()] += (float) (u.getHealth() / u.getMaxHealth());
-                }
-                if (tile.getContent().size() > GameUtils.MAX_UNITS_PER_TILE) {
-                    System.out.println("BUG : too many units on that tile !");
-                    return 404;
+                    populations[unit.getArmyIndex()] += (float) (unit.getHealth() / unit.getMaxHealth());
+
+                    // remove dead
+                    if (unit.isDead()) {
+                        battle.getUnitsToRemove().add(unit);
+                        tile.getContent().remove(unit);
+                    }
                 }
             }
         }
@@ -402,7 +406,7 @@ public class GameLogic {
             }
         }
 
-        // give rewards for the winners
+        // give rewards to the winners
         if (lstArmies.size() == 1) {
             List<Unit> lstUnits = lstArmies.get(lstArmies.keySet().iterator().next());
             for (Unit unit : lstUnits) {
@@ -447,7 +451,7 @@ public class GameLogic {
         // hide all tiles
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
-                // map.getTiles()[y][x].setVisible(myArmyIndex, false);
+                map.getTiles()[y][x].setVisible(myArmyIndex, false);
             }
         }
 

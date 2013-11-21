@@ -10,15 +10,15 @@ import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.graphics.TileSprite;
+import com.giggs.apps.chaos.game.logic.pathfinding.Node;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
-public class Tile implements Serializable {
+public class Tile extends Node implements Serializable {
 
     /**
      * 
      */
     private static final long serialVersionUID = -4833559440300774703L;
-    private final int x, y;
     private TerrainData terrain;
     private List<Unit> content = new ArrayList<Unit>();
     private int owner = -1;
@@ -28,8 +28,7 @@ public class Tile implements Serializable {
     private boolean isMoveOption = false;
 
     public Tile(int x, int y, TerrainData terrain) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
         this.terrain = terrain;
     }
 
@@ -47,14 +46,6 @@ public class Tile implements Serializable {
 
     public void setTerrain(TerrainData terrain) {
         this.terrain = terrain;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public int getOwner() {
@@ -176,6 +167,11 @@ public class Tile implements Serializable {
         if (sprite != null) {
             sprite.updateUnitProduction(texture);
         }
+    }
+
+    @Override
+    public boolean canMoveIn() {
+        return true;
     }
 
 }

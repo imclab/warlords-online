@@ -4,6 +4,7 @@ import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.logic.GameLogic.ArmorType;
 import com.giggs.apps.chaos.game.logic.GameLogic.WeaponType;
+import com.giggs.apps.chaos.game.model.map.Map;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class Monk extends Unit {
@@ -19,12 +20,12 @@ public class Monk extends Unit {
     }
 
     @Override
-    public void initTurn() {
+    public void initTurn(Map map) {
         // monks are healing closed units !
         for (Unit unit : tilePosition.getContent()) {
             unit.updateHealth(200);
         }
-        super.initTurn();
+        super.initTurn(map);
     }
 
 }

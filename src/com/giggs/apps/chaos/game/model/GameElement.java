@@ -66,13 +66,4 @@ public abstract class GameElement implements Serializable {
         return rank;
     }
 
-    public void setRank(Rank rank) {
-        this.rank = rank;
-        if (rank == Rank.ally) {
-            sprite.setCanBeDragged(true);
-        } else {
-            sprite.setCanBeDragged(false);
-        }
-    }
-
 }

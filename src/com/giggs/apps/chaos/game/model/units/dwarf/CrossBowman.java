@@ -15,7 +15,7 @@ public class CrossBowman extends Unit {
 
     public CrossBowman(int armyIndex) {
         super(R.string.dwarf_crossbowman, R.drawable.dwarf_crossbowman_image, "dwarf_crossbowman.png",
-                ArmiesData.DWARF, armyIndex, 75, 600, true, WeaponType.piercing, ArmorType.heavy, 60, 8);
+                ArmiesData.DWARF, armyIndex, 75, 700, true, WeaponType.piercing, ArmorType.heavy, 60, 8);
     }
 
 }

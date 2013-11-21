@@ -33,6 +33,7 @@ import com.giggs.apps.chaos.game.InputManager;
 import com.giggs.apps.chaos.game.SaveGameHelper;
 import com.giggs.apps.chaos.game.andengine.custom.CustomZoomCamera;
 import com.giggs.apps.chaos.game.data.ArmiesData;
+import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.graphics.SelectionCircle;
 import com.giggs.apps.chaos.game.graphics.TileSprite;
 import com.giggs.apps.chaos.game.graphics.UnitSprite;
@@ -62,6 +63,7 @@ public class GameActivity extends LayoutGameActivity {
     public Sprite selectionCircle;
 
     public Battle battle;
+    private Tile castleTile = null;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -136,8 +138,6 @@ public class GameActivity extends LayoutGameActivity {
         this.mCamera.setBounds(0, 0, battle.getMap().getHeight() * GameUtils.TILE_SIZE, battle.getMap().getWidth()
                 * GameUtils.TILE_SIZE);
         this.mCamera.setBoundsEnabled(true);
-        this.mCamera.setCenter(GameUtils.TILE_SIZE * battle.getMap().getWidth() / 2, GameUtils.TILE_SIZE
-                * battle.getMap().getWidth() / 2);
 
         // add selection circle
         selectionCircle = new SelectionCircle(GraphicsFactory.mGfxMap.get("selection.png"),
@@ -184,6 +184,9 @@ public class GameActivity extends LayoutGameActivity {
                 for (Unit unit : tile.getContent()) {
                     unit.setTile(tile);
                     addUnitToScene(unit);
+                }
+                if (tile.getTerrain() == TerrainData.castle && battle.getMeSoloMode().getArmyIndex() == tile.getOwner()) {
+                    castleTile = tile;
                 }
                 MapLogic.dispatchUnitsOnTile(tile);
             }
@@ -232,6 +235,9 @@ public class GameActivity extends LayoutGameActivity {
     private void startGame() {
         mGameStartTime = System.currentTimeMillis();
         mGameGUI.displayBigLabel(getString(R.string.turn_count, battle.getTurnCount()), R.color.white);
+
+        // center map on player's castle
+        mCamera.setCenter(castleTile.getX() * GameUtils.TILE_SIZE, castleTile.getY() * GameUtils.TILE_SIZE);
     }
 
     private void initNewGame() {
@@ -318,7 +324,7 @@ public class GameActivity extends LayoutGameActivity {
                 MapLogic.dispatchUnitsOnTile(tile);
             }
         }
-        
+
         // update fogs of war
         GameLogic.updateFogsOfWar(battle, 0);
 
@@ -339,6 +345,15 @@ public class GameActivity extends LayoutGameActivity {
             // show new turn count
             mGameGUI.displayBigLabel(getString(R.string.turn_count, battle.getTurnCount()), R.color.white);
         }
+    }
+
+    public void updateUnitProduction(final TileSprite sprite, final TextureRegion texture) {
+        runOnUpdateThread(new Runnable() {
+            @Override
+            public void run() {
+                sprite.updateUnitProduction(texture);
+            }
+        });
     }
 
 }

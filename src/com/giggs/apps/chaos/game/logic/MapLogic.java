@@ -79,4 +79,5 @@ public class MapLogic {
     public static Tile getTileAtCoordinates(Map map, float x, float y) {
         return map.getTiles()[(int) (y / GameUtils.TILE_SIZE)][(int) (x / GameUtils.TILE_SIZE)];
     }
+    
 }

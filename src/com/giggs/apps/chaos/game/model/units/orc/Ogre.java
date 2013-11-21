@@ -5,6 +5,7 @@ import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.logic.GameLogic.ArmorType;
 import com.giggs.apps.chaos.game.logic.GameLogic.WeaponType;
+import com.giggs.apps.chaos.game.model.map.Map;
 import com.giggs.apps.chaos.game.model.map.Tile;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
@@ -16,8 +17,8 @@ public class Ogre extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Ogre(int armyIndex) {
-        super(R.string.orcs_ogre, R.drawable.orcs_ogre_image, "orcs_ogre.png", ArmiesData.ORCS, armyIndex, 130, 600,
-                true, WeaponType.piercing, ArmorType.medium, 160, 8);
+        super(R.string.orcs_ogre, R.drawable.orcs_ogre_image, "orcs_ogre.png", ArmiesData.ORCS, armyIndex, 120, 600,
+                true, WeaponType.normal, ArmorType.medium, 160, 8);
     }
 
     @Override
@@ -30,14 +31,14 @@ public class Ogre extends Unit {
     }
 
     @Override
-    public void initTurn() {
+    public void initTurn(Map map) {
         // ogres are eating allied units close to them !
         for (Unit unit : tilePosition.getContent()) {
             if (this != unit) {
                 unit.updateHealth(-50);
             }
         }
-        super.initTurn();
+        super.initTurn(map);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.giggs.apps.chaos.game.logic.GameLogic.WeaponType;
 import com.giggs.apps.chaos.game.logic.MapLogic;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.GameElement;
+import com.giggs.apps.chaos.game.model.map.Map;
 import com.giggs.apps.chaos.game.model.map.Tile;
 import com.giggs.apps.chaos.game.model.orders.DefendOrder;
 import com.giggs.apps.chaos.game.model.orders.MoveOrder;
@@ -198,10 +199,10 @@ public abstract class Unit extends GameElement {
             sprite.updateHealth(health);
         }
 
-        return health == 0;
+        return isDead();
     }
 
-    public void initTurn() {
+    public void initTurn(Map map) {
         if (tilePosition.getTerrain() == TerrainData.castle || tilePosition.getTerrain() == TerrainData.fort) {
             updateHealth(150);
             updateMorale(25);
@@ -250,10 +251,9 @@ public abstract class Unit extends GameElement {
 
     public int getDamage(Unit target) {
         float attackFactor = GameLogic.WEAPONS_EFFICIENCY[weaponType.ordinal()][target.getArmorType().ordinal()];
-        int damage = (int) Math.max(
-                0,
-                attack * attackFactor * health / maxHealth * morale / 100 * (1 + 0.2 * Math.random())
-                        - target.getArmor() * 5);
+        int damage = (int) Math.max(0,
+                attack * attackFactor * health / maxHealth * morale / 100
+                        * (1 + 0.1 * Math.random() + (float) experience / 100) - target.getArmor());
 
         // terrain modifier
         if (target.getTilePosition().getTerrain() == TerrainData.castle
@@ -288,4 +288,9 @@ public abstract class Unit extends GameElement {
 
         return damage;
     }
+
+    public boolean isDead() {
+        return health <= 0;
+    }
+
 }

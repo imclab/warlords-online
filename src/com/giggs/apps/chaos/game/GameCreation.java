@@ -102,18 +102,22 @@ public class GameCreation {
         switch (lstPlayers.size()) {
         case 2:
             addPlayerZoneToMap(map, 0, 0, lstPlayersCopy);
-            addPlayerZoneToMap(map, map.getHeight() - 2, map.getWidth() - 2, lstPlayersCopy);
+            addPlayerZoneToMap(map, map.getHeight() - GameUtils.GAME_CREATION_ZONE_SIZE, map.getWidth()
+                    - GameUtils.GAME_CREATION_ZONE_SIZE, lstPlayersCopy);
             break;
         case 3:
             addPlayerZoneToMap(map, 0, 0, lstPlayersCopy);
-            addPlayerZoneToMap(map, map.getHeight() - 2, 0, lstPlayersCopy);
-            addPlayerZoneToMap(map, 2, map.getWidth() - 2, lstPlayersCopy);
+            addPlayerZoneToMap(map, map.getHeight() - GameUtils.GAME_CREATION_ZONE_SIZE, 0, lstPlayersCopy);
+            addPlayerZoneToMap(map, GameUtils.GAME_CREATION_ZONE_SIZE, map.getWidth()
+                    - GameUtils.GAME_CREATION_ZONE_SIZE, lstPlayersCopy);
             break;
         case 4:
-            addPlayerZoneToMap(map, 0, 3, lstPlayersCopy);
-            addPlayerZoneToMap(map, map.getHeight() - 2, 3, lstPlayersCopy);
-            addPlayerZoneToMap(map, 3, 0, lstPlayersCopy);
-            addPlayerZoneToMap(map, 3, map.getWidth() - 2, lstPlayersCopy);
+            addPlayerZoneToMap(map, 0, GameUtils.GAME_CREATION_ZONE_SIZE, lstPlayersCopy);
+            addPlayerZoneToMap(map, map.getHeight() - GameUtils.GAME_CREATION_ZONE_SIZE,
+                    GameUtils.GAME_CREATION_ZONE_SIZE, lstPlayersCopy);
+            addPlayerZoneToMap(map, GameUtils.GAME_CREATION_ZONE_SIZE, 0, lstPlayersCopy);
+            addPlayerZoneToMap(map, GameUtils.GAME_CREATION_ZONE_SIZE, map.getWidth()
+                    - GameUtils.GAME_CREATION_ZONE_SIZE, lstPlayersCopy);
             break;
         case 8:
             addPlayerZoneToMap(map, 0, 0, lstPlayersCopy);
@@ -130,13 +134,16 @@ public class GameCreation {
 
     private static void addPlayerZoneToMap(Map map, int i, int j, List<Player> lstPlayers) {
         // add a farm
-        map.getTiles()[i + (int) (Math.random() * 2)][j + (int) (Math.random() * 2)].setTerrain(TerrainData.farm);
+        Tile farmTile = map.getTiles()[i + (int) (Math.random() * GameUtils.GAME_CREATION_ZONE_SIZE)][j
+                + (int) (Math.random() * GameUtils.GAME_CREATION_ZONE_SIZE)];
+        farmTile.setTerrain(TerrainData.farm);
 
         // add a castle
         Tile castleTile = null;
         do {
-            castleTile = map.getTiles()[i + (int) (Math.random() * 2)][j + (int) (Math.random() * 2)];
-        } while (castleTile.getTerrain() == TerrainData.farm);
+            castleTile = map.getTiles()[i + (int) (Math.random() * (GameUtils.GAME_CREATION_ZONE_SIZE - 1))][j
+                    + (int) (Math.random() * (GameUtils.GAME_CREATION_ZONE_SIZE - 1))];
+        } while (castleTile == farmTile);
         castleTile.setTerrain(TerrainData.castle);
 
         // add initial units
@@ -152,15 +159,15 @@ public class GameCreation {
     private static int getMapSize(int nbPlayers) {
         switch (nbPlayers) {
         case 2:
-            return 6;
+            return 2 * GameUtils.GAME_CREATION_ZONE_SIZE;
         case 3:
-            return 7;
+            return 2 * GameUtils.GAME_CREATION_ZONE_SIZE + 1;
         case 4:
-            return 8;
+            return 3 * GameUtils.GAME_CREATION_ZONE_SIZE;
         case 8:
-            return 11;
+            return 4 * GameUtils.GAME_CREATION_ZONE_SIZE;
         }
-        return 0;
+        return 3 * GameUtils.GAME_CREATION_ZONE_SIZE;
     }
 
 }

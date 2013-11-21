@@ -17,7 +17,7 @@ public class DamnedSoul extends Unit {
 
     public DamnedSoul(int armyIndex) {
         super(R.string.chaos_damned_soul, R.drawable.chaos_damned_soul_image, "chaos_damned_soul.png",
-                ArmiesData.CHAOS, armyIndex, 60, 600, false, WeaponType.piercing, ArmorType.light, 60, 2);
+                ArmiesData.CHAOS, armyIndex, 160, 600, false, WeaponType.piercing, ArmorType.light, 80, 2);
     }
 
     @Override

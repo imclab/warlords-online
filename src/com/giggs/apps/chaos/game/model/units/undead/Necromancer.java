@@ -15,7 +15,7 @@ public class Necromancer extends Unit {
 
     public Necromancer(int armyIndex) {
         super(R.string.undead_necromancer, R.drawable.undead_necromancer_image, "undead_necromancer.png",
-                ArmiesData.UNDEAD, armyIndex, 120, 500, true, WeaponType.magic, ArmorType.unarmored, 80, 2);
+                ArmiesData.UNDEAD, armyIndex, 120, 500, true, WeaponType.magic, ArmorType.unarmored, 70, 2);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class Necromancer extends Unit {
         if (target.getArmy() != ArmiesData.UNDEAD) {
             target.updateMorale(damage / 10);
 
-            // cast undead
+            // undead invocation
             for (Unit unit : tilePosition.getContent()) {
                 if (unit.getArmyIndex() == armyIndex) {
                     unit.updateHealth(damage);
@@ -36,5 +36,5 @@ public class Necromancer extends Unit {
 
         return damage;
     }
-    
+
 }

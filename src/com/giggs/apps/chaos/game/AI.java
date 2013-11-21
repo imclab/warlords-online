@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.giggs.apps.chaos.game.data.UnitsData;
 import com.giggs.apps.chaos.game.logic.MapLogic;
+import com.giggs.apps.chaos.game.logic.pathfinding.AStar;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Map;
@@ -98,14 +99,14 @@ public class AI {
                     .get(player.getGameStats().getEconomy().size() - 1) * (battle.isWinter() ? GameUtils.WINTER_GATHERING_MODIFIER
                     : 1.0f));
         }
-        List<Unit> availableUnits = UnitsData.getUnits(player.getArmy(), player.getArmyIndex());
-
+        List<Unit> availableUnits;
         List<Tile> lstBuyOrders = new ArrayList<Tile>();
         for (Tile tile : insecureTiles) {
             if (economyBalance <= 0) {
                 break;
             }
             if (tile.getTerrain().isUnitFactory() && tile.getContent().size() < GameUtils.MAX_UNITS_PER_TILE) {
+                availableUnits = UnitsData.getUnits(player.getArmy(), player.getArmyIndex());
                 for (int n = availableUnits.size() - 1; n >= 0; n--) {
                     if (economyBalance > availableUnits.get(n).getPrice()) {
                         player.getLstTurnOrders().add(new BuyOrder(tile, availableUnits.get(n)));
@@ -123,6 +124,7 @@ public class AI {
             }
             if (lstBuyOrders.indexOf(tile) == -1 && tile.getOwner() == player.getArmyIndex()
                     && tile.getContent().size() < GameUtils.MAX_UNITS_PER_TILE) {
+                availableUnits = UnitsData.getUnits(player.getArmy(), player.getArmyIndex());
                 for (int n = availableUnits.size() - 1; n >= 0; n--) {
                     if (economyBalance > availableUnits.get(n).getPrice()) {
                         player.getLstTurnOrders().add(new BuyOrder(tile, availableUnits.get(n)));
@@ -138,6 +140,7 @@ public class AI {
             }
             if (lstBuyOrders.indexOf(tile) == -1 && tile.getOwner() == player.getArmyIndex()
                     && tile.getContent().size() < GameUtils.MAX_UNITS_PER_TILE) {
+                availableUnits = UnitsData.getUnits(player.getArmy(), player.getArmyIndex());
                 for (int n = availableUnits.size() - 1; n >= 0; n--) {
                     if (economyBalance > availableUnits.get(n).getPrice()) {
                         player.getLstTurnOrders().add(new BuyOrder(tile, availableUnits.get(n)));
@@ -173,17 +176,9 @@ public class AI {
     }
 
     private static Tile getOneStepCloser(Map map, Unit unit, Tile destination) {
-        int dx = destination.getX() - unit.getTilePosition().getX();
-        int dy = destination.getY() - unit.getTilePosition().getY();
-        if (Math.abs(dx) > 0
-                && (Math.abs(dx) > Math.abs(dy))
-                || Math.abs(dx) > 0
-                && Math.abs(dy) > 0
-                && unit.canMove(map.getTiles()[unit.getTilePosition().getY() + dy / Math.abs(dy)][unit
-                        .getTilePosition().getX()])) {
-            return map.getTiles()[unit.getTilePosition().getY()][unit.getTilePosition().getX() + dx / Math.abs(dx)];
-        } else if (Math.abs(dy) > 0) {
-            return map.getTiles()[unit.getTilePosition().getY() + dy / Math.abs(dy)][unit.getTilePosition().getX()];
+        List<Tile> path = new AStar<Tile>().search(map.getTiles(), unit.getTilePosition(), destination, false, unit);
+        if (path != null && path.size() > 1) {
+            return path.get(1);
         }
         return null;
     }
@@ -193,21 +188,21 @@ public class AI {
         Tile tile = null;
         for (Tile t : map.getCastles()) {
             int d = MapLogic.getDistance(unit.getTilePosition(), t);
-            if (t.getOwner() != unit.getArmyIndex() && d < distance) {
+            if (d > 0 && t.getOwner() != unit.getArmyIndex() && d < distance) {
                 distance = d;
                 tile = t;
             }
         }
         for (Tile t : map.getFarms()) {
             int d = MapLogic.getDistance(unit.getTilePosition(), t);
-            if (t.getOwner() != unit.getArmyIndex() && d < distance) {
+            if (d > 0 && t.getOwner() != unit.getArmyIndex() && d < distance) {
                 distance = d;
                 tile = t;
             }
         }
         for (Tile t : map.getForts()) {
             int d = MapLogic.getDistance(unit.getTilePosition(), t);
-            if (t.getOwner() != unit.getArmyIndex() && d < distance) {
+            if (d > 0 && t.getOwner() != unit.getArmyIndex() && d < distance) {
                 distance = d;
                 tile = t;
             }

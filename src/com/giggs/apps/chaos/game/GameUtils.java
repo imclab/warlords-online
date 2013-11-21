@@ -22,7 +22,7 @@ public class GameUtils {
             new Color(0.0f, 0.0f, 0.0f, ControlZone.INITIAL_ALPHA),
             new Color(1.0f, 1.0f, 1.0f, ControlZone.INITIAL_ALPHA),
             new Color(0.5f, 0.0f, 1.0f, ControlZone.INITIAL_ALPHA),
-            new Color(0.0f, 0.5f, 1.0f, ControlZone.INITIAL_ALPHA)};
+            new Color(0.0f, 0.5f, 1.0f, ControlZone.INITIAL_ALPHA) };
 
     public static final int[] PLAYER_BLASONS = { R.drawable.blason_1, R.drawable.blason_2, R.drawable.blason_3,
             R.drawable.blason_4, R.drawable.blason_5, R.drawable.blason_6, R.drawable.blason_7, R.drawable.blason_8 };
@@ -32,6 +32,8 @@ public class GameUtils {
     public static enum Direction {
         north, east, south, west
     }
+
+    public static final int GAME_CREATION_ZONE_SIZE = 3;
 
     public static final float WINTER_GATHERING_MODIFIER = 0.7f;
 

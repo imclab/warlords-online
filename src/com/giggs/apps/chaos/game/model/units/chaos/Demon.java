@@ -4,6 +4,7 @@ import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.logic.GameLogic.ArmorType;
 import com.giggs.apps.chaos.game.logic.GameLogic.WeaponType;
+import com.giggs.apps.chaos.game.model.map.Map;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class Demon extends Unit {
@@ -14,8 +15,8 @@ public class Demon extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Demon(int armyIndex) {
-        super(R.string.chaos_demons, R.drawable.chaos_demon_image, "chaos_demon.png", ArmiesData.CHAOS, armyIndex, 100,
-                900, false, WeaponType.normal, ArmorType.heavy, 90, 10);
+        super(R.string.chaos_demons, R.drawable.chaos_demon_image, "chaos_demon.png", ArmiesData.CHAOS, armyIndex, 130,
+                800, false, WeaponType.normal, ArmorType.heavy, 90, 10);
     }
 
     @Override
@@ -29,10 +30,10 @@ public class Demon extends Unit {
     }
 
     @Override
-    public void initTurn() {
+    public void initTurn(Map map) {
         // demons regeneration
         updateHealth(100);
-        super.initTurn();
+        super.initTurn(map);
     }
 
 }

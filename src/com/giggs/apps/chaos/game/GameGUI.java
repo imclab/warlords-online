@@ -84,7 +84,7 @@ public class GameGUI {
                             break;
                         }
                     }
-                    selectedTile.getSprite().updateUnitProduction(null);
+                    mActivity.updateUnitProduction(selectedTile.getSprite(), null);
                     hideBuyOptions();
                 }
             }
@@ -120,7 +120,7 @@ public class GameGUI {
                                 .getLstTurnOrders()
                                 .add(new BuyOrder(selectedTile, UnitsData.getUnits(unit.getArmy(),
                                         mActivity.battle.getMeSoloMode().getArmyIndex()).get((Integer) v.getTag())));
-                        selectedTile.getSprite().updateUnitProduction(
+                        mActivity.updateUnitProduction(selectedTile.getSprite(),
                                 GraphicsFactory.mGfxMap.get(unit.getSpriteName().replace(".png", "") + "_image.png"));
                         hideBuyOptions();
                     }

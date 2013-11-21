@@ -15,7 +15,7 @@ public class Warrior extends Unit {
 
     public Warrior(int armyIndex) {
         super(R.string.dwarf_warrior, R.drawable.dwarf_warrior_image, "dwarf_warrior.png", ArmiesData.DWARF, armyIndex,
-                50, 700, false, WeaponType.normal, ArmorType.heavy, 50, 8);
+                50, 750, false, WeaponType.normal, ArmorType.heavy, 50, 8);
     }
 
 }
