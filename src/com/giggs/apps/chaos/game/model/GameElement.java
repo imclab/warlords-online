@@ -44,6 +44,10 @@ public abstract class GameElement implements Serializable {
         return tilePosition;
     }
 
+    public void setTile(Tile tile) {
+        this.tilePosition = tile;
+    }
+
     public String getSpriteName() {
         return spriteName;
     }

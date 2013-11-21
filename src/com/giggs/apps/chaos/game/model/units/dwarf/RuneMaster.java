@@ -14,7 +14,8 @@ public class RuneMaster extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public RuneMaster(int armyIndex) {
-        super(R.string.dwarf_rune_master, R.drawable.dwarf_rune_master_image, "dwarf_rune_master.png", ArmiesData.DWARF, armyIndex,
-                130, 400, true, WeaponType.magic, ArmorType.light, 90, 4);
+        super(R.string.dwarf_rune_master, R.drawable.dwarf_rune_master_image, "dwarf_rune_master.png",
+                ArmiesData.DWARF, armyIndex, 130, 400, true, WeaponType.magic, ArmorType.light, 90, 4);
     }
+
 }

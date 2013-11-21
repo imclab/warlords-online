@@ -8,13 +8,24 @@ import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class GiantKiller extends Unit {
 
-	/**
+    /**
      * 
      */
-	private static final long serialVersionUID = 1018681662969655381L;
+    private static final long serialVersionUID = 1018681662969655381L;
 
-	public GiantKiller(int armyIndex) {
-		super(R.string.dwarf_giant_killer, R.drawable.dwarf_giant_killer_image, "dwarf_giant_killer.png",
-		        ArmiesData.DWARF, armyIndex, 85, 500, false, WeaponType.piercing, ArmorType.medium, 75, 3);
-	}
+    public GiantKiller(int armyIndex) {
+        super(R.string.dwarf_giant_killer, R.drawable.dwarf_giant_killer_image, "dwarf_giant_killer.png",
+                ArmiesData.DWARF, armyIndex, 85, 500, false, WeaponType.piercing, ArmorType.medium, 75, 3);
+    }
+
+    @Override
+    public int getDamage(Unit target) {
+        // beast killer !
+        int damage = super.getDamage(target);
+        if (target.getAttack() > 100) {
+            damage *= 1.3;
+        }
+        return damage;
+    }
+
 }

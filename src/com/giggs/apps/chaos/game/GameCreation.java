@@ -1,6 +1,7 @@
 package com.giggs.apps.chaos.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.giggs.apps.chaos.game.data.ArmiesData;
@@ -14,14 +15,23 @@ import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class GameCreation {
 
-    public static Battle createSoloGame(int nbPlayers, int myArmy) {
+    public static Battle createSoloGame(int nbPlayers, int myArmy, int myArmyIndex, int[] lstArmies) {
         Battle battle = new Battle();
 
         // init players
         List<Player> lstPlayers = new ArrayList<Player>();
+        List<String> lstAINames = new ArrayList<String>(Arrays.asList(GameUtils.AI_NAMES));
         for (int n = 0; n < nbPlayers; n++) {
-            int army = n > 0 ? (int) (Math.random() * ArmiesData.values().length) : myArmy;
-            Player p = new Player("" + n, "Bobby", ArmiesData.values()[army], n, n > 0);
+            int army;
+            if (lstArmies == null) {
+                army = n != myArmyIndex ? (int) (Math.random() * ArmiesData.values().length) : myArmy;
+            } else {
+                army = lstArmies[n];
+            }
+            int nameIndex = (int) (Math.random() * lstAINames.size());
+            String playerName = n == 0 ? "Me" : lstAINames.get(nameIndex);
+            lstAINames.remove(nameIndex);
+            Player p = new Player("" + n, playerName, ArmiesData.values()[army], n, n != myArmyIndex);
             lstPlayers.add(p);
         }
         battle.setPlayers(lstPlayers);
@@ -38,16 +48,30 @@ public class GameCreation {
         Tile[][] tiles = new Tile[mapSize][mapSize];
 
         // create terrain
-        buildRandomMap(tiles);
+        buildRandomMap(map, tiles);
         map.setTiles(tiles);
 
         // setup player zones
         addPlayersZones(map, lstPlayers);
 
+        // build zones list
+        for (int x = 0; x < tiles[0].length; x++) {
+            for (int y = 0; y < tiles.length; y++) {
+                Tile t = tiles[y][x];
+                if (t.getTerrain() == TerrainData.farm) {
+                    map.getFarms().add(t);
+                } else if (t.getTerrain() == TerrainData.fort) {
+                    map.getForts().add(t);
+                } else if (t.getTerrain() == TerrainData.castle) {
+                    map.getCastles().add(t);
+                }
+            }
+        }
+
         return map;
     }
 
-    private static void buildRandomMap(Tile[][] tiles) {
+    private static void buildRandomMap(Map map, Tile[][] tiles) {
         int terrainQuantitySum = 0;
         for (TerrainData terrain : TerrainData.values()) {
             terrainQuantitySum += terrain.getQuantityFactor();
@@ -55,7 +79,8 @@ public class GameCreation {
 
         for (int x = 0; x < tiles[0].length; x++) {
             for (int y = 0; y < tiles.length; y++) {
-                tiles[y][x] = new Tile(x, y, getRandomTerrain(terrainQuantitySum));
+                Tile newTile = new Tile(x, y, getRandomTerrain(terrainQuantitySum));
+                tiles[y][x] = newTile;
             }
         }
     }
@@ -77,18 +102,18 @@ public class GameCreation {
         switch (lstPlayers.size()) {
         case 2:
             addPlayerZoneToMap(map, 0, 0, lstPlayersCopy);
-            addPlayerZoneToMap(map, 3, 3, lstPlayersCopy);
+            addPlayerZoneToMap(map, map.getHeight() - 2, map.getWidth() - 2, lstPlayersCopy);
             break;
         case 3:
             addPlayerZoneToMap(map, 0, 0, lstPlayersCopy);
-            addPlayerZoneToMap(map, 4, 0, lstPlayersCopy);
-            addPlayerZoneToMap(map, 2, 4, lstPlayersCopy);
+            addPlayerZoneToMap(map, map.getHeight() - 2, 0, lstPlayersCopy);
+            addPlayerZoneToMap(map, 2, map.getWidth() - 2, lstPlayersCopy);
             break;
         case 4:
             addPlayerZoneToMap(map, 0, 3, lstPlayersCopy);
-            addPlayerZoneToMap(map, 6, 3, lstPlayersCopy);
+            addPlayerZoneToMap(map, map.getHeight() - 2, 3, lstPlayersCopy);
             addPlayerZoneToMap(map, 3, 0, lstPlayersCopy);
-            addPlayerZoneToMap(map, 3, 6, lstPlayersCopy);
+            addPlayerZoneToMap(map, 3, map.getWidth() - 2, lstPlayersCopy);
             break;
         case 8:
             addPlayerZoneToMap(map, 0, 0, lstPlayersCopy);
@@ -127,13 +152,13 @@ public class GameCreation {
     private static int getMapSize(int nbPlayers) {
         switch (nbPlayers) {
         case 2:
-            return 5;
+            return 6;
         case 3:
             return 7;
         case 4:
             return 8;
         case 8:
-            return 12;
+            return 11;
         }
         return 0;
     }

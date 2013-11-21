@@ -1,7 +1,10 @@
 package com.giggs.apps.chaos.game.model.map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.andengine.opengl.texture.region.TextureRegion;
 
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.game.GameUtils;
@@ -9,13 +12,17 @@ import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.graphics.TileSprite;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
-public class Tile {
+public class Tile implements Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4833559440300774703L;
     private final int x, y;
     private TerrainData terrain;
     private List<Unit> content = new ArrayList<Unit>();
     private int owner = -1;
-    private TileSprite sprite;
+    private transient TileSprite sprite;
     private boolean isVisible;
 
     private boolean isMoveOption = false;
@@ -68,15 +75,18 @@ public class Tile {
 
     public void updateTileOwner(int myArmyIndex, int newOwner) {
         setOwner(newOwner);
-        // update buy button visibility
-        if (terrain.isUnitFactory()) {
-            sprite.getChildByTag(R.string.tag_buy_button).setVisible(newOwner == myArmyIndex);
-        }
 
-        // update owner's control zone color
-        if (sprite.getChildByTag(R.string.tag_control_zone) != null) {
-            sprite.getChildByTag(R.string.tag_control_zone).setVisible(true);
-            sprite.getChildByTag(R.string.tag_control_zone).setColor(GameUtils.PLAYER_COLORS[newOwner]);
+        if (sprite != null) {
+            // update buy button visibility
+            if (terrain.isUnitFactory()) {
+                sprite.getChildByTag(R.string.tag_buy_button).setVisible(newOwner == myArmyIndex);
+            }
+
+            // update owner's control zone color
+            if (sprite.getChildByTag(R.string.tag_control_zone) != null) {
+                sprite.getChildByTag(R.string.tag_control_zone).setVisible(true);
+                sprite.getChildByTag(R.string.tag_control_zone).setColor(GameUtils.PLAYER_COLORS[newOwner]);
+            }
         }
     }
 
@@ -86,25 +96,28 @@ public class Tile {
 
     public void setVisible(int myArmyIndex, boolean isVisible) {
         this.isVisible = isVisible;
-        // update visibility
-        if (isVisible) {
-            sprite.setAlpha(1.0f);
-        } else {
-            sprite.setAlpha(0.5f);
-        }
-        // update sprite children visibility
-        if (sprite.getChildByTag(R.string.tag_control_zone) != null && owner >= 0) {
-            sprite.getChildByTag(R.string.tag_control_zone).setVisible(isVisible);
-        }
 
-        // update buy button visibility
-        if (terrain.isUnitFactory()) {
-            sprite.getChildByTag(R.string.tag_buy_button).setVisible(owner == myArmyIndex && isVisible);
-        }
+        if (sprite != null) {
+            // update visibility
+            if (isVisible) {
+                sprite.setAlpha(1.0f);
+            } else {
+                sprite.setAlpha(0.5f);
+            }
+            // update sprite children visibility
+            if (sprite.getChildByTag(R.string.tag_control_zone) != null && owner >= 0) {
+                sprite.getChildByTag(R.string.tag_control_zone).setVisible(isVisible);
+            }
 
-        // update content visibility
-        for (Unit unit : content) {
-            unit.getSprite().setVisible(isVisible);
+            // update buy button visibility
+            if (terrain.isUnitFactory()) {
+                sprite.getChildByTag(R.string.tag_buy_button).setVisible(owner == myArmyIndex && isVisible);
+            }
+
+            // update content visibility
+            for (Unit unit : content) {
+                unit.getSprite().setVisible(isVisible);
+            }
         }
     }
 
@@ -134,7 +147,9 @@ public class Tile {
     }
 
     public void updateWeather(boolean isWinter) {
-        sprite.updateWeather(isWinter);
+        if (sprite != null) {
+            sprite.updateWeather(isWinter);
+        }
     }
 
     public int getGoldAmountGathered() {
@@ -147,6 +162,20 @@ public class Tile {
             return 50;
         }
         return 0;
+    }
+
+    public boolean isEnemyOnIt(int myArmyIndex) {
+        return content.size() > 0 && content.get(0).getArmyIndex() != myArmyIndex;
+    }
+
+    public boolean isAllyOnIt(int myArmyIndex) {
+        return content.size() > 0 && content.get(0).getArmyIndex() == myArmyIndex;
+    }
+
+    public void updateUnitProduction(TextureRegion texture) {
+        if (sprite != null) {
+            sprite.updateUnitProduction(texture);
+        }
     }
 
 }

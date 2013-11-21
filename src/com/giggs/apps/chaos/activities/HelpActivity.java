@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.activities.adapters.HelpSimpleAdapter;
+import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
 import com.giggs.apps.chaos.utils.MyActivity;
 
@@ -49,40 +50,50 @@ public class HelpActivity extends MyActivity {
                     content.addView(getRow(R.drawable.ti_forest, R.string.forest, R.string.forestDescription));
                     content.addView(getRow(R.drawable.ti_fort, R.string.fort, R.string.fortDescription));
                     content.addView(getRow(R.drawable.ti_mountains, R.string.mountain, R.string.mountainDescription));
-                    content.addView(getRow(R.drawable.ti_swamp, R.string.hauntedRuins, R.string.hauntedRuinsDescription));
                     break;
                 case 2:
-                    content.addView(getRow(R.drawable.ic_helmet, R.string.battleTitle1, R.string.battle1));
-                    content.addView(getRow(R.drawable.ic_double_axe, R.string.battleTitle2, R.string.battle2));
-                    content.addView(getRow(R.drawable.ti_castle, R.string.battleTitle3, R.string.battle3));
-//                    content.addView(getRow(R.drawable.un_bowmen, R.string.battleTitle4, R.string.battle4));
-//                    break;
-//                case 3:
-//                    content.addView(getRow(R.drawable.ic_double_axe, R.string.human, R.string.humanHelp));
-//                    content.addView(getRow(R.drawable.un_infantry, R.string.human_soldier, R.string.infantryHelp));
-//                    content.addView(getRow(R.drawable.un_bowmen, R.string.human_bowman, R.string.bowmenHelp));
-//                    content.addView(getRow(R.drawable.un_knight, R.string.human_monk, R.string.knightsHelp));
-//                    break;
-//                case 4:
-//                    content.addView(getRow(R.drawable.ic_double_axe, R.string.undead, R.string.undeadHelp));
-//                    content.addView(getRow(R.drawable.un_skeleton, R.string.skeleton, R.string.skeletonHelp));
-//                    content.addView(getRow(R.drawable.un_skbowmen, R.string.skeletonBowmen, R.string.skeletonBowmenHelp));
-//                    content.addView(getRow(R.drawable.un_necromancer, R.string.necromancers, R.string.necromancerHelp));
-//                    break;
-//                case 5:
-//                    content.addView(getRow(R.drawable.ic_double_axe, R.string.chaos, R.string.chaosHelp));
-//                    content.addView(getRow(R.drawable.un_chaos_warriors, R.string.chaosWarriors,
-//                            R.string.chaosWarriorsHelp));
-//                    content.addView(getRow(R.drawable.un_chaos_wizards, R.string.chaosWizards,
-//                            R.string.chaosWizardsHelp));
-//                    content.addView(getRow(R.drawable.un_demon, R.string.chaosDemons, R.string.demonsHelp));
-//                    break;
-//                case 6:
-//                    content.addView(getRow(R.drawable.ic_double_axe, R.string.orcsArmy, R.string.orcsArmyHelp));
-//                    content.addView(getRow(R.drawable.un_goblin, R.string.goblins, R.string.goblinsHelp));
-//                    content.addView(getRow(R.drawable.un_orc, R.string.orcs, R.string.orcsHelp));
-//                    content.addView(getRow(R.drawable.un_troll, R.string.trolls, R.string.trollsHelp));
+                    content.addView(getRow(R.drawable.ic_double_axe, R.string.battleTitle1, R.string.battle1));
+                    content.addView(getRow(R.drawable.ti_castle, R.string.battleTitle2, R.string.battle2));
+                    content.addView(getRow(R.drawable.human_bowman_image, R.string.battleTitle3, R.string.battle3));
                     break;
+                case 3:
+                    content.addView(getRow(ArmiesData.HUMAN.getImage(), R.string.human, R.string.humanHelp));
+                    content.addView(getRow(R.drawable.human_soldier_image, R.string.human_soldier,
+                            R.string.infantryHelp));
+                    content.addView(getRow(R.drawable.human_bowman_image, R.string.human_bowman, R.string.bowmenHelp));
+                    content.addView(getRow(R.drawable.human_knight_image, R.string.human_knight, R.string.knightsHelp));
+                    content.addView(getRow(R.drawable.human_monk_image, R.string.human_monk, R.string.knightsHelp));
+                    break;
+                case 4:
+                    content.addView(getRow(R.drawable.ic_double_axe, R.string.undead, R.string.undeadHelp));
+                    content.addView(getRow(R.drawable.undead_skeleton_image, R.string.skeleton, R.string.skeletonHelp));
+                    content.addView(getRow(R.drawable.undead_bowman_image, R.string.skeletonBowmen,
+                            R.string.skeletonBowmenHelp));
+                    content.addView(getRow(R.drawable.undead_necromancer_image, R.string.necromancers,
+                            R.string.necromancerHelp));
+                    break;
+                // case 5:
+                // content.addView(getRow(R.drawable.ic_double_axe,
+                // R.string.chaos, R.string.chaosHelp));
+                // content.addView(getRow(R.drawable.chaos,
+                // R.string.chaosWarriors,
+                // R.string.chaosWarriorsHelp));
+                // content.addView(getRow(R.drawable.un_chaos_wizards,
+                // R.string.chaosWizards,
+                // R.string.chaosWizardsHelp));
+                // content.addView(getRow(R.drawable.un_demon,
+                // R.string.chaosDemons, R.string.demonsHelp));
+                // break;
+                // case 6:
+                // content.addView(getRow(R.drawable.ic_double_axe,
+                // R.string.orcsArmy, R.string.orcsArmyHelp));
+                // content.addView(getRow(R.drawable.un_goblin,
+                // R.string.goblins, R.string.goblinsHelp));
+                // content.addView(getRow(R.drawable.un_orc, R.string.orcs,
+                // R.string.orcsHelp));
+                // content.addView(getRow(R.drawable.un_troll, R.string.trolls,
+                // R.string.trollsHelp));
+                // break;
                 }
                 mHelpDetailsDialog.show();
             }
@@ -127,10 +138,11 @@ public class HelpActivity extends MyActivity {
         addHelpCategory(R.string.tutorial, R.drawable.ic_book);
         addHelpCategory(R.string.terrainTiles, R.drawable.ic_map);
         addHelpCategory(R.string.artOfWar, R.drawable.ic_axe);
-//        addHelpCategory(R.string.human, R.drawable.un_infantry);
-//        addHelpCategory(R.string.undead, R.drawable.un_skeleton);
-//        addHelpCategory(R.string.chaos, R.drawable.un_chaos_wizards);
-//        addHelpCategory(R.string.orcsArmy, R.drawable.un_orc);
+        addHelpCategory(R.string.human_army, ArmiesData.HUMAN.getImage());
+        addHelpCategory(R.string.orcs_army, ArmiesData.ORCS.getImage());
+        addHelpCategory(R.string.undead_army, ArmiesData.UNDEAD.getImage());
+        addHelpCategory(R.string.chaos_army, ArmiesData.CHAOS.getImage());
+        addHelpCategory(R.string.dwarf_army, ArmiesData.DWARF.getImage());
         HelpSimpleAdapter mSchedule = new HelpSimpleAdapter(this.getBaseContext(), mHelpCategoryList,
                 R.layout.help_category, new String[] { "title", "image" }, new int[] { R.id.text, R.id.image });
         helpCategoryListView.setAdapter(mSchedule);

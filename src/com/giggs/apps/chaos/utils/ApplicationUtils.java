@@ -25,9 +25,9 @@ import android.widget.Toast;
 
 import com.giggs.apps.chaos.MyApplication;
 import com.giggs.apps.chaos.R;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventAction;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.EventCategory;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventAction;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventCategory;
 
 public class ApplicationUtils {
 
@@ -54,7 +54,7 @@ public class ApplicationUtils {
 					        editor.commit();
 					        rateTheApp(activity);
 					        dialog.dismiss();
-					        GoogleAnalyticsHandler.sendEvent(activity, EventCategory.ui_action,
+					        GoogleAnalyticsHelper.sendEvent(activity, EventCategory.ui_action,
 					                EventAction.button_press, "rate_app_yes");
 				        }
 			        }).setNegativeButton(R.string.rate_dont_want, new DialogInterface.OnClickListener() {
@@ -63,7 +63,7 @@ public class ApplicationUtils {
 					        editor.putInt(PREFS_RATE_DIALOG_IN, -1);
 					        editor.commit();
 					        dialog.dismiss();
-					        GoogleAnalyticsHandler.sendEvent(activity, EventCategory.ui_action,
+					        GoogleAnalyticsHelper.sendEvent(activity, EventCategory.ui_action,
 					                EventAction.button_press, "rate_app_no");
 				        }
 			        }).setNeutralButton(R.string.rate_later, new DialogInterface.OnClickListener() {
@@ -71,7 +71,7 @@ public class ApplicationUtils {
 				        public void onClick(DialogInterface dialog, int which) {
 					        editor.putInt(PREFS_RATE_DIALOG_IN, 5);
 					        dialog.dismiss();
-					        GoogleAnalyticsHandler.sendEvent(activity, EventCategory.ui_action,
+					        GoogleAnalyticsHelper.sendEvent(activity, EventCategory.ui_action,
 					                EventAction.button_press, "rate_app_later");
 				        }
 			        }).create();
@@ -98,7 +98,7 @@ public class ApplicationUtils {
 		} catch (ActivityNotFoundException ex) {
 			Toast.makeText(context, context.getString(R.string.no_mail_client), Toast.LENGTH_LONG).show();
 		}
-		GoogleAnalyticsHandler.sendEvent(context, EventCategory.ui_action, EventAction.button_press, "contact_support");
+		GoogleAnalyticsHelper.sendEvent(context, EventCategory.ui_action, EventAction.button_press, "contact_support");
 	}
 
 	public static void stylifyDefaultAlertDialog(AlertDialog dialog) {

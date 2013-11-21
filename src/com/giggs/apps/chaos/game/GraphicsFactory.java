@@ -47,7 +47,7 @@ public class GraphicsFactory {
         for (Player player : battle.getPlayers()) {
             for (Unit unit : UnitsData.getUnits(player.getArmy(), player.getArmyIndex())) {
                 loadTiledTextureGfxFromAssets(126, 200, unit.getSpriteName());
-                loadGfxFromAssets(80, 80, unit.getSpriteName().replace(".png", "") + "_image.png", 0, 0);
+                loadGfxFromAssets(70, 70, unit.getSpriteName().replace(".png", "") + "_image.png", 0, 0);
             }
         }
 
@@ -75,13 +75,12 @@ public class GraphicsFactory {
         }
     }
 
-    // can't manage to make it work : invisible sprite...
     @SuppressWarnings("unused")
-    private void loadGfxFromResources(int textureWidth, int textureHeight, int imageResource, String imageName) {
+    private void loadGfxFromResources(int textureWidth, int textureHeight, String imageName) {
         if (mGfxMap.get(imageName) == null) {
             mTexture = new BitmapTextureAtlas(mTextureManager, textureWidth, textureHeight, TextureOptions.DEFAULT);
             TextureRegion textureRegion = BitmapTextureAtlasTextureRegionFactory.createFromResource(mTexture, mContext,
-                    imageResource, 0, 0);
+                    mContext.getResources().getIdentifier(imageName, "drawable", mContext.getPackageName()), 0, 0);
             mTexture.load();
             mGfxMap.put(imageName, textureRegion);
         }

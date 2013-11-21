@@ -14,7 +14,17 @@ public class Monk extends Unit {
     private static final long serialVersionUID = 1018681662969655381L;
 
     public Monk(int armyIndex) {
-        super(R.string.human_monk, R.drawable.human_monk_image, "human_monk.png", ArmiesData.HUMAN, armyIndex, 80, 500, false,
-                WeaponType.magic, ArmorType.unarmored, 40, 3);
+        super(R.string.human_monk, R.drawable.human_monk_image, "human_monk.png", ArmiesData.HUMAN, armyIndex, 80, 500,
+                false, WeaponType.magic, ArmorType.unarmored, 40, 3);
     }
+
+    @Override
+    public void initTurn() {
+        // monks are healing closed units !
+        for (Unit unit : tilePosition.getContent()) {
+            unit.updateHealth(200);
+        }
+        super.initTurn();
+    }
+
 }

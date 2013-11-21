@@ -1,6 +1,8 @@
 package com.giggs.apps.chaos.activities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
@@ -13,19 +15,24 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.LayoutGameActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.giggs.apps.chaos.R;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.TimingCategory;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHandler.TimingName;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventAction;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventCategory;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.TimingCategory;
+import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.TimingName;
 import com.giggs.apps.chaos.database.DatabaseHelper;
 import com.giggs.apps.chaos.game.GameCreation;
 import com.giggs.apps.chaos.game.GameGUI;
 import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.GraphicsFactory;
 import com.giggs.apps.chaos.game.InputManager;
+import com.giggs.apps.chaos.game.SaveGameHelper;
 import com.giggs.apps.chaos.game.andengine.custom.CustomZoomCamera;
+import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.graphics.SelectionCircle;
 import com.giggs.apps.chaos.game.graphics.TileSprite;
 import com.giggs.apps.chaos.game.graphics.UnitSprite;
@@ -34,6 +41,7 @@ import com.giggs.apps.chaos.game.logic.MapLogic;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Tile;
+import com.giggs.apps.chaos.game.model.orders.Order;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class GameActivity extends LayoutGameActivity {
@@ -67,14 +75,24 @@ public class GameActivity extends LayoutGameActivity {
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
 
-        // load battle
-        // TODO
-        // Bundle extras = getIntent().getExtras();
-        // int nbPlayers = extras.getInt("nb_players", 4);
-        // int myArmy = extras.getInt("my_army", 0);
-        battle = GameCreation.createSoloGame(4, 0);
-
         mDbHelper = new DatabaseHelper(getApplicationContext());
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            // new game
+            int myArmy = extras.getInt("my_army", 0);
+            int nbPlayers = extras.getInt("nb_players", 4);
+            battle = GameCreation.createSoloGame(nbPlayers, myArmy, 0, null);
+            SaveGameHelper.deleteSavedBattles(mDbHelper);
+            GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.nb_players, ""
+                    + nbPlayers);
+            GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game,
+                    EventAction.solo_player_army, ArmiesData.values()[myArmy].name());
+        } else {
+            // load game
+            battle = mDbHelper.getBattleDao().get(null, null, null, null).get(0);
+        }
+
         mGameGUI = new GameGUI(this);
         mGameGUI.setupGUI();
     }
@@ -96,10 +114,9 @@ public class GameActivity extends LayoutGameActivity {
         mGameElementFactory = new GraphicsFactory(this, getVertexBufferObjectManager(), getTextureManager());
         mGameElementFactory.initGraphics(battle);
 
-        mGameGUI.hideLoadingScreen();
         pOnCreateResourcesCallback.onCreateResourcesFinished();
 
-        GoogleAnalyticsHandler.sendTiming(getApplicationContext(), TimingCategory.resources, TimingName.load_game,
+        GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.resources, TimingName.load_game,
                 (System.currentTimeMillis() - startLoadingTime) / 1000);
     }
 
@@ -149,6 +166,9 @@ public class GameActivity extends LayoutGameActivity {
                         GraphicsFactory.mGfxMap.get(tile.getTerrain().getSpriteName()), getVertexBufferObjectManager(),
                         mScene, mInputManager, tile);
                 tile.setSprite(tileSprite);
+                if (battle.isWinter()) {
+                    tileSprite.updateWeather(true);
+                }
                 mScene.attachChild(tileSprite);
                 // update tile owner
                 if (tile.getOwner() >= 0) {
@@ -157,11 +177,12 @@ public class GameActivity extends LayoutGameActivity {
             }
         }
 
-        // add initial units
+        // add initial units to scene
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
                 Tile tile = battle.getMap().getTiles()[y][x];
                 for (Unit unit : tile.getContent()) {
+                    unit.setTile(tile);
                     addUnitToScene(unit);
                 }
                 MapLogic.dispatchUnitsOnTile(tile);
@@ -171,8 +192,16 @@ public class GameActivity extends LayoutGameActivity {
         // init fogs of war
         GameLogic.updateFogsOfWar(battle, 0);
 
+        wait(300);
+        mGameGUI.hideLoadingScreen();
+
+        if (battle.getId() >= 0L) {
+            initLoadedGame();
+        } else {
+            initNewGame();
+        }
+
         pOnPopulateSceneCallback.onPopulateSceneFinished();
-        startGame();
     }
 
     @Override
@@ -187,8 +216,7 @@ public class GameActivity extends LayoutGameActivity {
         GraphicsFactory.mGfxMap = new HashMap<String, TextureRegion>();
         GraphicsFactory.mTiledGfxMap = new HashMap<String, TiledTextureRegion>();
         if (mMustSaveGame) {
-            // TODO save game
-            // SaveGameHelper.saveGame(mDbHelper, battle);
+            SaveGameHelper.saveGame(mDbHelper, battle);
         }
     }
 
@@ -203,80 +231,114 @@ public class GameActivity extends LayoutGameActivity {
 
     private void startGame() {
         mGameStartTime = System.currentTimeMillis();
-        mGameGUI.displayBigLabel(getString(R.string.turn_count, 1), R.color.white);
+        mGameGUI.displayBigLabel(getString(R.string.turn_count, battle.getTurnCount()), R.color.white);
     }
 
-    public void endGame(final Player winningPlayer) {
-        if (mGameStartTime > 0L) {
-            GoogleAnalyticsHandler.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_time,
-                    (System.currentTimeMillis() - mGameStartTime) / 1000);
+    private void initNewGame() {
+        startGame();
+    }
+
+    private void initLoadedGame() {
+        for (Player player : battle.getPlayers()) {
+            player.setLstTurnOrders(new ArrayList<Order>());
         }
 
-        // stop engine
-        mEngine.stop();
+        List<Integer> economyHistory = battle.getMeSoloMode().getGameStats().getEconomy();
+        if (economyHistory.size() > 0) {
+            mGameGUI.updateEconomyBalance(economyHistory.get(economyHistory.size() - 1));
+        }
 
-        // show battle report when big label animation is over
-        // bigLabelAnimation.setAnimationListener(new AnimationListener() {
-        // @Override
-        // public void onAnimationStart(Animation animation) {
-        // }
-        //
-        // @Override
-        // public void onAnimationRepeat(Animation animation) {
-        // }
-        //
-        // @Override
-        // public void onAnimationEnd(Animation animation) {
-        // goToReport(winningPlayer == battle.getMe());
-        // }
-        // });
-        //
-        // // show victory / defeat big label
-        // if (winningPlayer == battle.getMe()) {
-        // // victory
-        // displayBigLabel(R.string.victory, R.color.green);
-        // } else {
-        // // defeat
-        // displayBigLabel(R.string.defeat, R.color.red);
-        // }
-
-        // GoogleAnalyticsHandler.sendEvent(getApplicationContext(),
-        // EventCategory.in_game, EventAction.end_game,
-        // winningPlayer == battle.getMe() ? "victory" : "defeat");
-    }
-
-    private void goToReport(boolean victory) {
-        // TODO
-        // mMustSaveGame = false;
-        // long battleId = SaveGameHelper.saveGame(mDbHelper, battle);
-        // Intent i = new Intent(GameActivity.this, BattleReportActivity.class);
-        // Bundle extras = new Bundle();
-        // extras.putLong("game_id", battleId);
-        // extras.putBoolean("victory", victory);
-        // i.putExtras(extras);
-        // startActivity(i);
-        // finish();
+        startGame();
     }
 
     public void addUnitToScene(Unit unit) {
-        // TODO stats
         UnitSprite s = new UnitSprite(unit, mInputManager, GameUtils.TILE_SIZE * unit.getTilePosition().getX(),
                 GameUtils.TILE_SIZE * unit.getTilePosition().getY(), GraphicsFactory.mTiledGfxMap.get(unit
                         .getSpriteName()), getVertexBufferObjectManager());
-        s.setCanBeDragged(unit.getArmyIndex() == battle.getPlayers().get(0).getArmyIndex());
+        s.setCanBeDragged(unit.getArmyIndex() == battle.getMeSoloMode().getArmyIndex());
         unit.setSprite(s);
+        unit.updateMorale(0);
+        unit.updateExperience(0);
         mScene.registerTouchArea(s);
         mScene.attachChild(s);
     }
 
     public void removeUnit(final Unit unit) {
-        // TODO stats
         this.runOnUpdateThread(new Runnable() {
             @Override
             public void run() {
                 mScene.detachChild(unit.getSprite());
             }
         });
-        unit.getTilePosition().getContent().remove(unit);
     }
+
+    public void endGame(final Player winningPlayer) {
+        if (mGameStartTime > 0L) {
+            GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_time,
+                    (System.currentTimeMillis() - mGameStartTime) / 1000);
+        }
+
+        GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_nb_turn,
+                battle.getTurnCount());
+        GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.against_AI,
+                winningPlayer == battle.getMeSoloMode() ? "victory" : "defeat");
+
+        mGameGUI.displayVictoryLabel(winningPlayer == battle.getMeSoloMode());
+    }
+
+    public void goToReport(boolean victory) {
+        // stop engine
+        mEngine.stop();
+
+        Intent intent = new Intent(GameActivity.this, BattleReportActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void runTurn() {
+        getEngine().stop();
+
+        // update battle
+        int winnerIndex = GameLogic.runTurn(battle);
+
+        // add new units, remove dead ones
+        for (Unit u : battle.getUnitsToAdd()) {
+            addUnitToScene(u);
+        }
+        battle.setUnitsToAdd(new ArrayList<Unit>());
+        for (Unit u : battle.getUnitsToRemove()) {
+            removeUnit(u);
+        }
+        battle.setUnitsToRemove(new ArrayList<Unit>());
+
+        // dispatch units properly on tiles
+        for (int y = 0; y < battle.getMap().getHeight(); y++) {
+            for (int x = 0; x < battle.getMap().getWidth(); x++) {
+                Tile tile = battle.getMap().getTiles()[y][x];
+                MapLogic.dispatchUnitsOnTile(tile);
+            }
+        }
+        
+        // update fogs of war
+        GameLogic.updateFogsOfWar(battle, 0);
+
+        getEngine().start();
+
+        // update my gold amount
+        mGameGUI.updateGoldAmount(battle.getMeSoloMode().getGold());
+        mGameGUI.updateEconomyBalance(battle.getMeSoloMode().getGameStats().getEconomy()
+                .get(battle.getMeSoloMode().getGameStats().getEconomy().size() - 1));
+
+        if (winnerIndex >= 0) {
+            endGame(battle.getPlayers().get(winnerIndex));
+            return;
+        } else if (winnerIndex == GameLogic.SOLO_PLAYER_DEFEAT) {
+            endGame(null);
+        } else {
+            // game continues !
+            // show new turn count
+            mGameGUI.displayBigLabel(getString(R.string.turn_count, battle.getTurnCount()), R.color.white);
+        }
+    }
+
 }
