@@ -8,6 +8,7 @@ import com.giggs.apps.chaos.game.graphics.ControlZone;
 public class GameUtils {
 
     public static final String GAME_PREFS_KEY_MUSIC_VOLUME = "game_music_volume";
+    public static final String TUTORIAL_DONE = "tutorial_done";
 
     public static enum MusicState {
         off, on

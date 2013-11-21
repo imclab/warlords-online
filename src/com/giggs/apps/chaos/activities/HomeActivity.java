@@ -178,14 +178,18 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
         if (v.isShown()) {
             switch (v.getId()) {
             case R.id.soloButton:
-                List<Battle> savedGames = mDbHelper.getBattleDao().get(null, null, null, null);
-                if (savedGames.size() > 0) {
-                    showResumeSoloGameDialog(savedGames.get(0));
+                if (mSharedPrefs.getInt(GameUtils.TUTORIAL_DONE, 0) == 0) {
+                    showTutorialDialog();
                 } else {
-                    goToSoloGameScreen();
+                    List<Battle> savedGames = mDbHelper.getBattleDao().get(null, null, null, null);
+                    if (savedGames.size() > 0) {
+                        showResumeSoloGameDialog(savedGames.get(0));
+                    } else {
+                        goToSoloGameScreen();
+                    }
+                    GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.ui_action,
+                            EventAction.button_press, "play_solo");
                 }
-                GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.ui_action,
-                        EventAction.button_press, "play_solo");
                 break;
             case R.id.multiplayerButton:
                 if (isSignedIn()) {
@@ -311,6 +315,29 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
             }
         });
         dialog.show();
+    }
+
+    private void showTutorialDialog() {
+        // ask user if he wants to do the tutorial as he is a noob
+        Dialog dialog = new CustomAlertDialog(this, R.style.Dialog, getString(R.string.ask_tutorial),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == R.id.okButton) {
+                            // go to tutorial
+                            Intent intent = new Intent(HomeActivity.this, TutorialActivity.class);
+                            dialog.dismiss();
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            // create new battle
+                            dialog.dismiss();
+                            goToSoloGameScreen();
+                        }
+                    }
+                });
+        dialog.show();
+        mSharedPrefs.edit().putInt(GameUtils.TUTORIAL_DONE, 1).commit();
     }
 
     private void goToSoloGameScreen() {

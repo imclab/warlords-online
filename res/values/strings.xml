@@ -37,9 +37,10 @@
     <string name="campaign">Campaign</string>
     <string name="battle_mode">Battle Mode</string>
     <string name="back">Back</string>
-    <string name="resume_saved_battle">You have a %s-players game unfinished, do you want to finish it ?\nIt will be lost if you start another battle.</string>
+    <string name="resume_saved_battle">You have an unfinished %s-players game, do you want to load it ?\nIt will be lost if you start another battle.</string>
     <string name="log_in_to_play_multi">You must log in\nto play online !</string>
     <string name="logout">Sign out</string>
+    <string name="ask_tutorial">It is recommanded to do the tutorial in order to know how to play !\nWould you like to do it now ?</string>
 
     <!-- Settings -->
     <string name="music_volume">Music</string>
@@ -132,15 +133,15 @@
     <string name="undead_skeleton_description"></string>
     <string name="undead_bowman_description">Ranged unit</string>
     <string name="undead_zombie_description">Steal life of enemies during battles</string>
-    <string name="undead_necromancer_description">Steal life of enemies and heal friendly units on same tile during battles</string>
+    <string name="undead_necromancer_description">Steal life of enemies and heal friendly units on same tile during battles\nRanged unit</string>
     <string name="orcs_goblin_description">Do not need supply when on forest and mountain tiles</string>
     <string name="orcs_orc_description"></string>
     <string name="orcs_troll_description">Regenerates health every turn</string>
-    <string name="orcs_ogre_description">Cannot climb mountains\nCritical strike (15% x2)\nEat friendly units on same tile every turn</string>
+    <string name="orcs_ogre_description">Cannot climb mountains\nCritical strike (15% : x2 damage)\nEat friendly units on same tile every turn</string>
     <string name="chaos_warrior_description"></string>
-    <string name="chaos_demon_description">Regenerates health every turn\nCritical strike (15% x2)</string>
-    <string name="chaos_wizard_description">Poison and damage adjacent enemy units every turn</string>
-    <string name="chaos_damned_soul_description">Cannot climb mountains\nAttack all enemies at the same time during battles</string>
+    <string name="chaos_demon_description">Regenerates health every turn\nCritical strike (15% : x2 damage)</string>
+    <string name="chaos_wizard_description">Poison and damage adjacent enemy units every turn\nRanged unit</string>
+    <string name="chaos_damned_soul_description">Cannot climb mountains\nAttack all enemies on the tile during battles</string>
     <string name="dwarf_warrior_description"></string>
     <string name="dwarf_crossbowman_description">Ranged unit</string>
     <string name="dwarf_giant_killer_description">Deal extra damages to bigger creatures</string>
@@ -167,7 +168,7 @@
 
     <!-- Tutorial -->
     <string name="tutorial">Tutorial</string>
-    <string name="tutoTitle1">Welcome to the tutorial !</string>
+    <string name="welcome_tutorial">Welcome to the tutorial !</string>
     <string name="tutoText1">Here you will learn how to lead your troops to the victory. Use the arrows to navigate through the tutorial.</string>
     <string name="tutoTitle2">A turn-based strategy game ?</string>
     <string name="tutoText2">It means that the game is decomposed into turns, which can last different amount of time. Each turn, players have to send orders to their troops. When every player has played or the time limit is reached, then all the actions are resolved and a new turn is starting !</string>

@@ -52,7 +52,7 @@ public class GameGUI {
 
     public void setupGUI() {
         // setup loading screen
-        mLoadingScreen = new Dialog(mActivity, R.style.FullScreenDialog);
+        mLoadingScreen = new Dialog(mActivity, R.style.LoadingDialog);
         mLoadingScreen.setContentView(R.layout.dialog_game_loading);
         mLoadingScreen.setCancelable(false);
         mLoadingScreen.setCanceledOnTouchOutside(false);

@@ -37,9 +37,8 @@ public class HelpActivity extends MyActivity {
         public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
             if (position == 0) {
                 // go to tutorial
-                // TODO
-                // Intent i = new Intent(HelpActivity.this, Tutorial.class);
-                // startActivity(i);
+                Intent i = new Intent(HelpActivity.this, TutorialActivity.class);
+                startActivity(i);
             } else {
                 mHelpDetailsDialog = new Dialog(HelpActivity.this, R.style.FullScreenDialog);
                 mHelpDetailsDialog.setContentView(R.layout.dialog_help_details);
