@@ -51,6 +51,8 @@
     <!-- New Game -->
     <string name="choose_army">Choose your army</string>
     <string name="choose_nb_players">Select the number of players</string>
+    <string name="createGame">Create Game !</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Battle Report -->
     <string name="leave_report">Leave report</string>
@@ -62,7 +64,7 @@
     <string name="population_graph_title">Population Graph</string>
     <string name="economy_graph_title">Economy Graph</string>
 
-    <!-- Armies -->
+    <!-- Armies and Units names -->
     <string name="human_army">Human</string>
     <string name="human_soldier">Infantry</string>
     <string name="human_bowman">Bowmen</string>
@@ -96,45 +98,61 @@
     <string name="fort">Fort</string>
     <string name="windmill">Windmill Farms</string>
     <string name="mountain">Mountain</string>
-    <string name="grassDescription">No effect</string>
-    <string name="castleDescription">- The most important place of your kingdom: lose it and you lose the game\n- +100 gold/turn (+70 during winter)\n- Units factory\n- Gives protection and recovering bonuses to units</string>
-    <string name="windmillDescription">- +100 gold/turn (+70 during winter)\n- Gives morale recovering bonuses.</string>
-    <string name="fortDescription">+50 gold/turn (+35 during winter)\n- Units factory\n- Gives protection and recovering bonuses to units</string>
-    <string name="forestDescription">- Fogs of war are not removed with units in diagonals</string>
-    <string name="mountainDescription">- Heavy infantries cannot climb mountains\n- Mountains allow you to see further through the fogs of war</string>
+    <string name="grass_description">No effect</string>
+    <string name="castle_description">+100 gold/turn (+70 during winter)\n\n- The most important place of your kingdom: lose it and you lose the game\n- Units factory\n- Gives protection and recovering bonuses to units</string>
+    <string name="windmill_description">+100 gold/turn (+70 during winter)\n\n- Gives morale recovering bonuses.</string>
+    <string name="fort_description">+50 gold/turn (+35 during winter)\n\n- Units factory\n- Gives protection and recovering bonuses to units</string>
+    <string name="forest_description">- Fogs of war are not removed with units in diagonals</string>
+    <string name="mountain_description">- Heavy infantries cannot climb mountains\n- Mountains allow you to see further through the fogs of war</string>
 
     <!-- Help section -->
-    <string name="battleTitle1">Morale and Experience during battles</string>
-    <string name="battle1">- Amount of damages dealt to your enemies mainly depends  on your units\' health, morale and experience.\n- Experience is earned during battles, the more the fight is undecided the more your units will earn experience.\n- Morale is lost each time your units get damages.\n- When your army has a morale inferior to 40%, it flees the battlefield. Winners recover some morale points after the battle.</string>
-    <string name="battleTitle2">Strong places</string>
-    <string name="battle2">- When protecting a fort or a castle, units only get half of the damages dealt to them.</string>
-    <string name="battleTitle3">Ranged attacks</string>
-    <string name="battle3">- Ranged attacks are executed first during battles.\nRanged attacks units are very effective to defend strong positions.</string>
-    <string name="humanHelp">- Average army with good skills in defense.</string>
-    <string name="infantryHelp">- Basic human unit.\n- Unit capacity : 100\n- Attack power : Average</string>
-    <string name="bowmenHelp">- Good defense unit, especially with a defense order or in a strong place.\n- To be accompanied with a contact unit to be even more effective.\n- Unit capacity : 60\n- Attack power : Average</string>
-    <string name="knightsHelp">- Heavy infantry.\n- Unit capacity : 100\n- Attack power : Great</string>
-    <string name="undeadHelp">- Undead have a life steal skill against living armies. When dealing damages, undead units resurrect 15 percents of the dealt damages.\n-  Moreover, each time a undead unit is dealing damages, the enemy unit loses 5 percents of morale.</string>
-    <string name="skeletonHelp">- Weak infantry unit.\n- Unit capacity : 100\n- Attack power : Low</string>
-    <string name="skeletonBowmenHelp">- Good defense unit, especially with a defense order or in a strong place.\n- To be accompanied with a contact unit to be even more effective.\n- Unit capacity : 60\n- Attack power : Average</string>
-    <string name="necromancerHelp">- Powerful support unit.\n- A necromancer unit doubles the life steal of its whole army.\n- Unit capacity : 50\n- Attack power : Great</string>
-    <string name="chaosHelp">- Chaos armies are outnumbered but are only composed of elite troops.\n- Chaos troops never lose morale and will fight until death.</string>
-    <string name="chaosWarriorsHelp">- Strong infantry unit.\n- Unit capacity : 70\n- Attack power : Great</string>
-    <string name="chaosWizardsHelp">- Good support unit.\nUsing their powerful demonic spells, the Chaos Wizards cancel enemies\' damages during the first round of every battle.\n- Unit capacity : 50\n- Attack power : Good</string>
-    <string name="demonsHelp">- Powerful but expensive unit.\n- Demons have a regeneration ability which allows them to get back 15 percents of their health per turn.\n- Moreover, they have 15 percents of chance to deal a critical strike (damages x 1.5).\n- Unit capacity : 90\n- Attack power : Great</string>
-    <string name="orcsArmyHelp">- The Orcs and Goblins are some agressive and ruthlessly troops.\n- They get a 20 percents damage bonus when attacking, but they get less bonus than other armies when defending.</string>
-    <string name="goblinsHelp">- Weak scout unit.\n- Goblins do not need any supply when they are in the forests or in the mountains as they are feeding themselves.\n- Unit capacity : 70\n- Attack power : Low</string>
-    <string name="orcsHelp">- Heavy Infantry.\n- Unit capacity : 90\n- Attack power : Good</string>
-    <string name="trollsHelp">- Deadly monsters, very effective against the heavy infantry and the toughest troops.\n- Trolls have a regeneration capacity which allow them to get back 15 percents of their health per turn.\n- Unit capacity : 80\n- Attack power : Great</string>
+    <string name="terrain_tiles">Terrain Tiles</string>
+    <string name="art_of_war">Art of War</string>
+    <string name="battle_title1">Weapons and Armor types</string>
+    <string name="battle1">- Normal weapons are effective against medium armor.\n- Piercing weapons are effective against lighter armors but deal less damage on heavier armors.\n- Magic is effective against any type of armor.</string>
+    <string name="battle_title2">Morale and Experience during battles</string>
+    <string name="battle2">- Amount of damages dealt to your enemies mainly depends  on your units\' health, morale and experience.\n- Experience is earned during battles, the more the fight is undecided the more your units will earn experience.\n- Morale is lost each time your units get damages.\n- When your army has a morale inferior to 40%, it flees the battlefield. Winners recover some morale points after the battle.</string>
+    <string name="battle_title3">Strong places</string>
+    <string name="battle3">- When protecting a fort or a castle, units only get half of the damages dealt to them.</string>
+    <string name="battle_title4">Ranged attacks</string>
+    <string name="battle4">- Ranged attacks are executed first during battles.\n- Ranged units are very effective to defend strong positions.</string>
+
+    <!-- Armies descriptions -->
+    <string name="human_army_description">Balanced army.</string>
+    <string name="orcs_army_description">The Orcs and Goblins are composed of aggressive and ruthlessly troops.\nTheir troops get damage bonuses when attacking, but they get less bonuses than other armies when defending.</string>
+    <string name="undead_army_description">Undead units are weak in battle but will never flee the battlefield; instead, their troops go back to dust when their morale (= magic) is too low.\nUndead are terrifying and decrease largely opponents\' morale during battles.</string>
+    <string name="chaos_army_description">The Chaos armies are composed of outnumbered elite troops, deadly spellcasters and devilish monsters.</string>
+    <string name="dwarf_army_description">Balanced defensive army.\nDwarves units have extra combat bonuses in mountains and when defending positions.</string>
+
+    <!-- Units descriptions -->
+    <string name="human_soldier_description"></string>
+    <string name="human_bowman_description">Ranged unit</string>
+    <string name="human_knight_description">Cannot climb mountains</string>
+    <string name="human_monk_description">Heal friendly units on same tile every turn</string>
+    <string name="undead_skeleton_description"></string>
+    <string name="undead_bowman_description">Ranged unit</string>
+    <string name="undead_zombie_description">Steal life of enemies during battles</string>
+    <string name="undead_necromancer_description">Steal life of enemies and heal friendly units on same tile during battles</string>
+    <string name="orcs_goblin_description">Do not need supply when on forest and mountain tiles</string>
+    <string name="orcs_orc_description"></string>
+    <string name="orcs_troll_description">Regenerates health every turn</string>
+    <string name="orcs_ogre_description">Cannot climb mountains\nCritical strike (15% x2)\nEat friendly units on same tile every turn</string>
+    <string name="chaos_warrior_description"></string>
+    <string name="chaos_demon_description">Regenerates health every turn\nCritical strike (15% x2)</string>
+    <string name="chaos_wizard_description">Poison and damage adjacent enemy units every turn</string>
+    <string name="chaos_damned_soul_description">Cannot climb mountains\nAttack all enemies at the same time during battles</string>
+    <string name="dwarf_warrior_description"></string>
+    <string name="dwarf_crossbowman_description">Ranged unit</string>
+    <string name="dwarf_giant_killer_description">Deal extra damages to bigger creatures</string>
+    <string name="dwarf_rune_master_description">Rust enemies\' equipment (weapon and armor) every battle\'s round</string>
 
     <!-- Game -->
-    <string name="turn_count">Turn %s</string>
-    <string name="confirm_no_orders">You have not given any order this turn.\nDo you confirm sending orders ?</string>
     <string name="tag_buy_button">buy_button</string>
     <string name="tag_control_zone">control_zone</string>
     <string name="tag_move_order">move_order</string>
     <string name="tag_defend_order">defend_order</string>
-    <string name="go">Go !</string>
+    <string name="turn_count">Turn %s</string>
+    <string name="confirm_no_orders">You have not given any order this turn.\nDo you confirm sending orders ?</string>
     <string name="loading_game">Loading</string>
     <string name="loading_dots">. . .</string>
     <string name="game_paused">Pause</string>
@@ -144,46 +162,10 @@
     <string name="save_exit">Exit</string>
     <string name="victory">Victory !</string>
     <string name="defeat">Defeat&#8230;</string>
-    <string name="loading">Loading...</string>
-    <string name="newGame">New Game</string>
-    <string name="turn">Turn</string>
-    <string name="vs">vs</string>
-    <string name="waitOpponents">Players needed...</string>
-    <string name="waitOpponentsTurns">Waiting...</string>
-    <string name="mapType">Map Type</string>
-    <string name="loadGame">Load Game</string>
-    <string name="createGame">Create Game !</string>
-    <string name="currentGames">Current games</string>
-    <string name="playersNumber">Number of players</string>
-    <string name="turnDuration">Turn duration</string>
-    <string name="players2">2 players</string>
-    <string name="players3">3 players</string>
-    <string name="players4">4 players</string>
-    <string name="players8">8 players !</string>
-    <string name="standardMap">Standard map</string>
-    <string name="perTurn">/ turn</string>
-    <string name="confirmJoin">Do you really want to join this game ?</string>
-    <string name="cancel">Cancel</string>
-    <string name="networkIssue">Cannot contact the server...</string>
-    <string name="retry">Retry</string>
-    <string name="blason">blason</string>
-    <string name="sendOrders">Send Orders</string>
-    <string name="scores">Scores</string>
-    <string name="refresh">Refresh</string>
-    <string name="notificationMessage">Your troops await your command, sir !</string>
-    <string name="gameReport">Game Over</string>
-    <string name="removeGameQuestion">Remove this game ?</string>
-    <string name="trainUnits">Hire units</string>
-    <string name="unit">unit</string>
-    <string name="infantryDescription">Basic unit with average skills. Essential to conquer places and to protect bowmen.</string>
-    <string name="bowmenDescription">Defensive range unit. Deadly when associated to other units, less efficient alone or in the forest.</string>
-    <string name="knightsDescription">Powerful contact unit, to be placed in the center of the battles. Expensive to supply, be sure to have stable income.</string>
-    <string name="chooseGameType">Type of Map</string>
-    <string name="randomMap">Random Map</string>
-    <string name="kingdomMayhem">Kingdom Mayhem !</string>
-    <string name="defeat">Defeat...</string>
-    <string name="victory">Victory !</string>
-    <string name="gameRulesHere">Learn how to play !</string>
+    <string name="send_orders">Send Orders</string>
+    <string name="notification_message">Your troops await your command, sir !</string>
+
+    <!-- Tutorial -->
     <string name="tutorial">Tutorial</string>
     <string name="tutoTitle1">Welcome to the tutorial !</string>
     <string name="tutoText1">Here you will learn how to lead your troops to the victory. Use the arrows to navigate through the tutorial.</string>
@@ -215,71 +197,5 @@
     <string name="tutoText12">When attacking you gain bonuses when your armies come from different sides of the battle. In defend, your armies, especially bowmen units, gain bonuses in castles and when they get defense orders. Bowmen are less efficient in the forest and can be quickly demoralized if they are fighting alone.</string>
     <string name="tutoTitle13">Victory !</string>
     <string name="tutoText13">Be part of the top score by playing and winning more games than the other players !</string>
-    <string name="options">Options</string>
-    <string name="fogsOfWar">Fogs of war</string>
-    <string name="chooseArmies">Choose your army</string>
-    <string name="human">Human</string>
-    <string name="undead">Undead</string>
-    <string name="humanDescription">Balanced army with a great ability to defend positions. Possibility to hire heavy infantry.</string>
-    <string name="undeadDescription">Undead units are weak in battle but resurrect when dealing damages to living armies. They also decrease largely opponents\' morale during battles.</string>
-    <string name="skeleton">Skeleton horde</string>
-    <string name="skeletonDescription">A weak unit in battle but which steals life to its enemies, making large hordes hard to defeat.</string>
-    <string name="skeletonBowmen">Skeleton Bowmen</string>
-    <string name="skeletonBowmenDescription">Defensive range unit. Less efficient alone or in the forest, stealing life when damaging enemies.</string>
-    <string name="necromancers">Necromancers</string>
-    <string name="necromancersDescription">Powerful but fragile support unit. When part of a battle, allied units\' life steals are twice more effective.</string>
-    <string name="discusionWith">Chat with </string>
-    <string name="sendMessage">Send !</string>
-    <string name="yourMessage">your message...</string>
-    <string name="withFogsOfWar">with fogs of war</string>
-    <string name="creator">Game creator :</string>
-    <string name="updateNationality">Update your nationality</string>
-    <string name="settings">Settings</string>
-    <string name="shareBody">Play Warlords Online with me !</string>
-    <string name="waitingEndTurn">Waiting for the end of turn...</string>
-    <string name="resetOrders">Reset Orders</string>
-    <string name="nameError">Another player has already chosen this name, please choose another one...</string>
-    <string name="filterFriends">Friends\' games</string>
-    <string name="addFriend">Add a friend</string>
-    <string name="inviteFriend">Invite a friend to play</string>
-    <string name="myFriends">My friends</string>
-    <string name="removeFriendQuestion">Remove this friend ?</string>
-    <string name="appLink">https://play.google.com/store/apps/details?id=com.giggs.chaos</string>
-    <string name="shareVia">Share via</string>
-    <string name="inviteSubject">Play to Warlords Online with me !</string>
-    <string name="typeFriendName">Type a friend name</string>
-    <string name="search">Search</string>
-    <string name="emptySearch">No player found...</string>
-    <string name="playersFound">players found !</string>
-    <string name="searchResult">Search result</string>
-    <string name="friendsSearch">Friends Search</string>
-    <string name="alreadyFriendWith">You are already friend with him !</string>
-    <string name="joinGame">Join Game</string>
-    <string name="connecting">Connecting...</string>
-    <string name="playAgainstAI">Play Solo</string>
-    <string name="playlocal">Play LAN</string>
-    <string name="playonline">Play Online</string>
-    <string name="cancelUnitProd">Cancel production</string>
-    <string name="enableAI">Enable AI when away</string>
-    <string name="playOffline">Play Offline Mode</string>
-    <string name="filterLocal">Local games</string>
-    <string name="terrainTiles">Terrain Tiles</string>
-    <string name="artOfWar">The Art Of War</string>
-    <string name="chaos">Chaos</string>
-    <string name="chaosDescription">The Chaos armies are composed of elite troops that have no notion of fear. Dominate you enemies with deadly spells and devilish monsters !</string>
-    <string name="chaosWarriors">Chaos Warriors</string>
-    <string name="chaosWizards">Chaos Wizards</string>
-    <string name="chaosDemons">Demons</string>
-    <string name="chaosWarriorsDescription">Chaos Warriors are some extremely dangerous fighters who will never flee the battlefield, even when largely outnumbered.</string>
-    <string name="chaosWizardsDescription">Chaos Wizards cast tormenting spells which prevent enemies to fight during the first round of battle.</string>
-    <string name="chaosDemonsDescription">Demons have the ability to deal critical damages and recover from their wounds through time.</string>
-    <string name="orcsArmy">Orcs</string>
-    <string name="orcsarmyDescription">The Orcs and Goblins are composed of agressive troops, very effective in attack.</string>
-    <string name="goblins">Goblins</string>
-    <string name="orcs">Orcs</string>
-    <string name="trolls">Trolls</string>
-    <string name="goblinsDescription">Goblins are one of the weakest creature but are useful for discovering and conquering the lands. They do not need to be supplied when they are in the forest or in the mountain.</string>
-    <string name="orcsDescription">Heavy infantry with good fighting skills. They are more effective in attack than in defense. </string>
-    <string name="trollsDescription">Trolls have the regeneration ability and deal greater damage to heavy troops.</string>
 
 </resources>

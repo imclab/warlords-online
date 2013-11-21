@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/name"
+        style="@style/ArmyBuilderSubTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_army_column"
+        android:gravity="center"
+        android:text="@string/placeholder" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp" >
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:scaleType="fitCenter" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical" >
+
+            <com.giggs.apps.chaos.views.CustomTextView
+                android:id="@+id/price"
+                style="@style/HelpUnitContentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="right"
+                android:drawableLeft="@drawable/ic_coin"
+                android:text="@string/placeholder"
+                android:textColor="@color/gold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical" >
+
+                <com.giggs.apps.chaos.views.CustomTextView
+                    android:id="@+id/health"
+                    style="@style/HelpUnitContentText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_helmet"
+                    android:text="@string/placeholder" />
+
+                <com.giggs.apps.chaos.views.CustomTextView
+                    android:id="@+id/attack"
+                    style="@style/HelpUnitContentText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_axe"
+                    android:text="@string/placeholder" />
+
+                <com.giggs.apps.chaos.views.CustomTextView
+                    android:id="@+id/defense"
+                    style="@style/HelpUnitContentText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_shield"
+                    android:text="@string/placeholder" />
+
+                <com.giggs.apps.chaos.views.CustomTextView
+                    android:id="@+id/description"
+                    style="@style/HelpUnitContentText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_book"
+                    android:text="@string/placeholder" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

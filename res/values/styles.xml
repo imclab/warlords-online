@@ -166,4 +166,12 @@
         <item name="android:padding">0dp</item>
     </style>
 
+    <style name="HelpUnitContentText" parent="@style/SettingsLabel">
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:textColor">#eee</item>
+        <item name="android:gravity">left</item>
+        <item name="android:drawablePadding">8dp</item>
+    </style>
+
 </resources>

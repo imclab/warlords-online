@@ -36,7 +36,7 @@
         android:drawableLeft="@drawable/ic_parchemin"
         android:drawablePadding="5dp"
         android:padding="7dp"
-        android:text="@string/sendOrders" />
+        android:text="@string/send_orders" />
 
     <com.giggs.apps.chaos.views.CustomTextView
         style="@style/ArmyBuilderColumn"

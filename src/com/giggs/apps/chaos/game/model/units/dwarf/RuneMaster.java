@@ -18,4 +18,17 @@ public class RuneMaster extends Unit {
                 ArmiesData.DWARF, armyIndex, 130, 400, true, WeaponType.magic, ArmorType.light, 90, 4);
     }
 
+    @Override
+    public int getDamage(Unit target) {
+        int damage = super.getDamage(target);
+        // rust enemies equipment
+        for (Unit unit : tilePosition.getContent()) {
+            if (unit.getArmyIndex() != armyIndex) {
+                unit.setAttack(unit.getAttack() - 1);
+                unit.setArmor(unit.getArmor() - 1);
+            }
+        }
+        return damage;
+    }
+
 }

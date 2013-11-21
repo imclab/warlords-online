@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.activities.adapters.HelpSimpleAdapter;
 import com.giggs.apps.chaos.game.data.ArmiesData;
+import com.giggs.apps.chaos.game.data.UnitsData;
+import com.giggs.apps.chaos.game.model.units.Unit;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
 import com.giggs.apps.chaos.utils.MyActivity;
 
@@ -44,56 +46,54 @@ public class HelpActivity extends MyActivity {
                 ViewGroup content = (ViewGroup) mHelpDetailsDialog.findViewById(R.id.content);
                 switch (position) {
                 case 1:
-                    content.addView(getRow(R.drawable.ti_empty_grass, R.string.grass, R.string.grassDescription));
-                    content.addView(getRow(R.drawable.ti_castle, R.string.castle, R.string.castleDescription));
-                    content.addView(getRow(R.drawable.ti_windmills, R.string.windmill, R.string.windmillDescription));
-                    content.addView(getRow(R.drawable.ti_forest, R.string.forest, R.string.forestDescription));
-                    content.addView(getRow(R.drawable.ti_fort, R.string.fort, R.string.fortDescription));
-                    content.addView(getRow(R.drawable.ti_mountains, R.string.mountain, R.string.mountainDescription));
+                    content.addView(getRow(R.drawable.ti_empty_grass, R.string.grass, R.string.grass_description));
+                    content.addView(getRow(R.drawable.ti_castle, R.string.castle, R.string.castle_description));
+                    content.addView(getRow(R.drawable.ti_windmills, R.string.windmill, R.string.windmill_description));
+                    content.addView(getRow(R.drawable.ti_forest, R.string.forest, R.string.forest_description));
+                    content.addView(getRow(R.drawable.ti_fort, R.string.fort, R.string.fort_description));
+                    content.addView(getRow(R.drawable.ti_mountains, R.string.mountain, R.string.mountain_description));
                     break;
                 case 2:
-                    content.addView(getRow(R.drawable.ic_double_axe, R.string.battleTitle1, R.string.battle1));
-                    content.addView(getRow(R.drawable.ti_castle, R.string.battleTitle2, R.string.battle2));
-                    content.addView(getRow(R.drawable.human_bowman_image, R.string.battleTitle3, R.string.battle3));
+                    content.addView(getRow(R.drawable.ic_double_axe, R.string.battle_title1, R.string.battle1));
+                    content.addView(getRow(R.drawable.ic_helmet, R.string.battle_title2, R.string.battle2));
+                    content.addView(getRow(R.drawable.ti_castle, R.string.battle_title3, R.string.battle3));
+                    content.addView(getRow(R.drawable.human_bowman_image, R.string.battle_title4, R.string.battle4));
                     break;
                 case 3:
-                    content.addView(getRow(ArmiesData.HUMAN.getImage(), R.string.human, R.string.humanHelp));
-                    content.addView(getRow(R.drawable.human_soldier_image, R.string.human_soldier,
-                            R.string.infantryHelp));
-                    content.addView(getRow(R.drawable.human_bowman_image, R.string.human_bowman, R.string.bowmenHelp));
-                    content.addView(getRow(R.drawable.human_knight_image, R.string.human_knight, R.string.knightsHelp));
-                    content.addView(getRow(R.drawable.human_monk_image, R.string.human_monk, R.string.knightsHelp));
+                    content.addView(getRow(ArmiesData.HUMAN.getImage(), ArmiesData.HUMAN.getName(),
+                            R.string.human_army_description));
+                    for (Unit unit : UnitsData.getUnits(ArmiesData.HUMAN, 0)) {
+                        content.addView(getRow(unit));
+                    }
                     break;
                 case 4:
-                    content.addView(getRow(R.drawable.ic_double_axe, R.string.undead, R.string.undeadHelp));
-                    content.addView(getRow(R.drawable.undead_skeleton_image, R.string.skeleton, R.string.skeletonHelp));
-                    content.addView(getRow(R.drawable.undead_bowman_image, R.string.skeletonBowmen,
-                            R.string.skeletonBowmenHelp));
-                    content.addView(getRow(R.drawable.undead_necromancer_image, R.string.necromancers,
-                            R.string.necromancerHelp));
+                    content.addView(getRow(ArmiesData.ORCS.getImage(), ArmiesData.ORCS.getName(),
+                            R.string.orcs_army_description));
+                    for (Unit unit : UnitsData.getUnits(ArmiesData.ORCS, 0)) {
+                        content.addView(getRow(unit));
+                    }
                     break;
-                // case 5:
-                // content.addView(getRow(R.drawable.ic_double_axe,
-                // R.string.chaos, R.string.chaosHelp));
-                // content.addView(getRow(R.drawable.chaos,
-                // R.string.chaosWarriors,
-                // R.string.chaosWarriorsHelp));
-                // content.addView(getRow(R.drawable.un_chaos_wizards,
-                // R.string.chaosWizards,
-                // R.string.chaosWizardsHelp));
-                // content.addView(getRow(R.drawable.un_demon,
-                // R.string.chaosDemons, R.string.demonsHelp));
-                // break;
-                // case 6:
-                // content.addView(getRow(R.drawable.ic_double_axe,
-                // R.string.orcsArmy, R.string.orcsArmyHelp));
-                // content.addView(getRow(R.drawable.un_goblin,
-                // R.string.goblins, R.string.goblinsHelp));
-                // content.addView(getRow(R.drawable.un_orc, R.string.orcs,
-                // R.string.orcsHelp));
-                // content.addView(getRow(R.drawable.un_troll, R.string.trolls,
-                // R.string.trollsHelp));
-                // break;
+                case 5:
+                    content.addView(getRow(ArmiesData.UNDEAD.getImage(), ArmiesData.UNDEAD.getName(),
+                            R.string.undead_army_description));
+                    for (Unit unit : UnitsData.getUnits(ArmiesData.UNDEAD, 0)) {
+                        content.addView(getRow(unit));
+                    }
+                    break;
+                case 6:
+                    content.addView(getRow(ArmiesData.CHAOS.getImage(), ArmiesData.CHAOS.getName(),
+                            R.string.chaos_army_description));
+                    for (Unit unit : UnitsData.getUnits(ArmiesData.CHAOS, 0)) {
+                        content.addView(getRow(unit));
+                    }
+                    break;
+                case 7:
+                    content.addView(getRow(ArmiesData.DWARF.getImage(), ArmiesData.DWARF.getName(),
+                            R.string.dwarf_army_description));
+                    for (Unit unit : UnitsData.getUnits(ArmiesData.DWARF, 0)) {
+                        content.addView(getRow(unit));
+                    }
+                    break;
                 }
                 mHelpDetailsDialog.show();
             }
@@ -136,8 +136,8 @@ public class HelpActivity extends MyActivity {
         ListView helpCategoryListView = (ListView) findViewById(R.id.helpCategoryList);
         mHelpCategoryList = new ArrayList<HashMap<String, String>>();
         addHelpCategory(R.string.tutorial, R.drawable.ic_book);
-        addHelpCategory(R.string.terrainTiles, R.drawable.ic_map);
-        addHelpCategory(R.string.artOfWar, R.drawable.ic_axe);
+        addHelpCategory(R.string.terrain_tiles, R.drawable.ic_map);
+        addHelpCategory(R.string.art_of_war, R.drawable.ic_axe);
         addHelpCategory(R.string.human_army, ArmiesData.HUMAN.getImage());
         addHelpCategory(R.string.orcs_army, ArmiesData.ORCS.getImage());
         addHelpCategory(R.string.undead_army, ArmiesData.UNDEAD.getImage());
@@ -173,6 +173,32 @@ public class HelpActivity extends MyActivity {
         helpContent.setText(description);
         ImageView helpImage = (ImageView) view.findViewById(R.id.image);
         helpImage.setImageResource(image);
+        return view;
+    }
+
+    private View getRow(Unit unit) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.help_unit_row, null);
+
+        TextView unitNameTV = (TextView) view.findViewById(R.id.name);
+        unitNameTV.setText(unit.getName());
+        ImageView unitImage = (ImageView) view.findViewById(R.id.image);
+        unitImage.setImageResource(unit.getImage());
+        TextView priceTV = (TextView) view.findViewById(R.id.price);
+        priceTV.setText("" + unit.getPrice());
+        TextView healthTV = (TextView) view.findViewById(R.id.health);
+        healthTV.setText("" + unit.getHealth());
+        TextView attackTV = (TextView) view.findViewById(R.id.attack);
+        attackTV.setText(unit.getAttack() + " (" + unit.getWeaponType().name() + ")");
+        TextView defenseTV = (TextView) view.findViewById(R.id.defense);
+        defenseTV.setText(unit.getArmor() + " (" + unit.getArmorType().name() + ")");
+        TextView descriptionTV = (TextView) view.findViewById(R.id.description);
+        String description = getString(getResources().getIdentifier(
+                unit.getSpriteName().replace(".png", "") + "_description", "string", getPackageName()));
+        descriptionTV.setText(description);
+        if (description.isEmpty()) {
+            descriptionTV.setVisibility(View.GONE);
+        }
         return view;
     }
 

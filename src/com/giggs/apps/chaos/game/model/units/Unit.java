@@ -30,9 +30,9 @@ public abstract class Unit extends GameElement {
     private final boolean isRangedAttack;
     private final WeaponType weaponType;
     private final ArmorType armorType;
-    private final int attack;
-    private final int armor;
 
+    private int attack;
+    private int armor;
     protected int experience = 0;
     protected int morale = 100;
     private int health;
@@ -291,6 +291,14 @@ public abstract class Unit extends GameElement {
 
     public boolean isDead() {
         return health <= 0;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public void setArmor(int armor) {
+        this.armor = armor;
     }
 
 }

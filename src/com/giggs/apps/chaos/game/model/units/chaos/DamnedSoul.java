@@ -32,7 +32,7 @@ public class DamnedSoul extends Unit {
     @Override
     public int getDamage(Unit target) {
         int damage = super.getDamage(target);
-        // strike attacks !
+        // bashing attacks !
         for (Unit unit : tilePosition.getContent()) {
             if (unit.getArmyIndex() != armyIndex) {
                 unit.setHealth(-damage);
