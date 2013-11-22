@@ -61,27 +61,36 @@
                     android:drawableLeft="@drawable/ic_helmet"
                     android:text="@string/placeholder" />
 
-                <com.giggs.apps.chaos.views.CustomTextView
-                    android:id="@+id/attack"
-                    style="@style/HelpUnitContentText"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_axe"
-                    android:text="@string/placeholder" />
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal" >
 
-                <com.giggs.apps.chaos.views.CustomTextView
-                    android:id="@+id/defense"
-                    style="@style/HelpUnitContentText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_shield"
-                    android:text="@string/placeholder" />
+                    <com.giggs.apps.chaos.views.CustomTextView
+                        android:id="@+id/attack"
+                        style="@style/HelpUnitContentText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_axe"
+                        android:text="@string/placeholder" />
+
+                    <com.giggs.apps.chaos.views.CustomTextView
+                        android:id="@+id/defense"
+                        style="@style/HelpUnitContentText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:drawableLeft="@drawable/ic_shield"
+                        android:text="@string/placeholder" />
+                </LinearLayout>
 
                 <com.giggs.apps.chaos.views.CustomTextView
                     android:id="@+id/description"
                     style="@style/HelpUnitContentText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
                     android:drawableLeft="@drawable/ic_book"
                     android:text="@string/placeholder" />
             </LinearLayout>

@@ -12,10 +12,10 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.giggs.apps.chaos.MyActivity;
 import com.giggs.apps.chaos.MyApplication.FONTS;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
-import com.giggs.apps.chaos.utils.MyActivity;
 
 public class SplashActivity extends MyActivity {
 

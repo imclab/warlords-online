@@ -44,20 +44,20 @@ public class TileSprite extends Sprite {
 
     public void updateWeather(boolean isWinter) {
         if (isWinter) {
-            setTextureRegion(GraphicsFactory.mGfxMap.get(tile.getTerrain().getSpriteName().replace(".png", "")
-                    + "_winter.png"));
+//            setTextureRegion(GraphicsFactory.mGfxMap.get(tile.getTerrain().getSpriteName().replace(".png", "")
+//                    + "_winter.png"));
         } else {
-            setTextureRegion(GraphicsFactory.mGfxMap.get(tile.getTerrain().getSpriteName()));
+//            setTextureRegion(GraphicsFactory.mGfxMap.get(tile.getTerrain().getSpriteName()));
         }
     }
 
     public void updateUnitProduction(TextureRegion texture) {
         if (texture == null) {
-            buySprite.setTextureRegion(GraphicsFactory.mGfxMap.get("buy.png"));
+//            buySprite.setTextureRegion(GraphicsFactory.mGfxMap.get("buy.png"));
             buySprite.setX(getWidth() - 64);
             buySprite.setColor(1.0f, 1.0f, 1.0f);
         } else {
-            buySprite.setTextureRegion(texture);
+//            buySprite.setTextureRegion(texture);
             buySprite.setX(getWidth() - 59);
         }
     }
