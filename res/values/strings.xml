@@ -76,7 +76,7 @@
     <string name="undead_bowman">Bowmen</string>
     <string name="undead_necromancer">Necromancers</string>
     <string name="undead_zombie">Zombies</string>
-    <string name="orcs_army">Orc</string>
+    <string name="orcs_army">Orcs</string>
     <string name="orcs_goblin">Goblins</string>
     <string name="orcs_orc">Orcs</string>
     <string name="orcs_troll">Trolls</string>
@@ -86,7 +86,7 @@
     <string name="chaos_wizards">Wizards</string>
     <string name="chaos_demons">Demons</string>
     <string name="chaos_damned_soul">Damned Souls</string>
-    <string name="dwarf_army">Dwarf</string>
+    <string name="dwarf_army">Dwarves</string>
     <string name="dwarf_warrior">Warriors</string>
     <string name="dwarf_crossbowman">Crossbowmen</string>
     <string name="dwarf_giant_killer">Giant killers</string>
@@ -169,34 +169,19 @@
     <!-- Tutorial -->
     <string name="tutorial">Tutorial</string>
     <string name="welcome_tutorial">Welcome to the tutorial !</string>
-    <string name="tutoText1">Here you will learn how to lead your troops to the victory. Use the arrows to navigate through the tutorial.</string>
-    <string name="tutoTitle2">A turn-based strategy game ?</string>
-    <string name="tutoText2">It means that the game is decomposed into turns, which can last different amount of time. Each turn, players have to send orders to their troops. When every player has played or the time limit is reached, then all the actions are resolved and a new turn is starting !</string>
-    <string name="tutoTitle3">Objectives</string>
-    <string name="tutoText3">To win, you have to capture your opponent\'s castles, by attacking them with your armies. You lose the game if at any time you do not control at least one castle... </string>
-    <string name="tutoTitle4">The map</string>
-    <string name="tutoText4">You can navigate in the map by sweeping the screen with your fingers. The minimap in the bottom left-hand corner allows you to see in which part of the entire map you are at the moment. You can use it to navigate too.</string>
-    <string name="tutoTitle5">Gathering resources</string>
-    <string name="tutoText5">Each turn, you will earn an amount of gold which depends on the number of castles and windmill farms in your kingdom. Each castle or windmill farm under your control makes you earn 100 gold coins per turn, and each fort 50 gold coins; these zones are enlighted in green on the map.</string>
-    <string name="tutoTitle6">Movement orders</string>
-    <string name="tutoText6">To give a movement order to an army, select it and tap on one the tiles that are enlighted in green. Try to send your infantry on the windmill farm !</string>
-    <string name="tutoTitle60">Nice, now finish your turn !</string>
-    <string name="tutoText60">To definitely send your turn\'s orders, press the send orders button. Once it is done, you cannot interact anymore with this game until your next turn. One more thing about move orders : a maximum of 3 units of the same owner can be on a single tile at the same time !</string>
-    <string name="tutoTitle61">You have conquered a place !</string>
-    <string name="tutoText61">Last turn you had sent a unit on this farm zone : as there are no enemies on it, you have successfully conquered it ! You will now earn 200 gold coins per turn !</string>
-    <string name="tutoTitle7">Kingdom\'s economy, where did my money go ?</string>
-    <string name="tutoText7">Each turn you are earning gold from your territories, but you also need to pay and supply your armies ! When you are buying a new unit, the price indicated is the price you have to paid every turn. If at any time, you do not have enough money to supply your armies, these will lose morale and even desert if they are already demoralized ! A stable economy is definitely a key to success.</string>
-    <string name="tutoTitle8">Hire units</string>
-    <string name="tutoText8">Now, it is time to hire fresh troops ! Tap on the icon in the top right-hand corner of your castle tile, and choose the unit you want to hire. Each unit has unique ability. Then click on the send orders button, to finish your turn. Next turn, a new unit will pop up on this tile, unless this tile is already full of your units (3 is the maximum).</string>
-    <string name="tutoTitle9">Fight !</string>
-    <string name="tutoText9">When 2 or more different armies are meeting each others on the same tile, or when they cross their path, a battle is engaging. Multiple factors are involved during a battle : the current life of the unit, the types of the units involved, the morale, the experience, the units\' orders, the terrain etc...</string>
-    <string name="tutoTitle10">Morale</string>
-    <string name="tutoText10">All armies have a morale capacity, represented by a blue bar on the top left-hand corner of each unit (near the flag). A unit loses morale when defeating in battles, or when it is not supplied anymore. Each resting turn, units are getting back their morale, more efficiencely on castles and farms. During battle, a low morale army will flee instead of fighting.</string>
-    <string name="tutoTitle11">Experience</string>
-    <string name="tutoText11">All armies have an experience capacity, represented by a green bar on the top left-hand corner of each unit (near the flag). A unit gets experience in battles, especially in long ones. More experienced armies are more efficient in battles.</string>
-    <string name="tutoTitle12">Battle tips</string>
-    <string name="tutoText12">When attacking you gain bonuses when your armies come from different sides of the battle. In defend, your armies, especially bowmen units, gain bonuses in castles and when they get defense orders. Bowmen are less efficient in the forest and can be quickly demoralized if they are fighting alone.</string>
-    <string name="tutoTitle13">Victory !</string>
-    <string name="tutoText13">Be part of the top score by playing and winning more games than the other players !</string>
+    <string name="tutorial_0">Here you will learn how to lead your troops to the victory.\nPress the send order button to continue !</string>
+    <string name="tutorial_1">Warlords is a turn-based game. Each turn, players have to give orders to their troops.\nAll the orders are simultaneously processed.</string>
+    <string name="tutorial_2">To win the game it is simple : you have to capture your opponents\' castles.\nYou lose if at any time you do not control any !</string>
+    <string name="tutorial_3">Navigate through the map by sweeping the screen; you can zoom in/out by pinching the screen.</string>
+    <string name="tutorial_4">There are 3 types of orders in Warlords : move orders and defend orders you can give to your units, and buy orders you can give to the units\' factories you own.</string>
+    <string name="tutorial_5">Let\'s start giving orders ! Give a move order to your soldier\'s unit on the castle by dragging it to the farm tile.\nA green arrow will pop, reminding you the direction.\nThen press the send order button to validate your orders\' turn !</string>
+    <string name="tutorial_6">Awesome ! You have conquered a farm ! Each turn, you will earn an amount of gold depending on the number of castles and farms in your kingdom.\nObviously, conquering areas is crucial to win !</string>
+    <string name="tutorial_7">Just touch a unit to give it a defend order. It will give it defensive bonuses during battles.\nOne more thing about move orders, there can\'t be more than 3 units on one tile. Keep it in mind !</string>
+    <string name="tutorial_8">Let\'s battle now ! Attack and conquer the fort with your troops, you will be able to hire units on it !</string>
+    <string name="tutorial_9">Cool, it was a great battle. As you can see your unit has gained experience (green bar) and lose a bit of morale (blue bar).\nMorale of your troops is important : if low, they will flee the battlefield !</string>
+    <string name="tutorial_10">Ok, let\'s buy units now ! Open the buy menu by touching the yellow coin on the tile. Then you can select the unit you want to hire; it will pop-up on the next turn !</string>
+    <string name="tutorial_11">As said before, each turn you are earning gold from your territories. But in Warlords, you also need to pay and supply your armies !\nWhen you are buying a new unit, the price indicated is the price you have to pay every turn. If at any time, you don\'t have enough money to supply your armies, these will lose morale and even desert !</string>
+    <string name="tutorial_12">It is recommanded to keep a stable economy; you can see your current balance by opening the left-hand side drawer.\nAlso beware of the weather changes, you will earn less gold during winter !</string>
+    <string name="tutorial_13">Let\'s attack the enemy castle to win the game and finish this tutorial !\nYou can get much more information on battles, terrain tiles, and armies abilities in the How to Play section !</string>
 
 </resources>

@@ -38,15 +38,6 @@
         android:padding="7dp"
         android:text="@string/send_orders" />
 
-    <com.giggs.apps.chaos.views.CustomTextView
-        style="@style/ArmyBuilderColumn"
-        android:layout_width="150px"
-        android:layout_height="150px"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="3dp"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/buyLayout"
         style="@style/ArmyBuilderColumn"

@@ -45,6 +45,8 @@ public class GameGUI {
     private Button mSendOrdersButton;
     private Animation mGoldDeficitAnimation;
     private TextView economyBalanceTV;
+    private Tile selectedTile = null;
+    public boolean showConfirm = true;
 
     public GameGUI(GameActivity activity) {
         this.mActivity = activity;
@@ -265,8 +267,6 @@ public class GameGUI {
         }
     }
 
-    private Tile selectedTile = null;
-
     public void showBuyOptions(Tile tile) {
         selectedTile = tile;
         mActivity.runOnUiThread(new Runnable() {
@@ -312,7 +312,7 @@ public class GameGUI {
 
     private void confirmSendOrders() {
         // show confirm dialog if no orders for this turn
-        if (mActivity.battle.getMeSoloMode().getLstTurnOrders().size() == 0) {
+        if (showConfirm && mActivity.battle.getMeSoloMode().getLstTurnOrders().size() == 0) {
             Dialog dialog = new CustomAlertDialog(mActivity, R.style.Dialog,
                     mActivity.getString(R.string.confirm_no_orders), new DialogInterface.OnClickListener() {
                         @Override

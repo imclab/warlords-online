@@ -39,13 +39,13 @@
         android:text="@string/send_orders" />
 
     <com.giggs.apps.chaos.views.CustomTextView
+        android:id="@+id/tutorialLayout"
         style="@style/ArmyBuilderColumn"
-        android:layout_width="150px"
-        android:layout_height="150px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_margin="3dp"
-        android:visibility="gone" />
+        android:gravity="center" />
 
     <LinearLayout
         android:id="@+id/buyLayout"

@@ -276,6 +276,7 @@ public class GameActivity extends LayoutGameActivity {
         this.runOnUpdateThread(new Runnable() {
             @Override
             public void run() {
+                mScene.unregisterTouchArea(unit.getSprite());
                 mScene.detachChild(unit.getSprite());
             }
         });
@@ -311,14 +312,14 @@ public class GameActivity extends LayoutGameActivity {
         int winnerIndex = GameLogic.runTurn(battle);
 
         // add new units, remove dead ones
-        for (Unit u : battle.getUnitsToAdd()) {
-            addUnitToScene(u);
-        }
-        battle.setUnitsToAdd(new ArrayList<Unit>());
         for (Unit u : battle.getUnitsToRemove()) {
             removeUnit(u);
         }
         battle.setUnitsToRemove(new ArrayList<Unit>());
+        for (Unit u : battle.getUnitsToAdd()) {
+            addUnitToScene(u);
+        }
+        battle.setUnitsToAdd(new ArrayList<Unit>());
 
         // dispatch units properly on tiles
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
