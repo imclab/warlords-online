@@ -21,6 +21,7 @@ import com.giggs.apps.chaos.activities.interfaces.OnBillingServiceConnectedListe
 import com.giggs.apps.chaos.billing.InAppBillingHelper;
 import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.data.ArmiesData;
+import com.giggs.apps.chaos.utils.MusicManager;
 import com.giggs.apps.chaos.views.CustomRadioButton;
 
 public class CreateGameDialog extends DialogFragment {
@@ -112,6 +113,7 @@ public class CreateGameDialog extends DialogFragment {
         view.findViewById(R.id.cancelButton).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                MusicManager.playSound(getActivity().getApplicationContext(), R.raw.main_button);
                 dismiss();
             }
         });
@@ -120,6 +122,7 @@ public class CreateGameDialog extends DialogFragment {
         view.findViewById(R.id.okButton).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                MusicManager.playSound(getActivity().getApplicationContext(), R.raw.main_button);
                 createGame();
             }
         });

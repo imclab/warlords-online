@@ -19,111 +19,113 @@ import com.giggs.apps.chaos.utils.ApplicationUtils;
 
 public class SplashActivity extends MyActivity {
 
-	private static final int DELAY_AFTER_ANIMATION = 300, DELAY_BEFORE_ANIMATION = 200;
+    private static final int DELAY_AFTER_ANIMATION = 300, DELAY_BEFORE_ANIMATION = 200;
 
-	private ViewGroup mTitleLayout;
-	private Animation mLetterAnimation, mBounceAnimation;
-	private int mCurrentAnimationPlaying = 0;
+    private ViewGroup mTitleLayout;
+    private Animation mLetterAnimation, mBounceAnimation;
+    private int mCurrentAnimationPlaying = 0;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		// increase number of launches
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		int nbLaunches = prefs.getInt(ApplicationUtils.PREFS_NB_LAUNCHES, 0);
-		prefs.edit().putInt(ApplicationUtils.PREFS_NB_LAUNCHES, ++nbLaunches).commit();
-		int nbLaunchesBeforeRateDialog = prefs.getInt(ApplicationUtils.PREFS_RATE_DIALOG_IN,
-		        ApplicationUtils.NB_LAUNCHES_RATE_DIALOG_APPEARS);
-		prefs.edit().putInt(ApplicationUtils.PREFS_RATE_DIALOG_IN, --nbLaunchesBeforeRateDialog).commit();
+        // increase number of launches
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int nbLaunches = prefs.getInt(ApplicationUtils.PREFS_NB_LAUNCHES, 0);
+        prefs.edit().putInt(ApplicationUtils.PREFS_NB_LAUNCHES, ++nbLaunches).commit();
+        int nbLaunchesBeforeRateDialog = prefs.getInt(ApplicationUtils.PREFS_RATE_DIALOG_IN,
+                ApplicationUtils.NB_LAUNCHES_RATE_DIALOG_APPEARS);
+        prefs.edit().putInt(ApplicationUtils.PREFS_RATE_DIALOG_IN, --nbLaunchesBeforeRateDialog).commit();
 
-		// do not show splashscreen after a few launches
-		if (nbLaunches >= ApplicationUtils.NB_LAUNCHES_WITH_SPLASHSCREEN) {
-			goToHomeScreen();
-		}
+        // do not show splashscreen after a few launches
+        if (nbLaunches >= ApplicationUtils.NB_LAUNCHES_WITH_SPLASHSCREEN) {
+            goToHomeScreen();
+        }
 
-		setContentView(R.layout.activity_splashscreen);
-		setupUI();
+        setContentView(R.layout.activity_splashscreen);
+        setupUI();
 
-		prepareSplashScreenTitle();
-	}
+        prepareSplashScreenTitle();
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		Handler handler = new Handler();
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				startNextFallingLetterAnimation();
-			}
-		}, DELAY_BEFORE_ANIMATION);
-	}
+        mIsMusic = false;
+    }
 
-	private void setupUI() {
-		mTitleLayout = (ViewGroup) findViewById(R.id.title);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startNextFallingLetterAnimation();
+            }
+        }, DELAY_BEFORE_ANIMATION);
+    }
 
-		mBounceAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce_effect);
+    private void setupUI() {
+        mTitleLayout = (ViewGroup) findViewById(R.id.title);
 
-		mLetterAnimation = AnimationUtils.loadAnimation(this, R.anim.falling_letter);
-		mLetterAnimation.setAnimationListener(new AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
+        mBounceAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce_effect);
 
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
+        mLetterAnimation = AnimationUtils.loadAnimation(this, R.anim.falling_letter);
+        mLetterAnimation.setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
 
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				// start next letter animation and the general bounce effect
-				startNextFallingLetterAnimation();
-				mTitleLayout.startAnimation(mBounceAnimation);
-			}
-		});
-	}
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
 
-	private void prepareSplashScreenTitle() {
-		// create text views for each letter of the title
-		String appPublisher = getString(R.string.app_publisher);
-		for (int n = 0; n < appPublisher.length(); n++) {
-			char c = appPublisher.charAt(n);
-			TextView letterTV = new TextView(this);
-			letterTV.setTextAppearance(this, R.style.SplashScreenTitle);
-			letterTV.setText("" + c);
-			letterTV.setVisibility(View.GONE);
-			letterTV.setTypeface(FONTS.splash);
-			mTitleLayout.addView(letterTV);
-		}
-	}
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // start next letter animation and the general bounce effect
+                startNextFallingLetterAnimation();
+                mTitleLayout.startAnimation(mBounceAnimation);
+            }
+        });
+    }
 
-	private void startNextFallingLetterAnimation() {
-		if (mCurrentAnimationPlaying < mTitleLayout.getChildCount()) {
-			// reset previous view's animation
-			if (mCurrentAnimationPlaying > 0) {
-				mTitleLayout.getChildAt(mCurrentAnimationPlaying - 1).setAnimation(null);
-			}
-			// play next animation
-			View nextLetter = mTitleLayout.getChildAt(mCurrentAnimationPlaying);
-			nextLetter.setVisibility(View.VISIBLE);
-			nextLetter.startAnimation(mLetterAnimation);
-			mCurrentAnimationPlaying++;
-		} else {
-			Handler handler = new Handler();
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					goToHomeScreen();
-				}
-			}, DELAY_AFTER_ANIMATION);
-		}
-	}
+    private void prepareSplashScreenTitle() {
+        // create text views for each letter of the title
+        String appPublisher = getString(R.string.app_publisher);
+        for (int n = 0; n < appPublisher.length(); n++) {
+            char c = appPublisher.charAt(n);
+            TextView letterTV = new TextView(this);
+            letterTV.setTextAppearance(this, R.style.SplashScreenTitle);
+            letterTV.setText("" + c);
+            letterTV.setVisibility(View.GONE);
+            letterTV.setTypeface(FONTS.splash);
+            mTitleLayout.addView(letterTV);
+        }
+    }
 
-	private void goToHomeScreen() {
-		Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-		startActivity(intent);
-		finish();
-	}
+    private void startNextFallingLetterAnimation() {
+        if (mCurrentAnimationPlaying < mTitleLayout.getChildCount()) {
+            // reset previous view's animation
+            if (mCurrentAnimationPlaying > 0) {
+                mTitleLayout.getChildAt(mCurrentAnimationPlaying - 1).setAnimation(null);
+            }
+            // play next animation
+            View nextLetter = mTitleLayout.getChildAt(mCurrentAnimationPlaying);
+            nextLetter.setVisibility(View.VISIBLE);
+            nextLetter.startAnimation(mLetterAnimation);
+            mCurrentAnimationPlaying++;
+        } else {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    goToHomeScreen();
+                }
+            }, DELAY_AFTER_ANIMATION);
+        }
+    }
+
+    private void goToHomeScreen() {
+        Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
 }
