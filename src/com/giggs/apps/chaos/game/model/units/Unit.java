@@ -233,8 +233,17 @@ public abstract class Unit extends GameElement {
                 return true;
             }
         }
-        for (Tile tile : MapLogic.getAdjacentTiles(battle.getMap(), tilePosition, 1, false)) {
+        adjacentTilesBoucle : for (Tile tile : MapLogic.getAdjacentTiles(battle.getMap(), tilePosition, 1, false)) {
             if (canFleeHere(tile)) {
+            	// check if enemies come from this position
+            	for (Unit u : tile.getContent()) {
+            		if (u.getArmyIndex() != armyIndex && u.getOrder() != null && u.getOrder() instanceof MoveOrder) {
+            			MoveOrder moveOrder = (MoveOrder) order;
+            			if (moveOrder.getOrigin() == tile) {
+            				continue adjacentTilesBoucle;
+            			}
+            		}
+            	}
                 updateTilePosition(tile);
                 return true;
             }

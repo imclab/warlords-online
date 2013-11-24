@@ -48,7 +48,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- sign-out button -->
+        <com.giggs.apps.chaos.views.CustomButton
+            android:id="@+id/achievementsButton"
+            style="@style/SettingsSmallButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:text="@string/achievements"
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <com.giggs.apps.chaos.views.CustomButton
             android:id="@+id/sign_out_button"
@@ -56,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/logout"
+            android:textSize="16sp"
             android:visibility="gone" />
     </LinearLayout>
 
