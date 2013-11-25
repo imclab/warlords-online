@@ -87,6 +87,8 @@ public class TutorialActivity extends GameActivity {
         // add tutorial layout
         tutorialTV = (TextView) findViewById(R.id.tutorialLayout);
         tutorialTV.setText(TUTORIAL_STEPS_TEXT[tutorialStep]);
+
+        myArmyIndex = 0;
     }
 
     @Override
@@ -157,7 +159,8 @@ public class TutorialActivity extends GameActivity {
                     unit.setTile(tile);
                     addUnitToScene(unit);
                 }
-                if (tile.getTerrain() == TerrainData.castle && battle.getMeSoloMode().getArmyIndex() == tile.getOwner()) {
+                if (tile.getTerrain() == TerrainData.castle
+                        && battle.getMe(myArmyIndex).getArmyIndex() == tile.getOwner()) {
                     castleTile = tile;
                 }
                 MapLogic.dispatchUnitsOnTile(tile);
@@ -192,7 +195,7 @@ public class TutorialActivity extends GameActivity {
         getEngine().stop();
 
         // update battle
-        int winnerIndex = GameLogic.runTurn(battle);
+        int winnerIndex = GameLogic.runTurn(battle, myArmyIndex);
 
         // add new units, remove dead ones
         for (Unit u : battle.getUnitsToRemove()) {
@@ -226,9 +229,9 @@ public class TutorialActivity extends GameActivity {
         }
 
         // update my gold amount
-        mGameGUI.updateGoldAmount(battle.getMeSoloMode().getGold());
-        mGameGUI.updateEconomyBalance(battle.getMeSoloMode().getGameStats().getEconomy()
-                .get(battle.getMeSoloMode().getGameStats().getEconomy().size() - 1));
+        mGameGUI.updateGoldAmount(battle.getMe(myArmyIndex).getGold());
+        mGameGUI.updateEconomyBalance(battle.getMe(myArmyIndex).getGameStats().getEconomy()
+                .get(battle.getMe(myArmyIndex).getGameStats().getEconomy().size() - 1));
 
         if (winnerIndex >= 0) {
             endGame(battle.getPlayers().get(winnerIndex));
@@ -243,7 +246,7 @@ public class TutorialActivity extends GameActivity {
     }
 
     @Override
-    public void goToReport(boolean victory) {
+    public void goToReport() {
         // stop engine
         mEngine.stop();
 

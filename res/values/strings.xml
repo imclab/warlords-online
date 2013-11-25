@@ -66,6 +66,16 @@
     <string name="population_graph_title">Population Graph</string>
     <string name="economy_graph_title">Economy Graph</string>
 
+    <!-- Multiplayer Screen -->
+    <string name="quick_game">Quick Battle</string>
+    <string name="invite_players">Create Game</string>
+    <string name="show_invitations">Show Invitations</string>
+    <string name="rankings">Top Players Rankings</string>
+    <string name="error_room_creation">An error occurred during the game creation, please retry !</string>
+    <string name="error_room_join">An error occurred while joining the game, please retry !</string>
+    <string name="error_room_connection">An error occurred while connecting to the game, please retry !</string>
+    <string name="go">Go !</string>
+
     <!-- Armies and Units names -->
     <string name="human_army">Human</string>
     <string name="human_soldier">Infantry</string>

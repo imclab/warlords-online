@@ -46,7 +46,7 @@ public class GameLogic {
      * @param battle
      * @return winner index
      */
-    public static int runTurn(Battle battle) {
+    public static int runTurn(Battle battle, int myArmyIndex) {
 
         // update turn count
         battle.setTurnCount(battle.getTurnCount() + 1);
@@ -196,7 +196,7 @@ public class GameLogic {
                 // update places' owners
                 if (tile.getTerrain().canBeControlled() && tile.getContent().size() > 0
                         && tile.getContent().get(0).getArmyIndex() != tile.getOwner()) {
-                    tile.updateTileOwner(battle.getPlayers().get(0).getArmyIndex(), tile.getContent().get(0)
+                    tile.updateTileOwner(myArmyIndex, tile.getContent().get(0)
                             .getArmyIndex());
                 }
 
@@ -305,7 +305,7 @@ public class GameLogic {
                 }
             }
             return winner.getArmyIndex();
-        } else if (!battle.getMeSoloMode().isAI() && battle.getMeSoloMode().isDefeated()) {
+        } else if (!battle.getMe(myArmyIndex).isAI() && battle.getMe(myArmyIndex).isDefeated()) {
             return SOLO_PLAYER_DEFEAT;
         } else {
             return -1;

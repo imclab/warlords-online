@@ -12,6 +12,7 @@ import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Map;
 import com.giggs.apps.chaos.game.model.map.Tile;
 import com.giggs.apps.chaos.game.model.units.Unit;
+import com.google.android.gms.games.multiplayer.Participant;
 
 public class GameCreation {
 
@@ -32,6 +33,25 @@ public class GameCreation {
             String playerName = n == 0 ? "Me" : lstAINames.get(nameIndex);
             lstAINames.remove(nameIndex);
             Player p = new Player("" + n, playerName, ArmiesData.values()[army], n, n != myArmyIndex);
+            lstPlayers.add(p);
+        }
+        battle.setPlayers(lstPlayers);
+
+        // create random map
+        battle.setMap(createRandomMap(lstPlayers));
+
+        return battle;
+    }
+
+    public static Battle createMultiplayerMap(List<Participant> players, int[] lstMultiplayerArmies) {
+        Battle battle = new Battle();
+
+        // init players
+        List<Player> lstPlayers = new ArrayList<Player>();
+        for (int n = 0; n < players.size(); n++) {
+            Participant participant = players.get(n);
+            Player p = new Player(participant.getParticipantId(), participant.getDisplayName(),
+                    ArmiesData.values()[lstMultiplayerArmies[n]], n, false);
             lstPlayers.add(p);
         }
         battle.setPlayers(lstPlayers);
@@ -167,7 +187,7 @@ public class GameCreation {
         case 8:
             return 4 * GameUtils.GAME_CREATION_ZONE_SIZE;
         }
-        return 3 * GameUtils.GAME_CREATION_ZONE_SIZE;
+        return nbPlayers / 2 * GameUtils.GAME_CREATION_ZONE_SIZE + 2;
     }
 
 }

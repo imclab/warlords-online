@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 
 import com.giggs.apps.chaos.database.DatabaseHelper;
 import com.giggs.apps.chaos.game.model.Battle;
+import com.giggs.apps.chaos.game.multiplayer.Message;
 
 public class SaveGameHelper {
 
@@ -34,7 +35,7 @@ public class SaveGameHelper {
     }
 
     /**
-     * Gets a battle object from a byte array.
+     * Gets a Battle object from a byte array.
      * 
      * @param blob
      * @return
@@ -46,6 +47,52 @@ public class SaveGameHelper {
             Battle battle = (Battle) in.readObject();
             in.close();
             return battle;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Gets a Message object from a byte array.
+     * 
+     * @param blob
+     * @return
+     */
+    public static Message getMessageFromByte(byte[] blob) {
+        try {
+            ByteArrayInputStream bais = new ByteArrayInputStream(blob);
+            ObjectInputStream in = new ObjectInputStream(bais);
+            Message msg = (Message) in.readObject();
+            in.close();
+            return msg;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Gets an object from a byte array.
+     * 
+     * @param blob
+     * @return
+     */
+    public static Object getObjectFromByte(byte[] blob) {
+        try {
+            ByteArrayInputStream bais = new ByteArrayInputStream(blob);
+            ObjectInputStream in = new ObjectInputStream(bais);
+            Object o = (Object) in.readObject();
+            in.close();
+            return o;
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {

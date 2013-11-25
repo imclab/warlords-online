@@ -42,7 +42,7 @@ public class GameGUI {
     private Animation mBuyLayoutAnimationIn, mBuyLayoutAnimationOut;
     private ViewGroup mBuyLayout;
     private TextView mGoldAmount;
-    private Button mSendOrdersButton;
+    public Button mSendOrdersButton;
     private Animation mGoldDeficitAnimation;
     private TextView economyBalanceTV;
     private Tile selectedTile = null;
@@ -80,9 +80,9 @@ public class GameGUI {
             public void onClick(View v) {
                 if (selectedTile != null) {
                     // remove order
-                    for (Order order : mActivity.battle.getMeSoloMode().getLstTurnOrders()) {
+                    for (Order order : mActivity.battle.getMe(mActivity.myArmyIndex).getLstTurnOrders()) {
                         if (order instanceof BuyOrder && ((BuyOrder) order).getTile() == selectedTile) {
-                            mActivity.battle.getMeSoloMode().removeOrder(order);
+                            mActivity.battle.getMe(mActivity.myArmyIndex).removeOrder(order);
                             break;
                         }
                     }
@@ -94,7 +94,8 @@ public class GameGUI {
         // init units buy buttons
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(15, 0, 0, 0);
-        List<Unit> lstAvailableUnits = UnitsData.getUnits(mActivity.battle.getMeSoloMode().getArmy(), 0);
+        List<Unit> lstAvailableUnits = UnitsData.getUnits(mActivity.battle.getMe(mActivity.myArmyIndex).getArmy(),
+                mActivity.myArmyIndex);
         for (int n = 0; n < lstAvailableUnits.size(); n++) {
             final Unit unit = lstAvailableUnits.get(n);
             View button = mActivity.getLayoutInflater().inflate(R.layout.buy_unit_button, null);
@@ -111,17 +112,17 @@ public class GameGUI {
                 public void onClick(View v) {
                     if (selectedTile != null) {
                         // remove order
-                        for (Order order : mActivity.battle.getMeSoloMode().getLstTurnOrders()) {
+                        for (Order order : mActivity.battle.getMe(mActivity.myArmyIndex).getLstTurnOrders()) {
                             if (order instanceof BuyOrder && ((BuyOrder) order).getTile() == selectedTile) {
-                                mActivity.battle.getMeSoloMode().removeOrder(order);
+                                mActivity.battle.getMe(mActivity.myArmyIndex).removeOrder(order);
                             }
                         }
                         mActivity.battle
-                                .getPlayers()
-                                .get(0)
+                                .getMe(mActivity.myArmyIndex)
                                 .getLstTurnOrders()
                                 .add(new BuyOrder(selectedTile, UnitsData.getUnits(unit.getArmy(),
-                                        mActivity.battle.getMeSoloMode().getArmyIndex()).get((Integer) v.getTag())));
+                                        mActivity.battle.getMe(mActivity.myArmyIndex).getArmyIndex()).get(
+                                        (Integer) v.getTag())));
                         mActivity.updateUnitProduction(selectedTile.getSprite(),
                                 GraphicsFactory.mGfxMap.get(unit.getSpriteName().replace(".png", "") + "_image.png"));
                         hideBuyOptions();
@@ -159,7 +160,7 @@ public class GameGUI {
 
             // chat button
             ImageView chatButton = (ImageView) layout.findViewById(R.id.chat);
-            if (!player.isAI() && player.getArmyIndex() != 0) {
+            if (!player.isAI() && player.getArmyIndex() != mActivity.myArmyIndex) {
                 chatButton.setVisibility(View.VISIBLE);
                 chatButton.setOnClickListener(new OnClickListener() {
                     @Override
@@ -170,7 +171,7 @@ public class GameGUI {
             }
 
             // show economy
-            if (player.getArmyIndex() == 0) {
+            if (player.getArmyIndex() == mActivity.myArmyIndex) {
                 economyBalanceTV = (TextView) layout.findViewById(R.id.economy);
                 economyBalanceTV.setVisibility(View.VISIBLE);
                 updateEconomyBalance(0);
@@ -217,10 +218,10 @@ public class GameGUI {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == R.id.okButton) {
-                            mActivity.battle.getMeSoloMode().setDefeated(true);
+                            mActivity.battle.getMe(mActivity.myArmyIndex).setDefeated(true);
                             GoogleAnalyticsHelper.sendEvent(mActivity.getApplicationContext(), EventCategory.ui_action,
                                     EventAction.button_press, "surrender_game");
-                            mActivity.goToReport(false);
+                            mActivity.goToReport();
                         }
                         dialog.dismiss();
                     }
@@ -268,20 +269,23 @@ public class GameGUI {
     }
 
     public void showBuyOptions(Tile tile) {
-        selectedTile = tile;
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // can I afford these units ?
-                List<Unit> lstUnits = UnitsData.getUnits(mActivity.battle.getMeSoloMode().getArmy(), 0);
-                for (int n = 0; n < lstUnits.size(); n++) {
-                    mBuyLayout.getChildAt(n + 1).setEnabled(
-                            lstUnits.get(n).getPrice() <= mActivity.battle.getMeSoloMode().getGold());
+        if (!mActivity.hasSendOrders) {
+            selectedTile = tile;
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // can I afford these units ?
+                    List<Unit> lstUnits = UnitsData.getUnits(mActivity.battle.getMe(mActivity.myArmyIndex).getArmy(),
+                            mActivity.myArmyIndex);
+                    for (int n = 0; n < lstUnits.size(); n++) {
+                        mBuyLayout.getChildAt(n + 1).setEnabled(
+                                lstUnits.get(n).getPrice() <= mActivity.battle.getMe(mActivity.myArmyIndex).getGold());
+                    }
+                    mBuyLayout.startAnimation(mBuyLayoutAnimationIn);
+                    mBuyLayout.setVisibility(View.VISIBLE);
                 }
-                mBuyLayout.startAnimation(mBuyLayoutAnimationIn);
-                mBuyLayout.setVisibility(View.VISIBLE);
-            }
-        });
+            });
+        }
     }
 
     public void hideBuyOptions() {
@@ -312,7 +316,7 @@ public class GameGUI {
 
     private void confirmSendOrders() {
         // show confirm dialog if no orders for this turn
-        if (showConfirm && mActivity.battle.getMeSoloMode().getLstTurnOrders().size() == 0) {
+        if (showConfirm && mActivity.battle.getMe(mActivity.myArmyIndex).getLstTurnOrders().size() == 0) {
             Dialog dialog = new CustomAlertDialog(mActivity, R.style.Dialog,
                     mActivity.getString(R.string.confirm_no_orders), new DialogInterface.OnClickListener() {
                         @Override
@@ -331,9 +335,16 @@ public class GameGUI {
     }
 
     private void sendOrders() {
-        // TODO multi
         hideBuyOptions();
-        mActivity.runTurn();
+        if (mActivity.isMultiplayerGame) {
+            // send orders
+            mSendOrdersButton.setVisibility(View.GONE);
+            mActivity.hasSendOrders = true;
+            mActivity.sendOrders();
+            mActivity.onNewOrders();
+        } else {
+            mActivity.runTurn();
+        }
     }
 
     private void openChatSession() {
@@ -367,7 +378,7 @@ public class GameGUI {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mActivity.goToReport(isVictory);
+                mActivity.goToReport();
             }
         });
 

@@ -76,6 +76,7 @@
             </GridLayout>
 
             <com.giggs.apps.chaos.views.CustomTextView
+                android:id="@+id/titleNbPlayers"
                 style="@style/ArmyBuilderSubTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

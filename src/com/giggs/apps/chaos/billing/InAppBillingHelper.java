@@ -10,9 +10,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.giggs.apps.chaos.activities.interfaces.OnBillingServiceConnectedListener;
@@ -54,13 +56,14 @@ public class InAppBillingHelper {
         return mServiceConn;
     }
 
-    public List<Integer> getAvailableArmies() {
+    public List<Integer> getAvailableArmies(Context context) {
         List<Integer> lstArmiesAvailable = new ArrayList<Integer>();
         lstArmiesAvailable.add(ArmiesData.HUMAN.ordinal());
         lstArmiesAvailable.add(ArmiesData.ORCS.ordinal());
         lstArmiesAvailable.add(ArmiesData.UNDEAD.ordinal());
 
         try {
+            SharedPreferences mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
             Bundle ownedItems = mService.getPurchases(BILLING_API_VERSION, mActivity.getPackageName(),
                     IN_APP_PURCHASE_TYPE, null);
             int response = ownedItems.getInt("RESPONSE_CODE");
@@ -68,10 +71,16 @@ public class InAppBillingHelper {
                 ArrayList<String> ownedSkus = ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
                 for (int i = 0; i < ownedSkus.size(); i++) {
                     String sku = ownedSkus.get(i);
-                    if (sku.equals("army_dwarf")) {
+                    if (sku.equals("army_dwarf") || mSharedPrefs.getBoolean("army_dwarf", false)) {
                         lstArmiesAvailable.add(ArmiesData.DWARF.ordinal());
-                    } else if (sku.equals("army_chaos")) {
+                        if (!mSharedPrefs.getBoolean("army_dwarf", false)) {
+                            mSharedPrefs.edit().putBoolean("army_dwarf", true).commit();
+                        }
+                    } else if (sku.equals("army_chaos") || mSharedPrefs.getBoolean("army_chaos", false)) {
                         lstArmiesAvailable.add(ArmiesData.CHAOS.ordinal());
+                        if (!mSharedPrefs.getBoolean("army_chaos", false)) {
+                            mSharedPrefs.edit().putBoolean("army_chaos", true).commit();
+                        }
                     }
                 }
             }

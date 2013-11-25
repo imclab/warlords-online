@@ -79,6 +79,7 @@
             android:id="@id/handle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/placeholder"
             android:src="@drawable/bg_drawer_handle" />
 
         <ScrollView
@@ -91,9 +92,9 @@
 
             <LinearLayout
                 android:id="@+id/players"
-                android:layout_width="350dp"
+                android:layout_width="450dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
+                android:layout_gravity="right"
                 android:orientation="vertical"
                 android:padding="15dp" >
             </LinearLayout>

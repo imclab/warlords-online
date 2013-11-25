@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.giggs.apps.chaos"
     android:installLocation="preferExternal"
-    android:versionCode="20"
+    android:versionCode="21"
     android:versionName="2.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -34,11 +34,6 @@
             android:name=".activities.SplashActivity"
             android:noHistory="true"
             android:screenOrientation="landscape" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.HomeActivity"
@@ -61,6 +56,15 @@
             android:name=".activities.BattleReportActivity"
             android:noHistory="true"
             android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".activities.MultiplayerActivity"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

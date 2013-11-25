@@ -12,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.RadioGroup.LayoutParams;
 
 import com.giggs.apps.chaos.MyApplication;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.activities.GameActivity;
+import com.giggs.apps.chaos.activities.MultiplayerActivity;
 import com.giggs.apps.chaos.activities.interfaces.OnBillingServiceConnectedListener;
 import com.giggs.apps.chaos.billing.InAppBillingHelper;
 import com.giggs.apps.chaos.game.GameUtils;
@@ -26,9 +28,16 @@ import com.giggs.apps.chaos.views.CustomRadioButton;
 
 public class CreateGameDialog extends DialogFragment {
 
+    public static final String ARGUMENT_GAME_TYPE = "game_type";
+    public static final String ARGUMENT_IS_HOST = "is_host";
+    public static final int SOLO_GAME_TYPE = 100;
+    public static final int MULTIPLAYER_GAME_TYPE = 200;
+
     private GridLayout mRadioGroupArmy;
     private RadioGroup mRadioGroupNbPlayers;
-    private int selectedArmy = 0;
+    private int mGameType;
+    private int mSelectedArmy = 0;
+    private boolean mIsHost = true;
     private InAppBillingHelper mInAppBillingHelper;
 
     /**
@@ -43,7 +52,7 @@ public class CreateGameDialog extends DialogFragment {
     private OnClickListener onAvailableArmyButtonClicked = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            selectedArmy = (Integer) v.getTag();
+            mSelectedArmy = (Integer) v.getTag();
             for (int n = 0; n < mRadioGroupArmy.getChildCount(); n++) {
                 CustomRadioButton view = (CustomRadioButton) mRadioGroupArmy.getChildAt(n);
                 view.setChecked(false);
@@ -71,6 +80,13 @@ public class CreateGameDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         mInAppBillingHelper = new InAppBillingHelper(getActivity(), mBillingServiceConnectionCallback);
+
+        Bundle args = getArguments();
+        mGameType = args.getInt(ARGUMENT_GAME_TYPE);
+
+        if (mGameType == MULTIPLAYER_GAME_TYPE) {
+            mIsHost = args.getBoolean(ARGUMENT_IS_HOST);
+        }
     }
 
     @Override
@@ -101,13 +117,19 @@ public class CreateGameDialog extends DialogFragment {
             mRadioGroupArmy.getChildAt(n).setTag(n);
         }
 
-        // init nb players chooser
         mRadioGroupNbPlayers = (RadioGroup) view.findViewById(R.id.radioGroupNbPlayers);
-        for (int nbPlayers : GameUtils.NB_PLAYERS_IN_GAME) {
-            addNbPlayersRadioButton(nbPlayers);
+        if (mIsHost) {
+            // init nb players chooser
+            for (int nbPlayers : GameUtils.NB_PLAYERS_IN_GAME) {
+                addNbPlayersRadioButton(nbPlayers);
+            }
+            // checks first radio button
+            ((CompoundButton) mRadioGroupNbPlayers.getChildAt(2)).setChecked(true);
+        } else {
+            mRadioGroupNbPlayers.setVisibility(View.GONE);
+            view.findViewById(R.id.titleNbPlayers).setVisibility(View.GONE);
+            ((TextView) view.findViewById(R.id.okButton)).setText(R.string.go);
         }
-        // checks first radio button
-        ((CompoundButton) mRadioGroupNbPlayers.getChildAt(2)).setChecked(true);
 
         // cancel button
         view.findViewById(R.id.cancelButton).setOnClickListener(new OnClickListener() {
@@ -159,7 +181,8 @@ public class CreateGameDialog extends DialogFragment {
 
     public void updateAvailableArmies() {
         // get available armies
-        List<Integer> lstAvailableArmies = mInAppBillingHelper.getAvailableArmies();
+        List<Integer> lstAvailableArmies = mInAppBillingHelper
+                .getAvailableArmies(getActivity().getApplicationContext());
         for (int n = 0; n < mRadioGroupArmy.getChildCount(); n++) {
             boolean isArmyAvailable = lstAvailableArmies.indexOf(n) >= 0;
             mRadioGroupArmy.getChildAt(n).setOnClickListener(
@@ -172,13 +195,19 @@ public class CreateGameDialog extends DialogFragment {
     }
 
     private void createGame() {
-        Intent intent = new Intent(getActivity(), GameActivity.class);
-        Bundle extras = new Bundle();
-        extras.putInt("my_army", selectedArmy);
-        extras.putInt("nb_players", mRadioGroupNbPlayers.getCheckedRadioButtonId());
-        intent.putExtras(extras);
-        startActivity(intent);
-        getActivity().finish();
+        if (mGameType == SOLO_GAME_TYPE) {
+            Intent intent = new Intent(getActivity(), GameActivity.class);
+            Bundle extras = new Bundle();
+            extras.putInt("my_army", mSelectedArmy);
+            extras.putInt("nb_players", mRadioGroupNbPlayers.getCheckedRadioButtonId());
+            intent.putExtras(extras);
+            startActivity(intent);
+            getActivity().finish();
+        } else if (mGameType == MULTIPLAYER_GAME_TYPE) {
+            ((MultiplayerActivity) getActivity()).onArmyChosen(mSelectedArmy,
+                    mIsHost ? mRadioGroupNbPlayers.getCheckedRadioButtonId() : -1);
+            dismiss();
+        }
     }
 
 }

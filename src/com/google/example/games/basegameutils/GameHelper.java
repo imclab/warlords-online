@@ -977,7 +977,7 @@ public class GameHelper implements GooglePlayServicesClient.ConnectionCallbacks,
         default:
             // No meaningful Activity response code, so generate default Google
             // Play services dialog
-            errorDialog = GooglePlayServicesUtil.getErrorDialog(errorCode, mActivity, RC_UNUSED, null);
+//            errorDialog = GooglePlayServicesUtil.getErrorDialog(errorCode, mActivity, RC_UNUSED, null);
             if (errorDialog == null) {
                 // get fallback dialog
                 debugLog("No standard error dialog available. Making fallback dialog.");

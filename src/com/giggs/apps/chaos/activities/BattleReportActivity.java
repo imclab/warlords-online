@@ -1,7 +1,5 @@
 package com.giggs.apps.chaos.activities;
 
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,148 +28,145 @@ import com.jjoe64.graphview.LineGraphView;
 
 public class BattleReportActivity extends BaseGameActivity {
 
-	@Override
-	public void onSignInFailed() {
-	}
+    @Override
+    public void onSignInFailed() {
+    }
 
-	@Override
-	public void onSignInSucceeded() {
-	}
+    @Override
+    public void onSignInSucceeded() {
+    }
 
-	private DatabaseHelper mDbHelper;
-	private Battle battle;
-	private boolean mIsVictory = false;
-	private boolean mIsSoloGame = true;
+    private DatabaseHelper mDbHelper;
+    private Battle battle;
+    private boolean mIsVictory = false;
+    private boolean mIsSoloGame = true;
 
-	private Button mLeaveReportBtn;
+    private Button mLeaveReportBtn;
 
-	/**
-	 * Callbacks
-	 */
-	private OnClickListener onLeaveReportClicked = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			MusicManager.playSound(getApplicationContext(), R.raw.main_button);
-			leaveReport();
-		}
-	};
+    /**
+     * Callbacks
+     */
+    private OnClickListener onLeaveReportClicked = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            MusicManager.playSound(getApplicationContext(), R.raw.main_button);
+            leaveReport();
+        }
+    };
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		mDbHelper = new DatabaseHelper(getApplicationContext());
+        Bundle args = getIntent().getExtras();
+        int myArmyIndex = args.getInt("army_index");
 
-		// get battle info
-		List<Battle> lstSavedGames = mDbHelper.getBattleDao().get(null, null, null, null);
-		// we never know !
-		if (lstSavedGames.size() == 0) {
-			leaveReport();
-			return;
-		}
-		battle = lstSavedGames.get(0);
-		mIsVictory = !battle.getMeSoloMode().isDefeated();
-		for (Player p : battle.getPlayers()) {
-			if (p != battle.getMeSoloMode() && !p.isAI()) {
-				mIsSoloGame = false;
-			}
-		}
+        mDbHelper = new DatabaseHelper(getApplicationContext());
 
-		// erase saved games from database
-		SaveGameHelper.deleteSavedBattles(mDbHelper);
+        // get battle info
+        battle = args.getParcelable("battle");
+        mIsVictory = !battle.getMe(myArmyIndex).isDefeated();
+        for (Player p : battle.getPlayers()) {
+            if (p != battle.getMe(myArmyIndex) && !p.isAI()) {
+                mIsSoloGame = false;
+            }
+        }
 
-		setContentView(R.layout.activity_battle_report);
-		setupUI();
+        // erase saved games from database
+        SaveGameHelper.deleteSavedBattles(mDbHelper);
 
-		mMusic = MusicManager.MUSIC_END_GAME;
-	}
+        setContentView(R.layout.activity_battle_report);
+        setupUI();
 
-	@Override
-	public void onBackPressed() {
-		leaveReport();
-	}
+        mMusic = MusicManager.MUSIC_END_GAME;
+    }
 
-	private void setupUI() {
-		// setup background victory label
-		TextView victoryLabel = (TextView) findViewById(R.id.victoryLabel);
-		if (mIsVictory) {
-			victoryLabel.setText(R.string.victory);
-			victoryLabel.setTextColor(getResources().getColor(R.color.green));
-		} else {
-			victoryLabel.setText(R.string.defeat);
-			victoryLabel.setTextColor(getResources().getColor(R.color.red));
-		}
+    @Override
+    public void onBackPressed() {
+        leaveReport();
+    }
 
-		// init leave report button
-		mLeaveReportBtn = (Button) findViewById(R.id.leaveReportButton);
-		mLeaveReportBtn.setOnClickListener(onLeaveReportClicked);
+    private void setupUI() {
+        // setup background victory label
+        TextView victoryLabel = (TextView) findViewById(R.id.victoryLabel);
+        if (mIsVictory) {
+            victoryLabel.setText(R.string.victory);
+            victoryLabel.setTextColor(getResources().getColor(R.color.green));
+        } else {
+            victoryLabel.setText(R.string.defeat);
+            victoryLabel.setTextColor(getResources().getColor(R.color.red));
+        }
 
-		// setup players figures
-		TableLayout statsTable = (TableLayout) findViewById(R.id.playersStats);
-		for (Player player : battle.getPlayers()) {
-			TableRow statsRow = (TableRow) getLayoutInflater().inflate(R.layout.player_stats_row, null);
-			TextView playerName = (TextView) statsRow.findViewById(R.id.name);
-			playerName.setText("" + player.getName());
-			playerName.setCompoundDrawablesWithIntrinsicBounds(player.getArmy().getImage(), 0, 0, 0);
-			int playerColor = GameUtils.PLAYER_COLORS[player.getArmyIndex()].getARGBPackedInt();
-			playerName.setTextColor(playerColor);
-			TextView goldGathered = (TextView) statsRow.findViewById(R.id.gold);
-			goldGathered.setText("" + player.getGameStats().getGold());
-			TextView unitsCreated = (TextView) statsRow.findViewById(R.id.unitsCreated);
-			unitsCreated.setText("" + player.getGameStats().getNbUnitsCreated());
-			TextView unitsKilled = (TextView) statsRow.findViewById(R.id.unitsKilled);
-			unitsKilled.setText("" + player.getGameStats().getNbUnitsKilled());
-			TextView battlesWon = (TextView) statsRow.findViewById(R.id.battlesWon);
-			battlesWon.setText("" + player.getGameStats().getNbBattlesWon());
+        // init leave report button
+        mLeaveReportBtn = (Button) findViewById(R.id.leaveReportButton);
+        mLeaveReportBtn.setOnClickListener(onLeaveReportClicked);
 
-			statsTable.addView(statsRow);
-		}
+        // setup players figures
+        TableLayout statsTable = (TableLayout) findViewById(R.id.playersStats);
+        for (Player player : battle.getPlayers()) {
+            TableRow statsRow = (TableRow) getLayoutInflater().inflate(R.layout.player_stats_row, null);
+            TextView playerName = (TextView) statsRow.findViewById(R.id.name);
+            playerName.setText("" + player.getName());
+            playerName.setCompoundDrawablesWithIntrinsicBounds(player.getArmy().getImage(), 0, 0, 0);
+            int playerColor = GameUtils.PLAYER_COLORS[player.getArmyIndex()].getARGBPackedInt();
+            playerName.setTextColor(playerColor);
+            TextView goldGathered = (TextView) statsRow.findViewById(R.id.gold);
+            goldGathered.setText("" + player.getGameStats().getGold());
+            TextView unitsCreated = (TextView) statsRow.findViewById(R.id.unitsCreated);
+            unitsCreated.setText("" + player.getGameStats().getNbUnitsCreated());
+            TextView unitsKilled = (TextView) statsRow.findViewById(R.id.unitsKilled);
+            unitsKilled.setText("" + player.getGameStats().getNbUnitsKilled());
+            TextView battlesWon = (TextView) statsRow.findViewById(R.id.battlesWon);
+            battlesWon.setText("" + player.getGameStats().getNbBattlesWon());
 
-		// setup charts
-		ViewGroup popGraphLayout = (ViewGroup) findViewById(R.id.popGraph);
-		ViewGroup economyGraphLayout = (ViewGroup) findViewById(R.id.economyGraph);
-		GraphView graphViewPop = new LineGraphView(this, "");
-		GraphView graphViewEconomy = new LineGraphView(this, "");
-		for (Player player : battle.getPlayers()) {
-			GameStats gameStats = player.getGameStats();
-			GraphViewData[] dataEconomy = new GraphViewData[gameStats.getEconomy().size()];
-			GraphViewData[] dataPop = new GraphViewData[gameStats.getPopulation().size()];
-			for (int n = 0; n < player.getGameStats().getPopulation().size(); n++) {
-				dataPop[n] = new GraphViewData(n + 1, player.getGameStats().getPopulation().get(n));
-				dataEconomy[n] = new GraphViewData(n + 1, player.getGameStats().getEconomy().get(n));
-			}
-			graphViewPop.addSeries(new GraphViewSeries(player.getName(), new GraphViewSeriesStyle(
-			        GameUtils.PLAYER_COLORS[player.getArmyIndex()].getARGBPackedInt(), 5), dataPop));
-			graphViewEconomy.addSeries(new GraphViewSeries(player.getName(), new GraphViewSeriesStyle(
-			        GameUtils.PLAYER_COLORS[player.getArmyIndex()].getARGBPackedInt(), 5), dataEconomy));
-		}
-		String[] horizontalLabels = new String[] { "", "", "time" };
-		graphViewPop.setHorizontalLabels(horizontalLabels);
-		graphViewPop.setVerticalLabels(new String[] { "high", "", "low" });
-		popGraphLayout.addView(graphViewPop);
-		graphViewEconomy.setHorizontalLabels(horizontalLabels);
-		economyGraphLayout.addView(graphViewEconomy);
-	}
+            statsTable.addView(statsRow);
+        }
 
-	private void leaveReport() {
-		GamesClient gameClient = getGamesClient();
-		if (gameClient != null && gameClient.isConnected()) {
-			if (mIsVictory) {
-				if (mIsSoloGame) {
-					gameClient.incrementAchievement(getString(R.string.achievement_ai_killer), 1);
-					gameClient.incrementAchievement(getString(R.string.achievement_morpheus), 1);
-				} else {
-					gameClient.incrementAchievement(getString(R.string.achievement_novice), 1);
-					gameClient.incrementAchievement(getString(R.string.achievement_sergeant), 1);
-					gameClient.incrementAchievement(getString(R.string.achievement_captain), 1);
-					gameClient.incrementAchievement(getString(R.string.achievement_warlord), 1);
-					gameClient.incrementAchievement(getString(R.string.achievement_professor_chaos), 1);
-					gameClient.submitScore(getString(R.string.ranking_best_generals), 1);
-				}
-			}
-		}
-		startActivity(new Intent(BattleReportActivity.this, HomeActivity.class));
-		finish();
-	}
+        // setup charts
+        ViewGroup popGraphLayout = (ViewGroup) findViewById(R.id.popGraph);
+        ViewGroup economyGraphLayout = (ViewGroup) findViewById(R.id.economyGraph);
+        GraphView graphViewPop = new LineGraphView(this, "");
+        GraphView graphViewEconomy = new LineGraphView(this, "");
+        for (Player player : battle.getPlayers()) {
+            GameStats gameStats = player.getGameStats();
+            GraphViewData[] dataEconomy = new GraphViewData[gameStats.getEconomy().size()];
+            GraphViewData[] dataPop = new GraphViewData[gameStats.getPopulation().size()];
+            for (int n = 0; n < player.getGameStats().getPopulation().size(); n++) {
+                dataPop[n] = new GraphViewData(n + 1, player.getGameStats().getPopulation().get(n));
+                dataEconomy[n] = new GraphViewData(n + 1, player.getGameStats().getEconomy().get(n));
+            }
+            graphViewPop.addSeries(new GraphViewSeries(player.getName(), new GraphViewSeriesStyle(
+                    GameUtils.PLAYER_COLORS[player.getArmyIndex()].getARGBPackedInt(), 5), dataPop));
+            graphViewEconomy.addSeries(new GraphViewSeries(player.getName(), new GraphViewSeriesStyle(
+                    GameUtils.PLAYER_COLORS[player.getArmyIndex()].getARGBPackedInt(), 5), dataEconomy));
+        }
+        String[] horizontalLabels = new String[] { "", "", "time" };
+        graphViewPop.setHorizontalLabels(horizontalLabels);
+        graphViewPop.setVerticalLabels(new String[] { "high", "", "low" });
+        popGraphLayout.addView(graphViewPop);
+        graphViewEconomy.setHorizontalLabels(horizontalLabels);
+        economyGraphLayout.addView(graphViewEconomy);
+    }
+
+    private void leaveReport() {
+        GamesClient gameClient = getGamesClient();
+        if (gameClient != null && gameClient.isConnected()) {
+            if (mIsVictory) {
+                if (mIsSoloGame) {
+                    gameClient.incrementAchievement(getString(R.string.achievement_ai_killer), 1);
+                    gameClient.incrementAchievement(getString(R.string.achievement_morpheus), 1);
+                } else {
+                    gameClient.incrementAchievement(getString(R.string.achievement_novice), 1);
+                    gameClient.incrementAchievement(getString(R.string.achievement_sergeant), 1);
+                    gameClient.incrementAchievement(getString(R.string.achievement_captain), 1);
+                    gameClient.incrementAchievement(getString(R.string.achievement_warlord), 1);
+                    gameClient.incrementAchievement(getString(R.string.achievement_professor_chaos), 1);
+                    gameClient.submitScore(getString(R.string.ranking_best_generals), 1);
+                }
+            }
+        }
+        startActivity(new Intent(BattleReportActivity.this, HomeActivity.class));
+        finish();
+    }
 
 }
