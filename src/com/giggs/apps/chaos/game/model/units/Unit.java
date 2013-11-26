@@ -99,9 +99,9 @@ public abstract class Unit extends GameElement {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(Order order, boolean showIt) {
         this.order = order;
-        if (sprite != null) {
+        if (sprite != null && showIt) {
             if (order instanceof DefendOrder) {
                 sprite.defend();
             } else if (order instanceof MoveOrder) {
@@ -233,17 +233,17 @@ public abstract class Unit extends GameElement {
                 return true;
             }
         }
-        adjacentTilesBoucle : for (Tile tile : MapLogic.getAdjacentTiles(battle.getMap(), tilePosition, 1, false)) {
+        adjacentTilesBoucle: for (Tile tile : MapLogic.getAdjacentTiles(battle.getMap(), tilePosition, 1, false)) {
             if (canFleeHere(tile)) {
-            	// check if enemies come from this position
-            	for (Unit u : tile.getContent()) {
-            		if (u.getArmyIndex() != armyIndex && u.getOrder() != null && u.getOrder() instanceof MoveOrder) {
-            			MoveOrder moveOrder = (MoveOrder) order;
-            			if (moveOrder.getOrigin() == tile) {
-            				continue adjacentTilesBoucle;
-            			}
-            		}
-            	}
+                // check if enemies come from this position
+                for (Unit u : tile.getContent()) {
+                    if (u.getArmyIndex() != armyIndex && u.getOrder() != null && u.getOrder() instanceof MoveOrder) {
+                        MoveOrder moveOrder = (MoveOrder) order;
+                        if (moveOrder.getOrigin() == tile) {
+                            continue adjacentTilesBoucle;
+                        }
+                    }
+                }
                 updateTilePosition(tile);
                 return true;
             }

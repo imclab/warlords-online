@@ -349,7 +349,11 @@ public class HomeActivity extends BaseGameActivity implements OnClickListener {
     }
 
     private void goToMultiplayerScreen() {
-        startActivity(new Intent(this, MultiplayerActivity.class));
+        Intent i = new Intent(this, GameActivity.class);
+        Bundle args = new Bundle();
+        args.putBoolean("multiplayer", true);
+        i.putExtras(args);
+        startActivity(i);
         finish();
     }
 

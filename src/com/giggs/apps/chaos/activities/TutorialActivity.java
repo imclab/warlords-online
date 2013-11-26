@@ -39,7 +39,7 @@ public class TutorialActivity extends GameActivity {
             R.string.tutorial_13 };
 
     @Override
-    protected void initActivity() {
+    protected void initGameActivity() {
         mDbHelper = new DatabaseHelper(getApplicationContext());
 
         battle = new Battle();
@@ -79,7 +79,6 @@ public class TutorialActivity extends GameActivity {
         battle.setMap(map);
 
         mGameGUI = new GameGUI(this);
-        mGameGUI.setupGUI();
         mGameGUI.showConfirm = false;
 
         mMustSaveGame = false;

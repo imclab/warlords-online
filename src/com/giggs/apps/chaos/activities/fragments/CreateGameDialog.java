@@ -2,6 +2,7 @@ package com.giggs.apps.chaos.activities.fragments;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +19,6 @@ import android.widget.RadioGroup.LayoutParams;
 import com.giggs.apps.chaos.MyApplication;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.activities.GameActivity;
-import com.giggs.apps.chaos.activities.MultiplayerActivity;
 import com.giggs.apps.chaos.activities.interfaces.OnBillingServiceConnectedListener;
 import com.giggs.apps.chaos.billing.InAppBillingHelper;
 import com.giggs.apps.chaos.game.GameUtils;
@@ -204,10 +204,15 @@ public class CreateGameDialog extends DialogFragment {
             startActivity(intent);
             getActivity().finish();
         } else if (mGameType == MULTIPLAYER_GAME_TYPE) {
-            ((MultiplayerActivity) getActivity()).onArmyChosen(mSelectedArmy,
-                    mIsHost ? mRadioGroupNbPlayers.getCheckedRadioButtonId() : -1);
+            Intent data = new Intent();
+            Bundle args = new Bundle();
+            args.putInt("army", mSelectedArmy);
+            if (mIsHost) {
+                args.putInt("nb_players", mRadioGroupNbPlayers.getCheckedRadioButtonId());
+            }
+            data.putExtras(args);
+            getTargetFragment().onActivityResult(MultiplayerFragment.RC_ARMY_CHOOSER, Activity.RESULT_OK, data);
             dismiss();
         }
     }
-
 }

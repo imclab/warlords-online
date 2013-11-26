@@ -43,7 +43,7 @@ public class GraphicsFactory {
             loadGfxFromAssets(256, 256, terrain.getSpriteName().replace(".png", "") + "_winter.png", 0, 0);
         }
 
-        // load all units graphics
+        // load all armies graphics
         for (Player player : battle.getPlayers()) {
             for (Unit unit : UnitsData.getUnits(player.getArmy(), player.getArmyIndex())) {
                 loadTiledTextureGfxFromAssets(126, 200, unit.getSpriteName());
@@ -96,24 +96,9 @@ public class GraphicsFactory {
         }
     }
 
-    // public GameSprite addGameElement(Scene scene, GameElement gameElement,
-    // InputManager inputManager,
-    // boolean isMySquad, TMXTile t) {
-    // // create sprite
-    // final GameSprite sprite = new GameSprite(gameElement, inputManager,
-    // t.getTileX(), t.getTileY(),
-    // mGfxMap.get(gameElement.getSpriteName()), mVertexBufferObjectManager);
-    // gameElement.setSprite(sprite);
-    // gameElement.setRank(isMySquad ? Rank.ally : Rank.enemy);
-    // scene.attachChild(sprite);
-    // scene.registerTouchArea(sprite);
-    // return sprite;
-    // }
-    //
-    // public static Sprite createSprite(float x, float y, String spriteName,
-    // VertexBufferObjectManager vertexBufferObjectManager) {
-    // return new Sprite(x, y, GraphicElementFactory.mGfxMap.get(spriteName),
-    // vertexBufferObjectManager);
-    // }
+    public void onPause() {
+        mGfxMap = new HashMap<String, TextureRegion>();
+        mTiledGfxMap = new HashMap<String, TiledTextureRegion>();
+    }
 
 }

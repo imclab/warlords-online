@@ -59,8 +59,8 @@ public class AI {
                             int distance = MapLogic.getDistance(t, insecure);
                             if (distance == 0) {
                                 // defend
-                                DefendOrder o = new DefendOrder(u);
-                                u.setOrder(o);
+                                DefendOrder o = new DefendOrder(u, u.getTilePosition());
+                                u.setOrder(o, false);
                                 player.getLstTurnOrders().add(o);
                                 break;
                             } else if (distance <= 2) {
@@ -68,7 +68,7 @@ public class AI {
                                 Tile step = getOneStepCloser(map, u, insecure);
                                 if (step != null) {
                                     MoveOrder o = new MoveOrder(u, step);
-                                    u.setOrder(o);
+                                    u.setOrder(o, false);
                                     player.getLstTurnOrders().add(o);
                                 }
                                 break;
@@ -82,7 +82,7 @@ public class AI {
                                 Tile step = getOneStepCloser(map, u, closestInterestingPlace);
                                 if (step != null) {
                                     MoveOrder o = new MoveOrder(u, step);
-                                    u.setOrder(o);
+                                    u.setOrder(o, false);
                                     player.getLstTurnOrders().add(o);
                                 }
                             }

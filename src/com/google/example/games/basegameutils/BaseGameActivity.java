@@ -130,7 +130,7 @@ public abstract class BaseGameActivity extends MyActivity implements GameHelper.
 		mHelper.onActivityResult(request, response, data);
 	}
 
-	protected GamesClient getGamesClient() {
+	public GamesClient getGamesClient() {
 		return mHelper.getGamesClient();
 	}
 

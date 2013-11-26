@@ -11,7 +11,7 @@ import com.giggs.apps.chaos.database.DatabaseHelper;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.multiplayer.Message;
 
-public class SaveGameHelper {
+public class GameConverterHelper {
 
     /**
      * Saves a battle.

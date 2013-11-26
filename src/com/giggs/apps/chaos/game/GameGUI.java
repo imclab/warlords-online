@@ -25,6 +25,7 @@ import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventAction;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventCategory;
 import com.giggs.apps.chaos.game.data.UnitsData;
+import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Tile;
 import com.giggs.apps.chaos.game.model.orders.BuyOrder;
@@ -47,12 +48,14 @@ public class GameGUI {
     private TextView economyBalanceTV;
     private Tile selectedTile = null;
     public boolean showConfirm = true;
+    private ViewGroup mPlayersLayout;
 
     public GameGUI(GameActivity activity) {
         this.mActivity = activity;
+        initGUI();
     }
 
-    public void setupGUI() {
+    private void initGUI() {
         // setup loading screen
         mLoadingScreen = new Dialog(mActivity, R.style.LoadingDialog);
         mLoadingScreen.setContentView(R.layout.dialog_game_loading);
@@ -149,7 +152,7 @@ public class GameGUI {
         });
 
         // setup players layout
-        ViewGroup playersLayout = (ViewGroup) mActivity.findViewById(R.id.players);
+        mPlayersLayout = (ViewGroup) mActivity.findViewById(R.id.players);
         for (Player player : mActivity.battle.getPlayers()) {
             View layout = mActivity.getLayoutInflater().inflate(R.layout.in_game_player_layout, null);
             // set name
@@ -182,7 +185,7 @@ public class GameGUI {
                 layout.setAlpha(0.5f);
             }
 
-            playersLayout.addView(layout);
+            mPlayersLayout.addView(layout);
         }
 
     }
@@ -336,11 +339,11 @@ public class GameGUI {
 
     private void sendOrders() {
         hideBuyOptions();
-        if (mActivity.isMultiplayerGame) {
+        if (mActivity.mIsMultiplayerGame) {
             // send orders
             mSendOrdersButton.setVisibility(View.GONE);
             mActivity.hasSendOrders = true;
-            mActivity.sendOrders();
+            mActivity.sendOrdersOnline();
             mActivity.onNewOrders();
         } else {
             mActivity.runTurn();
@@ -392,4 +395,16 @@ public class GameGUI {
         }
     }
 
+    public void updatePlayersNameColor(Battle battle) {
+        for (int n = 0; n < battle.getPlayers().size(); n++) {
+            Player p = battle.getPlayers().get(n);
+            if (p.isDefeated()) {
+                ((TextView) mPlayersLayout.getChildAt(n).findViewById(R.id.name)).setTextColor(mActivity.getResources()
+                        .getColor(R.color.red));
+                if (!p.isAI()) {
+                    mPlayersLayout.getChildAt(n).findViewById(R.id.chat).setVisibility(View.GONE);
+                }
+            }
+        }
+    }
 }

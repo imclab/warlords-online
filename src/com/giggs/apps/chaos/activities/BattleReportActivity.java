@@ -1,5 +1,7 @@
 package com.giggs.apps.chaos.activities;
 
+import java.util.Iterator;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,16 +11,22 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.database.DatabaseHelper;
+import com.giggs.apps.chaos.game.GameConverterHelper;
 import com.giggs.apps.chaos.game.GameUtils;
-import com.giggs.apps.chaos.game.SaveGameHelper;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.GameStats;
 import com.giggs.apps.chaos.game.model.Player;
+import com.giggs.apps.chaos.utils.ApplicationUtils;
 import com.giggs.apps.chaos.utils.MusicManager;
 import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.leaderboard.LeaderboardBuffer;
+import com.google.android.gms.games.leaderboard.LeaderboardScore;
+import com.google.android.gms.games.leaderboard.LeaderboardScoreBuffer;
+import com.google.android.gms.games.leaderboard.OnLeaderboardScoresLoadedListener;
 import com.google.example.games.basegameutils.BaseGameActivity;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
@@ -26,15 +34,7 @@ import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.GraphViewSeries.GraphViewSeriesStyle;
 import com.jjoe64.graphview.LineGraphView;
 
-public class BattleReportActivity extends BaseGameActivity {
-
-    @Override
-    public void onSignInFailed() {
-    }
-
-    @Override
-    public void onSignInSucceeded() {
-    }
+public class BattleReportActivity extends BaseGameActivity implements OnLeaderboardScoresLoadedListener {
 
     private DatabaseHelper mDbHelper;
     private Battle battle;
@@ -73,12 +73,17 @@ public class BattleReportActivity extends BaseGameActivity {
         }
 
         // erase saved games from database
-        SaveGameHelper.deleteSavedBattles(mDbHelper);
+        GameConverterHelper.deleteSavedBattles(mDbHelper);
 
         setContentView(R.layout.activity_battle_report);
         setupUI();
 
         mMusic = MusicManager.MUSIC_END_GAME;
+
+        // if battle was too short, no score update !
+        if (battle.getTurnCount() < 5) {
+            ApplicationUtils.showToast(getApplicationContext(), R.string.game_was_too_short, Toast.LENGTH_SHORT);
+        }
     }
 
     @Override
@@ -148,25 +153,49 @@ public class BattleReportActivity extends BaseGameActivity {
         economyGraphLayout.addView(graphViewEconomy);
     }
 
-    private void leaveReport() {
-        GamesClient gameClient = getGamesClient();
-        if (gameClient != null && gameClient.isConnected()) {
-            if (mIsVictory) {
-                if (mIsSoloGame) {
-                    gameClient.incrementAchievement(getString(R.string.achievement_ai_killer), 1);
-                    gameClient.incrementAchievement(getString(R.string.achievement_morpheus), 1);
-                } else {
-                    gameClient.incrementAchievement(getString(R.string.achievement_novice), 1);
-                    gameClient.incrementAchievement(getString(R.string.achievement_sergeant), 1);
-                    gameClient.incrementAchievement(getString(R.string.achievement_captain), 1);
-                    gameClient.incrementAchievement(getString(R.string.achievement_warlord), 1);
-                    gameClient.incrementAchievement(getString(R.string.achievement_professor_chaos), 1);
-                    gameClient.submitScore(getString(R.string.ranking_best_generals), 1);
+    @Override
+    public void onSignInFailed() {
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        if (battle.getTurnCount() >= 5) {
+            GamesClient gameClient = getGamesClient();
+            if (gameClient != null && gameClient.isConnected()) {
+                if (mIsVictory) {
+                    if (mIsSoloGame) {
+                        gameClient.incrementAchievement(getString(R.string.achievement_ai_killer), 1);
+                        gameClient.incrementAchievement(getString(R.string.achievement_morpheus), 1);
+                    } else {
+                        gameClient.incrementAchievement(getString(R.string.achievement_novice), 1);
+                        gameClient.incrementAchievement(getString(R.string.achievement_sergeant), 1);
+                        gameClient.incrementAchievement(getString(R.string.achievement_captain), 1);
+                        gameClient.incrementAchievement(getString(R.string.achievement_warlord), 1);
+                        gameClient.incrementAchievement(getString(R.string.achievement_professor_chaos), 1);
+                        getGamesClient().loadPlayerCenteredScores(this,
+                                getResources().getString(R.string.ranking_best_generals), 0, 0, 10);
+                        return;
+                    }
                 }
             }
         }
+    }
+
+    private void leaveReport() {
         startActivity(new Intent(BattleReportActivity.this, HomeActivity.class));
         finish();
+    }
+
+    @Override
+    public void onLeaderboardScoresLoaded(int arg0, LeaderboardBuffer arg1, LeaderboardScoreBuffer arg2) {
+        Iterator<LeaderboardScore> it = arg2.iterator();
+        while (it.hasNext()) {
+            LeaderboardScore temp = it.next();
+            if (temp.getScoreHolder().getPlayerId().equals(getGamesClient().getCurrentPlayerId())) {
+                getGamesClient().submitScore(getString(R.string.ranking_best_generals), temp.getRawScore() + 1);
+                break;
+            }
+        }
     }
 
 }

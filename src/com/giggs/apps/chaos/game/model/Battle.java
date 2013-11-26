@@ -7,7 +7,7 @@ import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.giggs.apps.chaos.game.SaveGameHelper;
+import com.giggs.apps.chaos.game.GameConverterHelper;
 import com.giggs.apps.chaos.game.model.map.Map;
 import com.giggs.apps.chaos.game.model.units.Unit;
 
@@ -97,7 +97,7 @@ public class Battle implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
-        out.writeByteArray(SaveGameHelper.toByte(this).toByteArray());
+        out.writeByteArray(GameConverterHelper.toByte(this).toByteArray());
     }
 
     public static final Parcelable.Creator<Battle> CREATOR = new Parcelable.Creator<Battle>() {
@@ -111,7 +111,7 @@ public class Battle implements Serializable, Parcelable {
     };
 
     private Battle(Parcel in) {
-        Battle battle = SaveGameHelper.getBattleFromLoadGame(in.createByteArray());
+        Battle battle = GameConverterHelper.getBattleFromLoadGame(in.createByteArray());
         id = battle.getId();
         players = battle.getPlayers();
         map = battle.getMap();

@@ -7,7 +7,7 @@ import android.database.Cursor;
 
 import com.giggs.apps.chaos.database.DatabaseHelper;
 import com.giggs.apps.chaos.database.Repository;
-import com.giggs.apps.chaos.game.SaveGameHelper;
+import com.giggs.apps.chaos.game.GameConverterHelper;
 import com.giggs.apps.chaos.game.model.Battle;
 
 public class BattleDao extends Repository<Battle> {
@@ -57,7 +57,7 @@ public class BattleDao extends Repository<Battle> {
 
     @Override
     public Battle convertCursorRowToObject(Cursor c) {
-        Battle entity = SaveGameHelper.getBattleFromLoadGame(c.getBlob(1));
+        Battle entity = GameConverterHelper.getBattleFromLoadGame(c.getBlob(1));
         entity.setId(c.getLong(0));
         return entity;
     }
@@ -66,7 +66,7 @@ public class BattleDao extends Repository<Battle> {
     public ContentValues getContentValues(Battle entity) {
         ContentValues args = new ContentValues();
         args.put(ID, (entity.getId() == 0 ? null : entity.getId()));
-        args.put(BATTLE, SaveGameHelper.toByte(entity).toByteArray());
+        args.put(BATTLE, GameConverterHelper.toByte(entity).toByteArray());
         return args;
     }
 

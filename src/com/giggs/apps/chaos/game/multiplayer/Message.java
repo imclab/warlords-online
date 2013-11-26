@@ -2,7 +2,7 @@ package com.giggs.apps.chaos.game.multiplayer;
 
 import java.io.Serializable;
 
-import com.giggs.apps.chaos.game.SaveGameHelper;
+import com.giggs.apps.chaos.game.GameConverterHelper;
 
 public class Message implements Serializable {
 
@@ -12,7 +12,7 @@ public class Message implements Serializable {
     private static final long serialVersionUID = -5267336555255334959L;
 
     public enum MessageType {
-        SEND_ARMY, INIT_BATTLE, CHAT, TURN_ORDERS
+        WHICH_ARMY, INIT_BATTLE, CHAT, TURN_ORDERS
     }
 
     private final int senderIndex;
@@ -38,7 +38,7 @@ public class Message implements Serializable {
     }
 
     public byte[] toByte() {
-        return SaveGameHelper.toByte(this).toByteArray();
+        return GameConverterHelper.toByte(this).toByteArray();
     }
 
 }

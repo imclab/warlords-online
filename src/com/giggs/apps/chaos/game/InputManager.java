@@ -135,6 +135,10 @@ public class InputManager implements IOnSceneTouchListener, IScrollDetectorListe
     }
 
     public void onSelectElement(UnitSprite gameSprite) {
+        if (mGameActivity.hasSendOrders) {
+            return;
+        }
+
         if (selectedElement != null) {
             unselectElement(selectedElement);
         }
@@ -196,16 +200,16 @@ public class InputManager implements IOnSceneTouchListener, IScrollDetectorListe
 
     public void giveDefendOrder() {
         Unit unit = (Unit) selectedElement.getGameElement();
-        Order order = new DefendOrder(unit);
+        Order order = new DefendOrder(unit, unit.getTilePosition());
         mGameActivity.battle.getPlayers().get(unit.getArmyIndex()).giveOrder(order, unit.getOrder());
-        unit.setOrder(order);
+        unit.setOrder(order, true);
     }
 
     public void giveMoveOrderToUnit(Tile destination) {
         Unit unit = (Unit) selectedElement.getGameElement();
         Order order = new MoveOrder(unit, destination);
         mGameActivity.battle.getPlayers().get(unit.getArmyIndex()).giveOrder(order, unit.getOrder());
-        unit.setOrder(order);
+        unit.setOrder(order, true);
     }
 
     public void onBuyIconClicked(Tile mTile) {

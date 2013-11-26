@@ -1,7 +1,8 @@
 package com.giggs.apps.chaos.activities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.andengine.engine.camera.ZoomCamera;
@@ -12,8 +13,9 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.opengl.texture.region.TiledTextureRegion;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,18 +23,19 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.giggs.apps.chaos.R;
+import com.giggs.apps.chaos.activities.fragments.MultiplayerFragment;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventAction;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventCategory;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.TimingCategory;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.TimingName;
 import com.giggs.apps.chaos.database.DatabaseHelper;
+import com.giggs.apps.chaos.game.GameConverterHelper;
 import com.giggs.apps.chaos.game.GameCreation;
 import com.giggs.apps.chaos.game.GameGUI;
 import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.GraphicsFactory;
 import com.giggs.apps.chaos.game.InputManager;
-import com.giggs.apps.chaos.game.SaveGameHelper;
 import com.giggs.apps.chaos.game.andengine.custom.CustomLayoutGameActivity;
 import com.giggs.apps.chaos.game.andengine.custom.CustomZoomCamera;
 import com.giggs.apps.chaos.game.data.ArmiesData;
@@ -45,43 +48,54 @@ import com.giggs.apps.chaos.game.logic.MapLogic;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Tile;
+import com.giggs.apps.chaos.game.model.orders.BuyOrder;
+import com.giggs.apps.chaos.game.model.orders.DefendOrder;
+import com.giggs.apps.chaos.game.model.orders.MoveOrder;
 import com.giggs.apps.chaos.game.model.orders.Order;
 import com.giggs.apps.chaos.game.model.units.Unit;
 import com.giggs.apps.chaos.game.multiplayer.Message;
 import com.giggs.apps.chaos.game.multiplayer.Message.MessageType;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
+import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeReliableMessageSentListener;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
+import com.google.android.gms.games.multiplayer.realtime.RoomConfig.Builder;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 
-public class GameActivity extends CustomLayoutGameActivity implements RealTimeMessageReceivedListener,
-        RealTimeReliableMessageSentListener, RoomUpdateListener, RoomStatusUpdateListener {
+public class GameActivity extends CustomLayoutGameActivity implements RoomUpdateListener,
+        RealTimeMessageReceivedListener, RoomStatusUpdateListener, RealTimeReliableMessageSentListener {
 
     private static final int CAMERA_WIDTH = 800;
     private static final int CAMERA_HEIGHT = 480;
 
     private long mGameStartTime = 0L;
     protected DatabaseHelper mDbHelper;
+    public Battle battle = null;
+    protected Tile castleTile = null;
+
+    /**
+     * By default, solo game
+     */
     protected boolean mMustSaveGame = true;
+    public int myArmyIndex = 0;
+    public boolean mIsMultiplayerGame = false;
 
     public Scene mScene;
     protected ZoomCamera mCamera;
     public GameGUI mGameGUI;
     protected GraphicsFactory mGameElementFactory;
     protected InputManager mInputManager;
-
     public Sprite selectionCircle;
 
-    public Battle battle;
-    protected Tile castleTile = null;
-    public int myArmyIndex = 0;
-    public boolean isMultiplayerGame = false;
-    private String roomId;
+    private MultiplayerFragment multiplayerFragment;
+    private OnCreateResourcesCallback pOnCreateResourcesCallback;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -94,40 +108,39 @@ public class GameActivity extends CustomLayoutGameActivity implements RealTimeMe
     @Override
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
-        initActivity();
+        initGameActivity();
     }
 
-    protected void initActivity() {
+    protected void initGameActivity() {
         mDbHelper = new DatabaseHelper(getApplicationContext());
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-
             int myArmy = extras.getInt("my_army", 0);
-            if (extras.getString("room_id") != null) {
+
+            if (extras.getBoolean("multiplayer")) {
                 // new multiplayer game
-                isMultiplayerGame = true;
-                mMustSaveGame = false;
-                roomId = extras.getString("room_id");
-                myArmyIndex = extras.getInt("army_index");
-                battle = extras.getParcelable("battle");
+                initMultiplayerGame();
             } else {
                 // new solo game
                 int nbPlayers = extras.getInt("nb_players", 4);
                 battle = GameCreation.createSoloGame(nbPlayers, myArmy, 0, null);
-                SaveGameHelper.deleteSavedBattles(mDbHelper);
-
+                // init GUI
+                mGameGUI = new GameGUI(this);
+                GameConverterHelper.deleteSavedBattles(mDbHelper);
+                // analytics
                 GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.nb_players,
                         "" + nbPlayers);
             }
+            // analytics
             GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game,
                     EventAction.solo_player_army, ArmiesData.values()[myArmy].name());
         } else {
             // load solo game
             battle = mDbHelper.getBattleDao().get(null, null, null, null).get(0);
+            // init GUI
+            mGameGUI = new GameGUI(this);
         }
-        mGameGUI = new GameGUI(this);
-        mGameGUI.setupGUI();
     }
 
     @Override
@@ -142,34 +155,38 @@ public class GameActivity extends CustomLayoutGameActivity implements RealTimeMe
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws Exception {
-        long startLoadingTime = System.currentTimeMillis();
-        // init game element factory
-        mGameElementFactory = new GraphicsFactory(this, getVertexBufferObjectManager(), getTextureManager());
-        mGameElementFactory.initGraphics(battle);
-
-        pOnCreateResourcesCallback.onCreateResourcesFinished();
-
-        GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.resources, TimingName.load_game,
-                (System.currentTimeMillis() - startLoadingTime) / 1000);
+        this.pOnCreateResourcesCallback = pOnCreateResourcesCallback;
+        if (battle != null) {
+            long startLoadingTime = System.currentTimeMillis();
+            // init game element factory
+            mGameElementFactory = new GraphicsFactory(this, getVertexBufferObjectManager(), getTextureManager());
+            mGameElementFactory.initGraphics(battle);
+            // analytics
+            GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.resources, TimingName.load_game,
+                    (System.currentTimeMillis() - startLoadingTime) / 1000);
+            pOnCreateResourcesCallback.onCreateResourcesFinished();
+        }
     }
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws Exception {
+        // prepare scene
         mScene = new Scene();
-
         mScene.setOnAreaTouchTraversalFrontToBack();
-
         mScene.setBackground(new Background(0, 0, 0));
-
         mInputManager = new InputManager(this, mCamera);
-        this.mScene.setOnSceneTouchListener(mInputManager);
-        this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
+        mScene.setOnSceneTouchListener(mInputManager);
+        mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
-        /* Make the camera not exceed the bounds of the TMXEntity. */
-        this.mCamera.setBounds(0, 0, battle.getMap().getHeight() * GameUtils.TILE_SIZE, battle.getMap().getWidth()
+        // make the camera not exceed the bounds of the bounds
+        mCamera.setBounds(0, 0, battle.getMap().getHeight() * GameUtils.TILE_SIZE, battle.getMap().getWidth()
                 * GameUtils.TILE_SIZE);
-        this.mCamera.setBoundsEnabled(true);
+        mCamera.setBoundsEnabled(true);
+        pOnCreateSceneCallback.onCreateSceneFinished(mScene);
+    }
 
+    @Override
+    public void onPopulateScene(Scene pScene, OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
         // add selection circle
         selectionCircle = new SelectionCircle(GraphicsFactory.mGfxMap.get("selection.png"),
                 getVertexBufferObjectManager());
@@ -182,13 +199,12 @@ public class GameActivity extends CustomLayoutGameActivity implements RealTimeMe
         // mScene.registerTouchArea(minimap);
         // mScene.attachChild(minimap);
 
-        pOnCreateSceneCallback.onCreateSceneFinished(mScene);
+        pOnPopulateSceneCallback.onPopulateSceneFinished();
+        startGame();
     }
 
-    @Override
-    public void onPopulateScene(Scene pScene, OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
-
-        // display map
+    private void startGame() {
+        // add tiles to scene
         TileSprite tileSprite = null;
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
@@ -208,7 +224,7 @@ public class GameActivity extends CustomLayoutGameActivity implements RealTimeMe
             }
         }
 
-        // add initial units to scene
+        // add units to scene
         for (int y = 0; y < battle.getMap().getHeight(); y++) {
             for (int x = 0; x < battle.getMap().getWidth(); x++) {
                 Tile tile = battle.getMap().getTiles()[y][x];
@@ -226,31 +242,66 @@ public class GameActivity extends CustomLayoutGameActivity implements RealTimeMe
         // init fogs of war
         GameLogic.updateFogsOfWar(battle, myArmyIndex);
 
-        wait(300);
-        mGameGUI.hideLoadingScreen();
-
         if (battle.getId() >= 0L) {
-            initLoadedGame();
-        } else {
-            initNewGame();
+            // for loaded games...
+            for (Player player : battle.getPlayers()) {
+                player.setLstTurnOrders(new ArrayList<Order>());
+            }
+            List<Integer> economyHistory = battle.getMe(myArmyIndex).getGameStats().getEconomy();
+            if (economyHistory.size() > 0) {
+                mGameGUI.updateEconomyBalance(economyHistory.get(economyHistory.size() - 1));
+            }
         }
 
-        pOnPopulateSceneCallback.onPopulateSceneFinished();
+        // analytics
+        mGameStartTime = System.currentTimeMillis();
+
+        // center map on player's castle
+        mCamera.setCenter(castleTile.getX() * GameUtils.TILE_SIZE, castleTile.getY() * GameUtils.TILE_SIZE);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                // wait a bit to avoid loading screen to not appear because the
+                // game is
+                // so awesome and loads so fast...
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+
+                // hide loading screen
+                mGameGUI.hideLoadingScreen();
+
+                // show turn number
+                mGameGUI.displayBigLabel(getString(R.string.turn_count, battle.getTurnCount()), R.color.white);
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-        pauseGame();
+        if (battle == null) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+        } else {
+            pauseGame();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mGameGUI.onPause();
-        GraphicsFactory.mGfxMap = new HashMap<String, TextureRegion>();
-        GraphicsFactory.mTiledGfxMap = new HashMap<String, TiledTextureRegion>();
-        if (mMustSaveGame) {
-            SaveGameHelper.saveGame(mDbHelper, battle);
+        if (mGameGUI != null) {
+            mGameGUI.onPause();
+        }
+        if (mGameElementFactory != null) {
+            mGameElementFactory.onPause();
+        }
+        if (mMustSaveGame && !mIsMultiplayerGame) {
+            GameConverterHelper.saveGame(mDbHelper, battle);
         }
     }
 
@@ -261,31 +312,6 @@ public class GameActivity extends CustomLayoutGameActivity implements RealTimeMe
 
     public void resumeGame() {
         mEngine.start();
-    }
-
-    private void startGame() {
-        mGameStartTime = System.currentTimeMillis();
-        mGameGUI.displayBigLabel(getString(R.string.turn_count, battle.getTurnCount()), R.color.white);
-
-        // center map on player's castle
-        mCamera.setCenter(castleTile.getX() * GameUtils.TILE_SIZE, castleTile.getY() * GameUtils.TILE_SIZE);
-    }
-
-    private void initNewGame() {
-        startGame();
-    }
-
-    private void initLoadedGame() {
-        for (Player player : battle.getPlayers()) {
-            player.setLstTurnOrders(new ArrayList<Order>());
-        }
-
-        List<Integer> economyHistory = battle.getMe(myArmyIndex).getGameStats().getEconomy();
-        if (economyHistory.size() > 0) {
-            mGameGUI.updateEconomyBalance(economyHistory.get(economyHistory.size() - 1));
-        }
-
-        startGame();
     }
 
     public void addUnitToScene(Unit unit) {
@@ -370,6 +396,8 @@ public class GameActivity extends CustomLayoutGameActivity implements RealTimeMe
         mGameGUI.updateGoldAmount(battle.getMe(myArmyIndex).getGold());
         mGameGUI.updateEconomyBalance(battle.getMe(myArmyIndex).getGameStats().getEconomy()
                 .get(battle.getMe(myArmyIndex).getGameStats().getEconomy().size() - 1));
+        
+        mGameGUI.updatePlayersNameColor(battle);
 
         if (winnerIndex >= 0) {
             endGame(battle.getPlayers().get(winnerIndex));
@@ -392,55 +420,145 @@ public class GameActivity extends CustomLayoutGameActivity implements RealTimeMe
         });
     }
 
-    public void sendOrders() {
+    /**
+     * 
+     * Multiplayer stuff
+     * 
+     */
+    public RoomConfig.Builder makeBasicRoomConfigBuilder() {
+        return RoomConfig.builder(this).setMessageReceivedListener(this).setRoomStatusUpdateListener(this);
+    }
+
+    private int[] lstMultiplayerArmies = null;
+    private Room mRoom;
+
+    public int nbOrdersReceived = 0;
+    public boolean hasSendOrders = false;
+    private int receivedArmies = 1;
+
+    public void sendOrdersOnline() {
         for (Player p : battle.getPlayers()) {
             if (p.getArmyIndex() != myArmyIndex) {
                 getGamesClient().sendReliableRealTimeMessage(
                         this,
-                        new Message(myArmyIndex, MessageType.TURN_ORDERS, SaveGameHelper.toByte(
+                        new Message(myArmyIndex, MessageType.TURN_ORDERS, GameConverterHelper.toByte(
                                 battle.getPlayers().get(myArmyIndex).getLstTurnOrders()).toByteArray()).toByte(),
-                        roomId, p.getId());
+                        mRoom.getRoomId(), p.getId());
             }
         }
-
     }
 
-    @Override
-    public void onSignInFailed() {
-    }
-
-    @Override
-    public void onSignInSucceeded() {
-        if (myArmyIndex == 0) {
-            RoomConfig.Builder rtmConfigBuilder = makeBasicRoomConfigBuilder();
-            rtmConfigBuilder.setSocketCommunicationEnabled(true);
-            ArrayList<String> ids = new ArrayList<String>();
-            for (Player p : battle.getPlayers()) {
-                ids.add(p.getId());
-            }
-            rtmConfigBuilder.addPlayersToInvite(ids);
-            getGamesClient().createRoom(rtmConfigBuilder.build());
-        }
-    }
-
-    @Override
-    public void onRealTimeMessageSent(int arg0, int arg1, String arg2) {
-    }
-
-    public int nbOrdersReceived = 0;
-    public boolean hasSendOrders = false;
-
+    @SuppressWarnings("unchecked")
     @Override
     public void onRealTimeMessageReceived(RealTimeMessage rtm) {
-        Message message = SaveGameHelper.getMessageFromByte(rtm.getMessageData());
+        Message message = GameConverterHelper.getMessageFromByte(rtm.getMessageData());
         Log.d("message", message.getType().name());
         switch (message.getType()) {
+        case WHICH_ARMY:
+            if (lstMultiplayerArmies == null) {
+                lstMultiplayerArmies = new int[mRoom.getParticipants().size()];
+            }
+            Integer army = (Integer) GameConverterHelper.getObjectFromByte(message.getContent());
+            lstMultiplayerArmies[message.getSenderIndex()] = army;
+            receivedArmies++;
+            if (receivedArmies == mRoom.getParticipants().size()) {
+                // let's create the game
+                battle = GameCreation.createMultiplayerMap(mRoom.getParticipants(), lstMultiplayerArmies);
+                // send the game object to the other players
+                for (int n = 0; n < mRoom.getParticipants().size(); n++) {
+                    if (myArmyIndex != n) {
+                        getGamesClient().sendReliableRealTimeMessage(
+                                this,
+                                new Message(myArmyIndex, MessageType.INIT_BATTLE, GameConverterHelper.toByte(battle)
+                                        .toByteArray()).toByte(), mRoom.getRoomId(),
+                                mRoom.getParticipants().get(n).getParticipantId());
+                    }
+                }
+                startMultiplayerGame();
+            }
+            break;
+        case INIT_BATTLE:
+            // init game data
+            battle = GameConverterHelper.getBattleFromLoadGame(message.getContent());
+            Log.d("message", "game received : " + battle.getPlayers().size() + " players");
+            startMultiplayerGame();
+            break;
         case TURN_ORDERS:
-            battle.getPlayers().get(message.getSenderIndex())
-                    .setLstTurnOrders((List<Order>) SaveGameHelper.getObjectFromByte(message.getContent()));
+            List<Order> lstOrders = (List<Order>) GameConverterHelper.getObjectFromByte(message.getContent());
+            // format received orders
+            for (Order o : lstOrders) {
+                if (o instanceof MoveOrder) {
+                    MoveOrder moveOrder = (MoveOrder) o;
+                    Unit unit = null;
+                    Tile tile = battle.getMap().getTiles()[moveOrder.getOrigin().getY()][moveOrder.getOrigin().getX()];
+                    for (Unit u : tile.getContent()) {
+                        if (u.getOrder() == null && u.getArmor() == moveOrder.getUnit().getArmor()
+                                && u.getAttack() == moveOrder.getUnit().getAttack()
+                                && u.getPrice() == moveOrder.getUnit().getPrice()) {
+                            unit = u;
+                            break;
+                        }
+                    }
+                    if (unit != null) {
+                        MoveOrder formattedOrder = new MoveOrder(unit, battle.getMap().getTiles()[moveOrder
+                                .getDestination().getY()][moveOrder.getDestination().getX()]);
+                        unit.setOrder(formattedOrder, false);
+                        battle.getPlayers().get(message.getSenderIndex()).getLstTurnOrders().add(formattedOrder);
+                    }
+                } else if (o instanceof DefendOrder) {
+                    DefendOrder defendOrder = (DefendOrder) o;
+                    Unit unit = null;
+                    Tile tile = battle.getMap().getTiles()[defendOrder.getTile().getY()][defendOrder.getTile().getX()];
+                    for (Unit u : tile.getContent()) {
+                        if (u.getOrder() == null && u.getArmor() == defendOrder.getUnit().getArmor()
+                                && u.getAttack() == defendOrder.getUnit().getAttack()
+                                && u.getPrice() == defendOrder.getUnit().getPrice()) {
+                            unit = u;
+                            break;
+                        }
+                    }
+                    if (unit != null) {
+                        DefendOrder formattedOrder = new DefendOrder(unit, tile);
+                        battle.getPlayers().get(message.getSenderIndex()).getLstTurnOrders().add(formattedOrder);
+                        unit.setOrder(formattedOrder, false);
+                    }
+                } else if (o instanceof BuyOrder) {
+                    BuyOrder buyOrder = (BuyOrder) o;
+                    battle.getPlayers()
+                            .get(message.getSenderIndex())
+                            .getLstTurnOrders()
+                            .add(new BuyOrder(battle.getMap().getTiles()[buyOrder.getTile().getY()][buyOrder.getTile()
+                                    .getX()], buyOrder.getUnit()));
+                }
+            }
             onNewOrders();
             break;
+
         }
+    }
+
+    private void initMultiplayerGame() {
+        mIsMultiplayerGame = true;
+
+        if (battle == null) {
+            // add multiplayer fragment
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            multiplayerFragment = new MultiplayerFragment();
+            ft.add(R.id.fragment_container, multiplayerFragment);
+            ft.commit();
+        }
+    }
+
+    public void startMultiplayerGame() {
+        mGameGUI = new GameGUI(this);
+        getFragmentManager().beginTransaction().remove(multiplayerFragment).commit();
+        try {
+            getEngine().stop();
+            onCreateResources(pOnCreateResourcesCallback);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        findViewById(R.id.fragment_container).setVisibility(View.GONE);
     }
 
     public void onNewOrders() {
@@ -459,26 +577,166 @@ public class GameActivity extends CustomLayoutGameActivity implements RealTimeMe
         }
     }
 
-    private RoomConfig.Builder makeBasicRoomConfigBuilder() {
-        return RoomConfig.builder(this).setMessageReceivedListener(this).setRoomStatusUpdateListener(this);
+    @Override
+    public void onSignInSucceeded() {
+        if (getInvitationId() != null) {
+            Builder roomConfigBuilder = makeBasicRoomConfigBuilder();
+            roomConfigBuilder.setInvitationIdToAccept(getInvitationId());
+            getGamesClient().joinRoom(roomConfigBuilder.build());
+        }
     }
 
     @Override
-    public void onJoinedRoom(int arg0, Room arg1) {
-        // TODO Auto-generated method stub
-
+    public void onSignInFailed() {
     }
 
     @Override
-    public void onLeftRoom(int arg0, String arg1) {
-        // TODO Auto-generated method stub
-
+    public void onPeersConnected(Room room, List<String> peers) {
     }
 
     @Override
-    public void onRoomConnected(int arg0, Room arg1) {
-        // TODO Auto-generated method stub
+    public void onPeerLeft(Room room, List<String> arg1) {
+    }
 
+    @Override
+    public void onRealTimeMessageSent(int arg0, int arg1, String arg2) {
+    }
+
+    @Override
+    public void onDisconnectedFromRoom(Room room) {
+        // leave the room
+        getGamesClient().leaveRoom(this, room.getRoomId());
+    }
+
+    @Override
+    public void onPeerDeclined(Room room, List<String> arg1) {
+    }
+
+    @Override
+    public void onPeerInvitedToRoom(Room room, List<String> arg1) {
+    }
+
+    @Override
+    public void onPeerJoined(Room room, List<String> arg1) {
+    }
+
+    @Override
+    public void onPeersDisconnected(Room room, List<String> peers) {
+        int nbPlayersLeft = 0;
+        for (Player p : battle.getPlayers()) {
+            if (peers.indexOf(p.getId()) >= 0) {
+                p.setDefeated(true);
+            }
+            if (!p.isDefeated()) {
+                nbPlayersLeft++;
+            }
+        }
+        if (nbPlayersLeft == 1) {
+            endGame(battle.getMe(myArmyIndex));
+            return;
+        }
+    }
+
+    @Override
+    public void onRoomAutoMatching(Room room) {
+    }
+
+    @Override
+    public void onRoomConnecting(Room room) {
+    }
+
+    @Override
+    public void onLeftRoom(int statusCode, String arg1) {
+    }
+
+    @Override
+    public void onActivityResult(int request, int response, Intent data) {
+        if (request == MultiplayerFragment.RC_INVITATION_INBOX) {
+            if (response != Activity.RESULT_OK) {
+                // canceled
+                return;
+            }
+
+            // get the selected invitation
+            Bundle extras = data.getExtras();
+            Invitation invitation = extras.getParcelable(GamesClient.EXTRA_INVITATION);
+
+            // accept it!
+            RoomConfig roomConfig = makeBasicRoomConfigBuilder().setInvitationIdToAccept(invitation.getInvitationId())
+                    .build();
+            getGamesClient().joinRoom(roomConfig);
+        } else if (request == MultiplayerFragment.RC_SELECT_PLAYERS) {
+            if (response != Activity.RESULT_OK) {
+                // user canceled
+                return;
+            }
+
+            final ArrayList<String> invitees = data.getStringArrayListExtra(GamesClient.EXTRA_PLAYERS);
+
+            // get automatch criteria
+            Bundle autoMatchCriteria = null;
+            int minAutoMatchPlayers = data.getIntExtra(GamesClient.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
+            int maxAutoMatchPlayers = data.getIntExtra(GamesClient.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+
+            if (minAutoMatchPlayers > 0) {
+                autoMatchCriteria = RoomConfig.createAutoMatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers, 0);
+            } else {
+                autoMatchCriteria = null;
+            }
+
+            // create the room and specify a variant if appropriate
+            RoomConfig.Builder roomConfigBuilder = makeBasicRoomConfigBuilder();
+            roomConfigBuilder.addPlayersToInvite(invitees);
+            if (autoMatchCriteria != null) {
+                roomConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
+            }
+            RoomConfig roomConfig = roomConfigBuilder.build();
+            getGamesClient().createRoom(roomConfig);
+        } else if (request == MultiplayerFragment.RC_WAITING_ROOM) {
+            if (response == Activity.RESULT_OK) {
+                // start game
+                Room room = data.getParcelableExtra(GamesClient.EXTRA_ROOM);
+                prepareGame(room);
+            } else if (response == Activity.RESULT_CANCELED) {
+                // Waiting room was dismissed with the back button. The meaning
+                // of this
+                // action is up to the game. You may choose to leave the room
+                // and cancel the
+                // match, or do something else like minimize the waiting room
+                // and
+                // continue to connect in the background.
+
+                // in this example, we take the simple approach and just leave
+                // the room:
+                getGamesClient().leaveRoom(this, mRoom.getRoomId());
+            } else if (response == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
+                // player wants to leave the room.
+                getGamesClient().leaveRoom(this, mRoom.getRoomId());
+            }
+        }
+    }
+
+    @Override
+    public void onJoinedRoom(int statusCode, Room room) {
+        if (statusCode != GamesClient.STATUS_OK) {
+            // show error message, return to main screen.
+            ApplicationUtils.showToast(getApplicationContext(), R.string.error_room_join, Toast.LENGTH_SHORT);
+            return;
+        }
+
+        // get waiting room intent
+        Intent i = getGamesClient().getRealTimeWaitingRoomIntent(room, Integer.MAX_VALUE);
+        startActivityForResult(i, MultiplayerFragment.RC_WAITING_ROOM);
+    }
+
+    @Override
+    public void onRoomConnected(int statusCode, Room room) {
+        if (statusCode != GamesClient.STATUS_OK) {
+            // show error message, return to main screen.
+            ApplicationUtils.showToast(getApplicationContext(), R.string.error_room_connection, Toast.LENGTH_SHORT);
+            return;
+        }
+        mRoom = room;
     }
 
     @Override
@@ -488,68 +746,43 @@ public class GameActivity extends CustomLayoutGameActivity implements RealTimeMe
             ApplicationUtils.showToast(getApplicationContext(), R.string.error_room_creation, Toast.LENGTH_SHORT);
             return;
         }
-        
-        roomId = room.getRoomId();
+
+        // get waiting room intent
+        Intent i = getGamesClient().getRealTimeWaitingRoomIntent(room, Integer.MAX_VALUE);
+        startActivityForResult(i, MultiplayerFragment.RC_WAITING_ROOM);
+        mRoom = room;
     }
 
     @Override
-    public void onConnectedToRoom(Room arg0) {
-        // TODO Auto-generated method stub
-
+    public void onConnectedToRoom(Room room) {
+        mRoom = room;
     }
 
-    @Override
-    public void onDisconnectedFromRoom(Room arg0) {
-        // TODO Auto-generated method stub
-
+    private void prepareGame(Room room) {
+        myArmyIndex = -1;
+        List<Participant> copy = new ArrayList<Participant>(room.getParticipants());
+        Collections.sort(room.getParticipants(), new Comparator<Participant>() {
+            @Override
+            public int compare(Participant p1, Participant p2) {
+                return p1.getParticipantId().hashCode() - p2.getParticipantId().hashCode();
+            }
+        });
+        for (int n = 0; n < copy.size(); n++) {
+            Participant p = copy.get(n);
+            if (p.getParticipantId().equals(room.getParticipantId(getGamesClient().getCurrentPlayerId()))) {
+                myArmyIndex = n;
+                break;
+            }
+        }
+        if (myArmyIndex == 0) {
+            lstMultiplayerArmies = new int[mRoom.getParticipants().size()];
+            lstMultiplayerArmies[0] = multiplayerFragment.mArmyChosen;
+        } else {
+            getGamesClient().sendReliableRealTimeMessage(
+                    this,
+                    new Message(myArmyIndex, MessageType.WHICH_ARMY, GameConverterHelper.toByte(
+                            multiplayerFragment.mArmyChosen).toByteArray()).toByte(), room.getRoomId(),
+                    copy.get(0).getParticipantId());
+        }
     }
-
-    @Override
-    public void onPeerDeclined(Room arg0, List<String> arg1) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onPeerInvitedToRoom(Room arg0, List<String> arg1) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onPeerJoined(Room arg0, List<String> arg1) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onPeerLeft(Room arg0, List<String> arg1) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onPeersConnected(Room arg0, List<String> arg1) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onPeersDisconnected(Room arg0, List<String> arg1) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onRoomAutoMatching(Room arg0) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onRoomConnecting(Room arg0) {
-        // TODO Auto-generated method stub
-
-    }
-
 }

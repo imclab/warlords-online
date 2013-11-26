@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import android.annotation.SuppressLint;
 
@@ -27,6 +28,8 @@ import com.giggs.apps.chaos.game.model.units.orc.Goblin;
 
 @SuppressLint("UseSparseArrays")
 public class GameLogic {
+
+    private static Random random = new Random(153548);
 
     public static enum WeaponType {
         normal, piercing, siege, magic;
@@ -52,10 +55,10 @@ public class GameLogic {
         battle.setTurnCount(battle.getTurnCount() + 1);
 
         // update weather
-        if (battle.isWinter() && Math.random() < 0.2) {
+        if (battle.isWinter() && random.nextDouble() < 0.2) {
             // summer !
             updateWeather(battle, false);
-        } else if (!battle.isWinter() && Math.random() < 0.1) {
+        } else if (!battle.isWinter() && random.nextDouble() < 0.1) {
             // winter !
             updateWeather(battle, true);
         }
@@ -98,14 +101,14 @@ public class GameLogic {
                     MoveOrder moveOrder = (MoveOrder) order;
                     boolean canMove = true;
                     // check units crossing
-                    double random = Math.random();
+                    double r = random.nextDouble();
                     for (Unit u : moveOrder.getDestination().getContent()) {
                         if (u.getOrder() != null && u.getOrder() instanceof MoveOrder
                                 && ((MoveOrder) u.getOrder()).getDestination() == moveOrder.getOrigin()) {
                             // resolve units crossing
-                            if (random < 0.5) {
+                            if (r < 0.5) {
                                 battle.getPlayers().get(u.getArmyIndex()).removeOrder(u.getOrder());
-                                u.setOrder(null);
+                                u.setOrder(null, false);
                             } else {
                                 canMove = false;
                                 for (Unit allyUnit : moveOrder.getOrigin().getContent()) {
@@ -114,7 +117,7 @@ public class GameLogic {
                                             && ((MoveOrder) allyUnit.getOrder()).getDestination() == moveOrder
                                                     .getDestination()) {
                                         player.removeOrder(allyUnit.getOrder());
-                                        allyUnit.setOrder(null);
+                                        allyUnit.setOrder(null, false);
                                     }
                                 }
                                 break;
@@ -196,8 +199,7 @@ public class GameLogic {
                 // update places' owners
                 if (tile.getTerrain().canBeControlled() && tile.getContent().size() > 0
                         && tile.getContent().get(0).getArmyIndex() != tile.getOwner()) {
-                    tile.updateTileOwner(myArmyIndex, tile.getContent().get(0)
-                            .getArmyIndex());
+                    tile.updateTileOwner(myArmyIndex, tile.getContent().get(0).getArmyIndex());
                 }
 
                 // gather resources
@@ -229,7 +231,7 @@ public class GameLogic {
                     }
 
                     // reset unit order
-                    unit.setOrder(null);
+                    unit.setOrder(null, true);
                 }
             }
         }
@@ -433,7 +435,8 @@ public class GameLogic {
         // pick a random opponent unit
         Integer armyIndex = (Integer) opposingArmies.keySet().toArray()[(int) ((opposingArmies.size() - 1) * Math
                 .random())];
-        return opposingArmies.get(armyIndex).get((int) ((opposingArmies.get(armyIndex).size() - 1) * Math.random()));
+        return opposingArmies.get(armyIndex).get(
+                (int) ((opposingArmies.get(armyIndex).size() - 1) * random.nextDouble()));
 
     }
 
