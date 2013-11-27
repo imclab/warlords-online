@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.model.orders.Order;
+import com.giggs.apps.chaos.game.multiplayer.ChatMessage;
 
 public class Player implements Serializable {
 
@@ -24,6 +25,7 @@ public class Player implements Serializable {
     private int gold = 0;
     private boolean isDefeated = false;
     private transient List<Order> lstTurnOrders = new ArrayList<Order>();
+    private transient List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
 
     public Player(String id, String name, ArmiesData army, int armyIndex, boolean isAI) {
         this.id = id;
@@ -98,6 +100,14 @@ public class Player implements Serializable {
 
     public void setLstTurnOrders(List<Order> lstTurnOrders) {
         this.lstTurnOrders = lstTurnOrders;
+    }
+
+    public List<ChatMessage> getChatMessages() {
+        return chatMessages;
+    }
+
+    public void setChatMessages(List<ChatMessage> chatMessages) {
+        this.chatMessages = chatMessages;
     }
 
 }

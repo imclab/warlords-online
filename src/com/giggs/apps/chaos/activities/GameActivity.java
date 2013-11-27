@@ -53,6 +53,7 @@ import com.giggs.apps.chaos.game.model.orders.DefendOrder;
 import com.giggs.apps.chaos.game.model.orders.MoveOrder;
 import com.giggs.apps.chaos.game.model.orders.Order;
 import com.giggs.apps.chaos.game.model.units.Unit;
+import com.giggs.apps.chaos.game.multiplayer.ChatMessage;
 import com.giggs.apps.chaos.game.multiplayer.Message;
 import com.giggs.apps.chaos.game.multiplayer.Message.MessageType;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
@@ -246,6 +247,7 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
             // for loaded games...
             for (Player player : battle.getPlayers()) {
                 player.setLstTurnOrders(new ArrayList<Order>());
+                player.setChatMessages(new ArrayList<ChatMessage>());
             }
             List<Integer> economyHistory = battle.getMe(myArmyIndex).getGameStats().getEconomy();
             if (economyHistory.size() > 0) {
@@ -396,7 +398,7 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
         mGameGUI.updateGoldAmount(battle.getMe(myArmyIndex).getGold());
         mGameGUI.updateEconomyBalance(battle.getMe(myArmyIndex).getGameStats().getEconomy()
                 .get(battle.getMe(myArmyIndex).getGameStats().getEconomy().size() - 1));
-        
+
         mGameGUI.updatePlayersNameColor(battle);
 
         if (winnerIndex >= 0) {
@@ -533,7 +535,10 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
             }
             onNewOrders();
             break;
-
+        case CHAT:
+            onReceiveChatMessage(message.getSenderIndex(),
+                    (ChatMessage) GameConverterHelper.getObjectFromByte(message.getContent()));
+            break;
         }
     }
 
@@ -622,18 +627,20 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
 
     @Override
     public void onPeersDisconnected(Room room, List<String> peers) {
-        int nbPlayersLeft = 0;
-        for (Player p : battle.getPlayers()) {
-            if (peers.indexOf(p.getId()) >= 0) {
-                p.setDefeated(true);
+        if (battle != null) {
+            int nbPlayersLeft = 0;
+            for (Player p : battle.getPlayers()) {
+                if (peers.indexOf(p.getId()) >= 0) {
+                    p.setDefeated(true);
+                }
+                if (!p.isDefeated()) {
+                    nbPlayersLeft++;
+                }
             }
-            if (!p.isDefeated()) {
-                nbPlayersLeft++;
+            if (nbPlayersLeft == 1) {
+                endGame(battle.getMe(myArmyIndex));
+                return;
             }
-        }
-        if (nbPlayersLeft == 1) {
-            endGame(battle.getMe(myArmyIndex));
-            return;
         }
     }
 
@@ -785,4 +792,27 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
                     copy.get(0).getParticipantId());
         }
     }
+
+    public void sendChatMessage(int recipientIndex, String messageContent) {
+        ChatMessage chatMessage = new ChatMessage(getGamesClient().getCurrentPlayer().getDisplayName(), messageContent,
+                true);
+        // add message to UI
+        mGameGUI.addMessageToChatDialog(chatMessage);
+        mGameGUI.scrollToChatBottom();
+        // add message to player object
+        battle.getPlayers().get(recipientIndex).getChatMessages().add(chatMessage);
+        // send message !
+        getGamesClient().sendReliableRealTimeMessage(this,
+                new Message(myArmyIndex, MessageType.CHAT, chatMessage.toByte()).toByte(), mRoom.getRoomId(),
+                battle.getPlayers().get(recipientIndex).getId());
+    }
+
+    public void onReceiveChatMessage(int senderIndex, ChatMessage receivedMessage) {
+        // add message to player object
+        ChatMessage chatMessage = new ChatMessage(receivedMessage.getSenderName(), receivedMessage.getContent(), false);
+        battle.getPlayers().get(senderIndex).getChatMessages().add(chatMessage);
+        // notify player
+        mGameGUI.onReceiveChatMessage(senderIndex, chatMessage);
+    }
+
 }

@@ -76,6 +76,27 @@
     <string name="error_room_connection">An error occurred while connecting to the game, please retry !</string>
     <string name="go">Go !</string>
 
+    <!-- Game -->
+    <string name="tag_buy_button">buy_button</string>
+    <string name="tag_control_zone">control_zone</string>
+    <string name="tag_move_order">move_order</string>
+    <string name="tag_defend_order">defend_order</string>
+    <string name="turn_count">Turn %s</string>
+    <string name="confirm_no_orders">You have not given any order this turn.\nDo you confirm sending orders ?</string>
+    <string name="loading_game">Loading</string>
+    <string name="loading_dots">. . .</string>
+    <string name="game_paused">Pause</string>
+    <string name="surrender">Surrender</string>
+    <string name="confirm_surrender_message">Are you sure you want to surrender ?</string>
+    <string name="resume_game">Resume Game</string>
+    <string name="save_exit">Exit</string>
+    <string name="victory">Victory !</string>
+    <string name="defeat">Defeat&#8230;</string>
+    <string name="send_orders">Send Orders</string>
+    <string name="notification_message">Your troops await your command, Sir !</string>
+    <string name="chatHint">chat&#8230;</string>
+    <string name="dismiss">Dismiss</string>
+
     <!-- Armies and Units names -->
     <string name="human_army">Human</string>
     <string name="human_soldier">Infantry</string>
@@ -157,25 +178,6 @@
     <string name="dwarf_crossbowman_description">Ranged unit</string>
     <string name="dwarf_giant_killer_description">Deal extra damages to bigger creatures</string>
     <string name="dwarf_rune_master_description">Rust enemies\' equipment (weapon and armor) every battle\'s round</string>
-
-    <!-- Game -->
-    <string name="tag_buy_button">buy_button</string>
-    <string name="tag_control_zone">control_zone</string>
-    <string name="tag_move_order">move_order</string>
-    <string name="tag_defend_order">defend_order</string>
-    <string name="turn_count">Turn %s</string>
-    <string name="confirm_no_orders">You have not given any order this turn.\nDo you confirm sending orders ?</string>
-    <string name="loading_game">Loading</string>
-    <string name="loading_dots">. . .</string>
-    <string name="game_paused">Pause</string>
-    <string name="surrender">Surrender</string>
-    <string name="confirm_surrender_message">Are you sure you want to surrender ?</string>
-    <string name="resume_game">Resume Game</string>
-    <string name="save_exit">Exit</string>
-    <string name="victory">Victory !</string>
-    <string name="defeat">Defeat&#8230;</string>
-    <string name="send_orders">Send Orders</string>
-    <string name="notification_message">Your troops await your command, sir !</string>
 
     <!-- Tutorial -->
     <string name="tutorial">Tutorial</string>

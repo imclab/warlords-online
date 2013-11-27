@@ -21,5 +21,7 @@
     <color name="gold">#cc8911</color>
     <color name="bg_drawer">#bb000000</color>
     <color name="cannot_buy_red">#88D10000</color>
+    <color name="unread_message">#B5D0FF</color>
+    <color name="message_in">#639CFF</color>
 
 </resources>

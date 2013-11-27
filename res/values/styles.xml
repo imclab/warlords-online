@@ -179,4 +179,9 @@
         <item name="android:drawablePadding">8dp</item>
     </style>
 
+    <style name="ChatMessage">
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
 </resources>

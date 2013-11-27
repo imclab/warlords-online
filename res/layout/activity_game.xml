@@ -24,6 +24,18 @@
         android:textColor="@color/gold"
         android:textSize="14sp" />
 
+    <ImageView
+        android:id="@+id/chatNotification"
+        style="@style/ArmyBuilderSmallButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/gold"
+        android:layout_margin="3dp"
+        android:background="@drawable/bg_btn_buy_unit"
+        android:src="@drawable/ic_mail"
+        android:visibility="gone" />
+
     <com.giggs.apps.chaos.views.CustomButton
         android:id="@+id/sendOrders"
         style="@style/ArmyBuilderSmallButton"
@@ -68,7 +80,7 @@
 
     <SlidingDrawer
         android:id="@+id/drawer"
-        android:layout_width="match_parent"
+        android:layout_width="450dp"
         android:layout_height="match_parent"
         android:content="@+id/content"
         android:handle="@+id/handle"
@@ -92,7 +104,7 @@
 
             <LinearLayout
                 android:id="@+id/players"
-                android:layout_width="450dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:orientation="vertical"

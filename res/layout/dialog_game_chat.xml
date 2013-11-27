@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_game_menu" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <ScrollView
+            android:id="@+id/scroll"
+            style="@style/ArmyBuilderColumn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <LinearLayout
+                android:id="@+id/messages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp" >
+            </LinearLayout>
+        </ScrollView>
+
+        <EditText
+            android:id="@+id/chatInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="@string/chatHint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <com.giggs.apps.chaos.views.CustomButton
+        android:id="@+id/backButton"
+        style="@style/HomeScreenButton"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="2dp"
+        android:text="@string/dismiss"
+        android:textSize="16sp" />
+
+</RelativeLayout>
