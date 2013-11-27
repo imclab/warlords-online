@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="right"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:padding="2dp" >
 
     <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/time"
