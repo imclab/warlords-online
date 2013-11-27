@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.giggs.apps.chaos.R;
@@ -110,6 +111,10 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
         initGameActivity();
+
+        // If the device goes to sleep during handshake or gameplay, the player
+        // will be disconnected from the room
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     protected void initGameActivity() {
@@ -305,6 +310,7 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
         if (mMustSaveGame && !mIsMultiplayerGame) {
             GameConverterHelper.saveGame(mDbHelper, battle);
         }
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private void pauseGame() {

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -65,10 +64,6 @@ public class MultiplayerFragment extends Fragment implements OnClickListener {
 
         view.findViewById(R.id.mainButtonsLayout).startAnimation(mButtonsInAnimation);
 
-        // If the device goes to sleep during handshake or gameplay, the player
-        // will be disconnected from the room
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
         return view;
     }
 
@@ -83,7 +78,6 @@ public class MultiplayerFragment extends Fragment implements OnClickListener {
     public void onPause() {
         super.onPause();
         mStormBackground.removeCallbacks(mStormEffect);
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override

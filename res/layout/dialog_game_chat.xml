@@ -42,7 +42,7 @@
     <com.giggs.apps.chaos.views.CustomButton
         android:id="@+id/backButton"
         style="@style/HomeScreenButton"
-        android:layout_width="80dp"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"

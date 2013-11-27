@@ -1,0 +1,188 @@
+<resources>
+
+    <string name="coming_soon">Bientôt disponible !</string>
+
+    <!-- Contact -->
+    <string name="contact_title">Question à propos de </string>
+    <string name="contact_support_via">Contacter le support technique via&#8230;</string>
+    <string name="no_mail_client">Vous n\'avez aucune application de mail&#8230;</string>
+
+    <!-- Rate Dialog -->
+    <string name="rate_dont_want">Non, merci</string>
+    <string name="rate_later">Plus tard</string>
+    <string name="rate_now">Noter l\'application maintenant !</string>
+    <string name="rate_title">Donner une note à l\'application ?</string>
+    <string name="rate_message">Si vous prenez plaisir à jouer à %s, merci de prendre un moment pour la noter.\nMerci de votre soutien !</string>
+
+    <!-- About Dialog -->
+    <string name="about_title">À propos de Warlords</string>
+    <string name="about_credits">Jeu et musique\npar <a href="http://www.linkedin.com/profile/view?id=144913212">Guillaume Gouchon</a>.</string>
+    <string name="about_blog">Jetez un coup d\'oeil à <a href="http://glevelapps.blogspot.co.uk">mon Blog</a> !</string>
+    <string name="about_contact"><a href="mailto:guillaume.gouchon@gmail.com">Contactez moi</a> si vous rencontrez un problème ou si vous avez une question.</string>
+    <string name="about_other_sources">L\'application utilise le moteur AndEngine réalisé par Nicolas Gramlich.</string>
+    <string name="about_version">Version : 2.0.0</string>
+
+    <!-- Home Screen -->
+    <string name="solo">Partie Solo</string>
+    <string name="multiplayer">Multijoueur</string>
+    <string name="help">Comment jouer</string>
+    <string name="settings">Options</string>
+    <string name="back">Retour</string>
+    <string name="resume_saved_battle">Vous avez une partie à %s joueurs non terminée, voulez-vous la charger ?\nCelle-ci sera perdue si vous recommencez une partie.</string>
+    <string name="log_in_to_play_multi">Vous devez être connecté\npour jouer en ligne !</string>
+    <string name="logout">Se deconnecter</string>
+    <string name="ask_tutorial">Pour les nouveaux joueurs, il est recommandé de faire le didacticiel !\nVoulez-vous le faire maintenant ?</string>
+    <string name="achievements">Trophees</string>
+
+    <!-- Settings -->
+    <string name="music_volume">Musique</string>
+    <string name="music_off">Off</string>
+    <string name="music_on">On</string>
+    <string name="about">A propos de Warlords</string>
+    <string name="rate_app">Noter l\'application</string>
+
+    <!-- New Game -->
+    <string name="choose_army">Choisissez votre armée</string>
+    <string name="choose_nb_players">Sélectionner le nombre de joueurs</string>
+    <string name="createGame">Creer la partie !</string>
+    <string name="cancel">Annuler</string>
+
+    <!-- Battle Report -->
+    <string name="leave_report">Quitter le debriefing</string>
+    <string name="players">Joueurs</string>
+    <string name="gold_gathered">Or récolté</string>
+    <string name="units_created">Unités créés</string>
+    <string name="units_killed">Unités détruites</string>
+    <string name="battles_won">Batailles remportées</string>
+    <string name="population_graph_title">Graphe de population</string>
+    <string name="economy_graph_title">Graphe d\'économie</string>
+    <string name="game_was_too_short">La partie était trop courte !\Vos stats ne seront pas mises à jour&#8230;</string>
+
+    <!-- Multiplayer Screen -->
+    <string name="quick_game">Partie rapide</string>
+    <string name="invite_players">Creer une partie</string>
+    <string name="show_invitations">Mes invitations</string>
+    <string name="rankings">Classements</string>
+    <string name="error_room_creation">Une erreur s\'est produite pendant la création de la partie, veuillez réessayer !</string>
+    <string name="error_room_join">Une erreur s\'est produite pendant la connexion à la partie, veuillez réessayer !</string>
+    <string name="error_room_connection">Une erreur s\'est produite pendant la connexion à la partie, veuillez réessayer !</string>
+    <string name="go">Jouer !</string>
+
+    <!-- Game -->
+    <string name="turn_count">Tour %s</string>
+    <string name="confirm_no_orders">Vous n\'avez pas donné d\'ordre pour ce tour.\nConfirmer la fin du tour ?</string>
+    <string name="loading_game">Chargement</string>
+    <string name="loading_dots">. . .</string>
+    <string name="game_paused">Pause</string>
+    <string name="surrender">Abandonner</string>
+    <string name="confirm_surrender_message">Êtes-vous sûr de vouloir abandonner la partie ?</string>
+    <string name="resume_game">Retour au jeu</string>
+    <string name="save_exit">Quitter</string>
+    <string name="victory">Victoire !</string>
+    <string name="defeat">Défaite&#8230;</string>
+    <string name="send_orders">Envoyer les ordres</string>
+    <string name="notification_message">Vos troupes attendent vos ordres, sire !</string>
+    <string name="chatHint">chat&#8230;</string>
+    <string name="dismiss">Fermer</string>
+
+    <!-- Armies and Units names -->
+    <string name="human_army">Humains</string>
+    <string name="human_soldier">Infanterie</string>
+    <string name="human_bowman">Archers</string>
+    <string name="human_knight">Chevaliers</string>
+    <string name="human_monk">Moines</string>
+    <string name="undead_army">Morts-Vivants</string>
+    <string name="undead_skeleton">Squelettes</string>
+    <string name="undead_bowman">Archers</string>
+    <string name="undead_necromancer">Nécromanciens</string>
+    <string name="undead_zombie">Zombies</string>
+    <string name="orcs_army">Orques</string>
+    <string name="orcs_goblin">Gobelins</string>
+    <string name="orcs_orc">Orques</string>
+    <string name="orcs_troll">Trolls</string>
+    <string name="orcs_ogre">Ogres</string>
+    <string name="chaos_army">Chaos</string>
+    <string name="chaos_warrior">Guerriers</string>
+    <string name="chaos_wizards">Sorciers</string>
+    <string name="chaos_demons">Demons</string>
+    <string name="chaos_damned_soul">Âmes damnées</string>
+    <string name="dwarf_army">Nains</string>
+    <string name="dwarf_warrior">Guerriers</string>
+    <string name="dwarf_crossbowman">Arbalétriers</string>
+    <string name="dwarf_giant_killer">Tueurs de géants</string>
+    <string name="dwarf_rune_master">Maîtres des runes</string>
+
+    <!-- Terrains -->
+    <string name="grass">Herbe</string>
+    <string name="forest">Forêt</string>
+    <string name="castle">Château‎</string>
+    <string name="fort">Fort</string>
+    <string name="windmill">Fermes</string>
+    <string name="mountain">Montagnes</string>
+    <string name="grass_description">Pas d\'effet particulier</string>
+    <string name="castle_description">+100 or/tour (+70 en hiver)\n\n- L\'endroit le plus important de votre royaume: vous perdez la partie si vous le perdez\n- Fabrique d\'unités\n- Procure protection et bonus de récupération aux unités</string>
+    <string name="windmill_description">+100 or/tour (+70 en hiver)\n\n- Donne un bonus de récupération au moral.</string>
+    <string name="fort_description">+50 or/tour (+35 en hiver)\n\n- Fabrique d\'unités\n- Procure protection et bonus de récupération aux unités</string>
+    <string name="forest_description">- Les unités en diagonale ne font pas tomber le brouillard de guerre</string>
+    <string name="mountain_description">- Les unités lourdes ne peuvent pas gravir les montagnes\n- Les montagnes donnent des bonus de vision</string>
+
+    <!-- Help section -->
+    <string name="terrain_tiles">Types de terrains</string>
+    <string name="art_of_war">L\'Art de la guerre</string>
+    <string name="battle_title1">Types d\'armes et d\'armures</string>
+    <string name="battle1">- Les armes de type normales sont efficaces contre les armures moyennes.\n- Les armes perçantes sont efficaces contre les armures les plus légères mais sont moins efficaces contre les armures les plus lourdes.\n- La Magie est efficace contre tous les types d\'armure.</string>
+    <string name="battle_title2">Moral et expérience pendant les batailles</string>
+    <string name="battle2">- Les dégâts infligés à vos ennemis dépendent principalement de la santé, du moral et de l\'expérience de vos unités.\n- L\'expérience est gagnée durant les batailles, plus la victoire est serrée, plus vos unités gagneront de l\'expérience.\n- Du moral est perdu à chaque fois que vos unités encaissent des dégât.\n- Quand une armée a un moral inférieur à 40%, elle fuit le champs de bataille. Les vainqueurs regagnent des points de moral après chaque victoire.</string>
+    <string name="battle_title3">Places fortes</string>
+    <string name="battle3">- Lorsqu\'elles protègent une place forte, les unités en défense n\'encaissent que la moitié des dégâts.</string>
+    <string name="battle_title4">Attaques à distance</string>
+    <string name="battle4">- Les attaques à distance sont effectués en premier lors des batailles.\n- Les unités à distance sont très efficaces pour defendre des positions.</string>
+
+    <!-- Armies descriptions -->
+    <string name="human_army_description">Armée équilibrée.</string>
+    <string name="orcs_army_description">Les orques et gobelins sont composés de troupes agressives et sans merci.\nLeurs troupes ont des bonus offensifs quand elles attaquent, mais gagnent moins de bonus que les autres armées quand elles défendent leurs positions.</string>
+    <string name="undead_army_description">Les unités morts-vivants sont faibles au combat mais ne fuiront jamais une bataille car sans âme; à la place, leurs troupes retournent à l\'état de poussière quand leur moral (=magie) est bas.\nLes morts-vivants sont terrifiants et font rapidement décroître le moral de leurs ennemis pendant les combats.</string>
+    <string name="chaos_army_description">Les armées du Chaos sont uniquement composées de troupes d\'élites en sous-nombre, de puissants sorciers et de monstres démoniaques.</string>
+    <string name="dwarf_army_description">Armée défensive.\nLes unités naines ont des bonus de combat en défense et dans les montagnes.</string>
+
+    <!-- Units descriptions -->
+    <string name="human_soldier_description"></string>
+    <string name="human_bowman_description">Attaquent à distance</string>
+    <string name="human_knight_description">Ne peuvent gravir les montagnes</string>
+    <string name="human_monk_description">Chaque tour, soignent les unités amies sur la même case</string>
+    <string name="undead_skeleton_description"></string>
+    <string name="undead_bowman_description">Attaquent à distance</string>
+    <string name="undead_zombie_description">Absorbent la vie de leurs ennemis pendant les combats</string>
+    <string name="undead_necromancer_description">Absorbent la vie de leurs ennemis et soignent les unités amies sur la même case pendant les combats\nAttaquent à distance</string>
+    <string name="orcs_goblin_description">Ne nécessitent pas de ravitaillement lorsqu\'ils sont en forêt ou en montagne</string>
+    <string name="orcs_orc_description"></string>
+    <string name="orcs_troll_description">Chaque tour, régénèrent leurs blessures</string>
+    <string name="orcs_ogre_description">Ne peuvent gravir les montagnes\nCoup critique (15% : x2 dégâts)\nChaque tour, mangent des unités amies sur la même case</string>
+    <string name="chaos_warrior_description"></string>
+    <string name="chaos_demon_description">Chaque tour, régénèrent leurs blessures\nCoup critique (15% : x2 dégâts)</string>
+    <string name="chaos_wizard_description">Chaque tour, empoisonnent et infligent des dégâts aux unités ennemies adjacentes\nAttaquent à distance</string>
+    <string name="chaos_damned_soul_description">Ne peuvent gravir les montagnes\nAu combat, leurs dégâts sont infligées à tous les ennemis en même temps</string>
+    <string name="dwarf_warrior_description"></string>
+    <string name="dwarf_crossbowman_description">Attaquent à distance</string>
+    <string name="dwarf_giant_killer_description">Infligent des dégâts supplémentaires aux créatures les plus grosses</string>
+    <string name="dwarf_rune_master_description">Chaque round de bataille, détériorent les équipements (armes et armures) de tous leurs ennemis</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial">Didacticiel</string>
+    <string name="welcome_tutorial">Bienvenue au didacticiel !</string>
+    <string name="tutorial_0">Ici, vous allez apprendre comment mener vos troupes à la victoire.\nAppuyez sur le bouton d\'envoi des ordres pour continuer !</string>
+    <string name="tutorial_1">Warlords est un jeu au tour-par-tour. À chaque tour, les joueurs doivent donner des ordres à leurs troupes.\nTous les ordres sont ensuite procédés simultanément.</string>
+    <string name="tutorial_2">Pour gagner, c\'est simple : vous devez capturer tous les châteaux des joueurs ennemis.\nVous perdez la partie si vous ne contrôlez plus aucun château !</string>
+    <string name="tutorial_3">Vous pouvez naviguer a travers la carte en faisant glisser l\'écran; vous pouvez aussi zoomer/dézoomer en touchant l\'écran avec deux doigts.</string>
+    <string name="tutorial_4">Il y a 3 types d\'ordre dans Warlords : les ordres de mouvement et les ordres de défense que vous pouvez donner à vos unités, ainsi que les ordres d\'achats que vous pouvez assigner aux fabrique d\'unités que vous contrôlez.</string>
+    <string name="tutorial_5">Commençons par donner des ordres ! Donnez un ordre de mouvement à votre unité d\'infanterie sur le château en la tirant vers la ferme.\nUne flèche verte va apparaître, afin de vous rappeler la direction de l\'ordre.\nEnsuite, appuyer sur le bouton d\'envoi des ordres pour valider la fin de votre tour !</string>
+    <string name="tutorial_6">Parfait ! Vous avez conqui une ferme ! Chaque tour, vous gagnez une quantité dépendant du nombre de fermes et de châteaux dans votre royaume.\nConquérir les zones de la carte est donc crucial pour gagner !</string>
+    <string name="tutorial_7">Touchez juste une unité pour lui donner un ordre de défense. Cela lui donnera des bonus de défense au combat.\nUne dernière chose à propos des ordres, il ne peut y avoir plus de 3 unités sur la même case. Gardez-le en tête !</string>
+    <string name="tutorial_8">Allons combattre maintenant ! Attaquez et capturez le fort avec vos troupes, vous pourrez ensuite recruter des troupes sur cette zone !</string>
+    <string name="tutorial_9">Cool, ce fut une belle bataille. Comme vous pouvez le voir, votre unité a gagné de l\'expérience (barre verte) et perdu un peu de moral (barre bleue).\nLe moral de vos troupes est important : s\'il est bas, elles fuiront le champs de bataille !</string>
+    <string name="tutorial_10">Ok, achetons des unités maintenant ! Ouvrez le menu d\'achat d\'unités en touchant la pièce d\'or sur la zone de fort. Ensuite, choisissez l\'unité que vous souhaitez recruter; elle apparaîtra au tour prochain !</string>
+    <string name="tutorial_11">Comme dit précédemment, vous gagnez de l\'or chaque tour grâce à vos territoires conquis. Mais dans Warlords, vous devez aussi payer et ravitailler vos unités !\nQuand vous achetez une nouvelle unité, le prix indiqué est le prix que vous allez devoir payer chaque tour. Si vous n\'avez plus assez d\'argent pour ravitailler vos unités, celles-ci vont perdre du moral et même déserter !</string>
+    <string name="tutorial_12">Il est recommandé de garder une économie stable; vous pouvez voir votre équilibre budgétaire dans le volet rétractable de gauche.\nFaites aussi attention aux changements de saison, vous gagnez moins d\'or pendant l\'hiver !</string>
+    <string name="tutorial_13">Attaquez le château ennemi pour gagner la partie et achever ce didacticiel ! Vous pouvez obtenir plus d\'informations sur les combats, les terrains et les armées dans la section Comment jouer !</string>
+
+</resources>
