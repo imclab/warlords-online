@@ -81,7 +81,7 @@ public class BattleReportActivity extends BaseGameActivity implements OnLeaderbo
         mMusic = MusicManager.MUSIC_END_GAME;
 
         // if battle was too short, no score update !
-        if (battle.getTurnCount() < 5) {
+        if (getGamesClient() != null && getGamesClient().isConnected() && battle.getTurnCount() < 5) {
             ApplicationUtils.showToast(getApplicationContext(), R.string.game_was_too_short, Toast.LENGTH_SHORT);
         }
     }

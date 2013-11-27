@@ -800,17 +800,19 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
     }
 
     public void sendChatMessage(int recipientIndex, String messageContent) {
-        ChatMessage chatMessage = new ChatMessage(getGamesClient().getCurrentPlayer().getDisplayName(), messageContent,
-                true);
-        // add message to UI
-        mGameGUI.addMessageToChatDialog(chatMessage);
-        mGameGUI.scrollToChatBottom();
-        // add message to player object
-        battle.getPlayers().get(recipientIndex).getChatMessages().add(chatMessage);
-        // send message !
-        getGamesClient().sendReliableRealTimeMessage(this,
-                new Message(myArmyIndex, MessageType.CHAT, chatMessage.toByte()).toByte(), mRoom.getRoomId(),
-                battle.getPlayers().get(recipientIndex).getId());
+        if (getGamesClient() != null && getGamesClient().isConnected()) {
+            ChatMessage chatMessage = new ChatMessage(getGamesClient().getCurrentPlayer().getDisplayName(),
+                    messageContent, true);
+            // add message to UI
+            mGameGUI.addMessageToChatDialog(chatMessage);
+            mGameGUI.scrollToChatBottom();
+            // add message to player object
+            battle.getPlayers().get(recipientIndex).getChatMessages().add(chatMessage);
+            // send message !
+            getGamesClient().sendReliableRealTimeMessage(this,
+                    new Message(myArmyIndex, MessageType.CHAT, chatMessage.toByte()).toByte(), mRoom.getRoomId(),
+                    battle.getPlayers().get(recipientIndex).getId());
+        }
     }
 
     public void onReceiveChatMessage(int senderIndex, ChatMessage receivedMessage) {

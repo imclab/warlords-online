@@ -12,7 +12,7 @@
     <string name="rate_later">Plus tard</string>
     <string name="rate_now">Noter l\'application maintenant !</string>
     <string name="rate_title">Donner une note à l\'application ?</string>
-    <string name="rate_message">Si vous prenez plaisir à jouer à %s, merci de prendre un moment pour la noter.\nMerci de votre soutien !</string>
+    <string name="rate_message">Si vous aimez jouer a %s, merci de prendre un moment pour noter l\'application.\nMerci de votre soutien !</string>
 
     <!-- About Dialog -->
     <string name="about_title">À propos de Warlords</string>

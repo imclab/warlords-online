@@ -254,4 +254,8 @@ public class TutorialActivity extends GameActivity {
         finish();
     }
 
+    @Override
+    public void sendChatMessage(int recipientIndex, String messageContent) {
+    }
+    
 }
