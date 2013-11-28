@@ -37,7 +37,7 @@
     <string name="battle_mode">Battle Mode</string>
     <string name="back">Back</string>
     <string name="resume_saved_battle">You have an unfinished %s-players game, do you want to load it ?\nIt will be lost if you start another battle.</string>
-    <string name="log_in_to_play_multi">You must log in\nto play online !</string>
+    <string name="log_in_to_play_multi">You must sign in\nto play online !</string>
     <string name="logout">Sign out</string>
     <string name="ask_tutorial">It is recommanded to do the tutorial in order to know how to play !\nWould you like to do it now ?</string>
     <string name="achievements">Achievements</string>

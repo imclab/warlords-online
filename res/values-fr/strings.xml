@@ -29,7 +29,7 @@
     <string name="settings">Options</string>
     <string name="back">Retour</string>
     <string name="resume_saved_battle">Vous avez une partie à %s joueurs non terminée, voulez-vous la charger ?\nCelle-ci sera perdue si vous recommencez une partie.</string>
-    <string name="log_in_to_play_multi">Vous devez être connecté\npour jouer en ligne !</string>
+    <string name="log_in_to_play_multi">Vous devez vous connecter\npour jouer en ligne !</string>
     <string name="logout">Se deconnecter</string>
     <string name="ask_tutorial">Pour les nouveaux joueurs, il est recommandé de faire le didacticiel !\nVoulez-vous le faire maintenant ?</string>
     <string name="achievements">Trophees</string>
