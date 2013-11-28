@@ -3,6 +3,7 @@ package com.giggs.apps.chaos.game.model.units.orc;
 import com.giggs.apps.chaos.R;
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.data.TerrainData;
+import com.giggs.apps.chaos.game.logic.GameLogic;
 import com.giggs.apps.chaos.game.logic.GameLogic.ArmorType;
 import com.giggs.apps.chaos.game.logic.GameLogic.WeaponType;
 import com.giggs.apps.chaos.game.model.map.Map;
@@ -44,8 +45,9 @@ public class Ogre extends Unit {
     @Override
     public int getDamage(Unit target) {
         int damage = super.getDamage(target);
+        double random = GameLogic.random.nextDouble();
         // critical hit !
-        if (Math.random() < 0.15) {
+        if (random < 0.15) {
             damage *= 2;
         }
         return damage;

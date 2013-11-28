@@ -43,16 +43,29 @@ public class GameCreation {
         return battle;
     }
 
-    public static Battle createMultiplayerMap(List<Participant> players, int[] lstMultiplayerArmies) {
+    public static Battle createMultiplayerMap(List<String> lstParticipantIds, List<Participant> players,
+            int[] lstMultiplayerArmies, String myName) {
         Battle battle = new Battle();
 
         // init players
         List<Player> lstPlayers = new ArrayList<Player>();
-        for (int n = 0; n < players.size(); n++) {
-            Participant participant = players.get(n);
-            Player p = new Player(participant.getParticipantId(), participant.getDisplayName(),
-                    ArmiesData.values()[lstMultiplayerArmies[n]], n, false);
-            lstPlayers.add(p);
+        for (int n = 0; n < lstParticipantIds.size(); n++) {
+            for (Participant participant : players) {
+                if (lstParticipantIds.get(n).equals(participant.getParticipantId())) {
+                    String playerName;
+                    if (n == 0) {
+                        playerName = myName;
+                    } else if (participant.getPlayer() != null) {
+                        playerName = participant.getPlayer().getDisplayName();
+                    } else {
+                        playerName = participant.getDisplayName();
+                    }
+                    Player p = new Player(participant.getParticipantId(), playerName,
+                            ArmiesData.values()[lstMultiplayerArmies[n]], n, false);
+                    lstPlayers.add(n, p);
+                    break;
+                }
+            }
         }
         battle.setPlayers(lstPlayers);
 

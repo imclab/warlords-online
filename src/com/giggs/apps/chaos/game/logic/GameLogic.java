@@ -29,7 +29,7 @@ import com.giggs.apps.chaos.game.model.units.orc.Goblin;
 @SuppressLint("UseSparseArrays")
 public class GameLogic {
 
-    private static Random random = new Random(153548);
+    public static Random random = new Random(153548);
 
     public static enum WeaponType {
         normal, piercing, siege, magic;
@@ -55,10 +55,11 @@ public class GameLogic {
         battle.setTurnCount(battle.getTurnCount() + 1);
 
         // update weather
-        if (battle.isWinter() && random.nextDouble() < 0.2) {
+        double randomWeather = random.nextDouble();
+        if (battle.isWinter() && randomWeather < 0.2) {
             // summer !
             updateWeather(battle, false);
-        } else if (!battle.isWinter() && random.nextDouble() < 0.1) {
+        } else if (!battle.isWinter() && randomWeather < 0.1) {
             // winter !
             updateWeather(battle, true);
         }
@@ -326,10 +327,9 @@ public class GameLogic {
         }
 
         int nbRounds = 0;
-
         do {
-            nbRounds++;
 
+            nbRounds++;
             // ranged attacks have initiative
             for (Unit unit : tile.getContent()) {
                 if (unit.isRangedAttack()) {
@@ -342,6 +342,12 @@ public class GameLogic {
             }
 
             // then contact units
+            // update temporary health and morale for simultaneous attacks
+            for (Unit unit : tile.getContent()) {
+                if (!unit.isRangedAttack()) {
+                    unit.updateTempStats();
+                }
+            }
             for (Unit unit : tile.getContent()) {
                 if (!unit.isRangedAttack()) {
                     boolean isKilled = unit.attack(getTarget(lstArmies, unit));
@@ -387,8 +393,8 @@ public class GameLogic {
             }
         } while (lstArmies.size() > 1 && nbRounds < 100);
 
-        // battle is a draw
-        if (nbRounds >= 100) {
+        if (nbRounds >= 100 && lstArmies.size() > 1) {
+            // battle is a draw
             Iterator<Entry<Integer, List<Unit>>> it = lstArmies.entrySet().iterator();
             while (it.hasNext()) {
                 Entry<Integer, List<Unit>> entry = it.next();
@@ -406,10 +412,8 @@ public class GameLogic {
                     }
                 }
             }
-        }
-
-        // give rewards to the winners
-        if (lstArmies.size() == 1) {
+        } else if (lstArmies.size() == 1) {
+            // give rewards to the winners
             List<Unit> lstUnits = lstArmies.get(lstArmies.keySet().iterator().next());
             for (Unit unit : lstUnits) {
                 giveBattleReward(unit, true, nbRounds);
@@ -433,11 +437,12 @@ public class GameLogic {
         opposingArmies.remove(unit.getArmyIndex());
 
         // pick a random opponent unit
-        Integer armyIndex = (Integer) opposingArmies.keySet().toArray()[(int) ((opposingArmies.size() - 1) * Math
-                .random())];
-        return opposingArmies.get(armyIndex).get(
-                (int) ((opposingArmies.get(armyIndex).size() - 1) * random.nextDouble()));
+        Integer armyIndex = (Integer) opposingArmies.keySet().toArray()[(int) ((opposingArmies.size() - 1) * random
+                .nextDouble())];
 
+        Unit target = opposingArmies.get(armyIndex).get(
+                (int) ((opposingArmies.get(armyIndex).size() - 1) * random.nextDouble()));
+        return target;
     }
 
     private static void updateWeather(Battle battle, boolean isWinter) {

@@ -12,10 +12,12 @@ public class DefendOrder extends Order {
 
     private final Unit unit;
     private final Tile tile;
+    private final int unitIndex;
 
-    public DefendOrder(Unit unit, Tile tile) {
+    public DefendOrder(Unit unit, Tile tile, int unitIndex) {
         this.unit = unit;
         this.tile = tile;
+        this.unitIndex = unitIndex;
     }
 
     public Unit getUnit() {
@@ -26,4 +28,7 @@ public class DefendOrder extends Order {
         return tile;
     }
 
+    public int getUnitIndex() {
+        return unitIndex;
+    }
 }

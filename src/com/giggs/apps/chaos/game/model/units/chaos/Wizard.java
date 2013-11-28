@@ -18,7 +18,7 @@ public class Wizard extends Unit {
 
     public Wizard(int armyIndex) {
         super(R.string.chaos_wizards, R.drawable.chaos_wizard_image, "chaos_wizard.png", ArmiesData.CHAOS, armyIndex,
-                130, 500, true, WeaponType.magic, ArmorType.unarmored, 70, 2);
+                100, 500, true, WeaponType.magic, ArmorType.unarmored, 80, 2);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Wizard extends Unit {
         for (Tile t : MapLogic.getAdjacentTiles(map, tilePosition, 1, false)) {
             if (t.isEnemyOnIt(armyIndex)) {
                 for (Unit unit : t.getContent()) {
-                    unit.updateHealth(-30);
+                    unit.updateHealth(-50);
                 }
             }
         }

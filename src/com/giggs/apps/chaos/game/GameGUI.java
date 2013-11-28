@@ -170,7 +170,11 @@ public class GameGUI {
             View layout = mGameActivity.getLayoutInflater().inflate(R.layout.in_game_player_layout, null);
             // set name
             TextView playerName = (TextView) layout.findViewById(R.id.name);
-            playerName.setText(player.getName());
+            if (mGameActivity.mIsMultiplayerGame && player.getArmyIndex() == mGameActivity.myArmyIndex) {
+                playerName.setText(mGameActivity.getGamesClient().getCurrentPlayer().getDisplayName());
+            } else {
+                playerName.setText(player.getName());
+            }
             playerName.setCompoundDrawablesWithIntrinsicBounds(GameUtils.PLAYER_BLASONS[player.getArmyIndex()], 0,
                     (player.isAI() ? R.drawable.ic_wooden_sword : 0), 0);
 
@@ -398,7 +402,7 @@ public class GameGUI {
         }
     }
 
-    private void sendOrders() {
+    public void sendOrders() {
         hideBuyOptions();
         if (mGameActivity.mIsMultiplayerGame) {
             // send orders

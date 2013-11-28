@@ -39,6 +39,9 @@ public abstract class Unit extends GameElement {
     private int frags = 0;
     private Order order;
 
+    private int tmpHealth;
+    private int tmpMorale;
+
     public Unit(int name, int image, String spriteName, ArmiesData army, int armyIndex, int price, int health,
             boolean isRangedAttack, WeaponType weaponType, ArmorType armorType, int attack, int armor) {
         super(name, spriteName);
@@ -238,7 +241,7 @@ public abstract class Unit extends GameElement {
                 // check if enemies come from this position
                 for (Unit u : tile.getContent()) {
                     if (u.getArmyIndex() != armyIndex && u.getOrder() != null && u.getOrder() instanceof MoveOrder) {
-                        MoveOrder moveOrder = (MoveOrder) order;
+                        MoveOrder moveOrder = (MoveOrder) u.getOrder();
                         if (moveOrder.getOrigin() == tile) {
                             continue adjacentTilesBoucle;
                         }
@@ -259,40 +262,40 @@ public abstract class Unit extends GameElement {
     }
 
     public int getDamage(Unit target) {
+        double randomDamage = GameLogic.random.nextDouble();
         float attackFactor = GameLogic.WEAPONS_EFFICIENCY[weaponType.ordinal()][target.getArmorType().ordinal()];
-        int damage = (int) Math.max(0,
-                attack * attackFactor * health / maxHealth * morale / 100
-                        * (1 + 0.1 * Math.random() + (float) experience / 100) - target.getArmor());
-
+        int damage = (int) Math.max(0, 1.0f * attack * attackFactor * (isRangedAttack ? health : tmpHealth) / maxHealth
+                * (isRangedAttack ? morale : tmpMorale) / 100 * (1.0f + 0.15f * randomDamage + 1.0f * experience / 100)
+                - target.getArmor());
         // terrain modifier
-        if (target.getTilePosition().getTerrain() == TerrainData.castle
-                || target.getTilePosition().getTerrain() == TerrainData.fort) {
-            damage *= 0.5;
+        if ((target.getTilePosition().getTerrain() == TerrainData.castle || target.getTilePosition().getTerrain() == TerrainData.fort)
+                && (order == null || order instanceof DefendOrder)) {
+            damage *= 0.5f;
 
             // ranged attacks are very effective when defending strong positions
             if (isRangedAttack && (order == null || order instanceof DefendOrder)) {
-                damage *= 1.3;
+                damage *= 1.3f;
             }
         }
 
         // orcs are agressive !
         if (army == ArmiesData.ORCS && order != null && order instanceof MoveOrder) {
-            damage *= 1.15;
+            damage *= 1.15f;
         }
 
         // order modifier
         if (target.getOrder() != null && target.getOrder() instanceof DefendOrder) {
             if (target.getArmy() == ArmiesData.ORCS) {
-                damage *= 0.85;
+                damage *= 0.85f;
             } else if (target.getArmy() == ArmiesData.DWARF) {
-                damage *= 0.6;
+                damage *= 0.6f;
             } else {
-                damage *= 0.7;
+                damage *= 0.7f;
             }
         }
 
         if (target.getArmy() == ArmiesData.DWARF && target.getTilePosition().getTerrain() == TerrainData.mountain) {
-            damage *= 0.8;
+            damage *= 0.8f;
         }
 
         return damage;
@@ -308,6 +311,11 @@ public abstract class Unit extends GameElement {
 
     public void setArmor(int armor) {
         this.armor = armor;
+    }
+
+    public void updateTempStats() {
+        tmpHealth = health;
+        tmpMorale = morale;
     }
 
 }

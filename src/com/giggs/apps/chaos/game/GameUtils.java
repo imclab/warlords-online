@@ -50,4 +50,6 @@ public class GameUtils {
             "Ban Anna", "Optimus Lime", "Al Pacho", "Lemon Alisa", "Goliath", "Spongebob", "Nautilus", "Asterion",
             "Tron" };
 
+    public static final int MULTIPLAYER_TURN_MAX_TIME = 60;
+
 }

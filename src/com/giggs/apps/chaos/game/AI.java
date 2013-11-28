@@ -54,12 +54,13 @@ public class AI {
         for (Tile[] h : map.getTiles()) {
             for (Tile t : h) {
                 if (t.isAllyOnIt(player.getArmyIndex())) {
-                    for (Unit u : t.getContent()) {
+                    for (int n = 0; n < t.getContent().size(); n++) {
+                        Unit u = t.getContent().get(n);
                         for (Tile insecure : insecureTiles) {
                             int distance = MapLogic.getDistance(t, insecure);
                             if (distance == 0) {
                                 // defend
-                                DefendOrder o = new DefendOrder(u, u.getTilePosition());
+                                DefendOrder o = new DefendOrder(u, u.getTilePosition(), n);
                                 u.setOrder(o, false);
                                 player.getLstTurnOrders().add(o);
                                 break;
@@ -67,7 +68,7 @@ public class AI {
                                 // go back to defend
                                 Tile step = getOneStepCloser(map, u, insecure);
                                 if (step != null) {
-                                    MoveOrder o = new MoveOrder(u, step);
+                                    MoveOrder o = new MoveOrder(u, step, n);
                                     u.setOrder(o, false);
                                     player.getLstTurnOrders().add(o);
                                 }
@@ -81,7 +82,7 @@ public class AI {
                             if (closestInterestingPlace != null) {
                                 Tile step = getOneStepCloser(map, u, closestInterestingPlace);
                                 if (step != null) {
-                                    MoveOrder o = new MoveOrder(u, step);
+                                    MoveOrder o = new MoveOrder(u, step, n);
                                     u.setOrder(o, false);
                                     player.getLstTurnOrders().add(o);
                                 }

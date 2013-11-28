@@ -17,7 +17,7 @@ public class DamnedSoul extends Unit {
 
     public DamnedSoul(int armyIndex) {
         super(R.string.chaos_damned_soul, R.drawable.chaos_damned_soul_image, "chaos_damned_soul.png",
-                ArmiesData.CHAOS, armyIndex, 160, 600, false, WeaponType.piercing, ArmorType.light, 80, 2);
+                ArmiesData.CHAOS, armyIndex, 130, 600, false, WeaponType.piercing, ArmorType.medium, 90, 4);
     }
 
     @Override
@@ -35,8 +35,7 @@ public class DamnedSoul extends Unit {
         // bashing attacks !
         for (Unit unit : tilePosition.getContent()) {
             if (unit.getArmyIndex() != armyIndex) {
-                unit.setHealth(-damage);
-                unit.setMorale(damage / 10);
+                unit.applyDamage(-damage);
             }
         }
         return damage;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="gamehelper_sign_in_failed">Erreur lors du  login. Veuillez vérifier votre connexion Internet et réessayez.</string>
+    <string name="gamehelper_sign_in_failed">Erreur lors du  login. Veuillez vérifier votre connexion Internet et réessayer.</string>
     <string name="gamehelper_app_misconfigured">L\'application est mal configurée.</string>
     <string name="gamehelper_license_failed">Erreur lors de la vérification de license</string>
     <string name="gamehelper_unknown_error">Erreur inconnue</string>

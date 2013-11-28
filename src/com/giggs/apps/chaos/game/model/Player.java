@@ -19,9 +19,9 @@ public class Player implements Serializable {
     private final String name;
     private final ArmiesData army;
     private final int armyIndex;
-    private final boolean isAI;
     private final GameStats gameStats = new GameStats();
 
+    private boolean isAI;
     private int gold = 0;
     private boolean isDefeated = false;
     private transient List<Order> lstTurnOrders = new ArrayList<Order>();
@@ -110,4 +110,8 @@ public class Player implements Serializable {
         this.chatMessages = chatMessages;
     }
 
+    public void setAI(boolean isAI) {
+        this.isAI = isAI;
+    }
+    
 }

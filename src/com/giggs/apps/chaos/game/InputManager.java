@@ -200,14 +200,14 @@ public class InputManager implements IOnSceneTouchListener, IScrollDetectorListe
 
     public void giveDefendOrder() {
         Unit unit = (Unit) selectedElement.getGameElement();
-        Order order = new DefendOrder(unit, unit.getTilePosition());
+        Order order = new DefendOrder(unit, unit.getTilePosition(), unit.getTilePosition().getContent().indexOf(unit));
         mGameActivity.battle.getPlayers().get(unit.getArmyIndex()).giveOrder(order, unit.getOrder());
         unit.setOrder(order, true);
     }
 
     public void giveMoveOrderToUnit(Tile destination) {
         Unit unit = (Unit) selectedElement.getGameElement();
-        Order order = new MoveOrder(unit, destination);
+        Order order = new MoveOrder(unit, destination, unit.getTilePosition().getContent().indexOf(unit));
         mGameActivity.battle.getPlayers().get(unit.getArmyIndex()).giveOrder(order, unit.getOrder());
         unit.setOrder(order, true);
     }
