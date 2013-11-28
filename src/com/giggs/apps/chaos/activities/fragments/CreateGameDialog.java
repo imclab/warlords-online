@@ -127,8 +127,6 @@ public class CreateGameDialog extends DialogFragment {
             ((CompoundButton) mRadioGroupNbPlayers.getChildAt(2)).setChecked(true);
             // disable some options in multiplayer for now
             if (mGameType == MULTIPLAYER_GAME_TYPE) {
-                ((CompoundButton) mRadioGroupNbPlayers.getChildAt(0)).setEnabled(false);
-                ((CompoundButton) mRadioGroupNbPlayers.getChildAt(1)).setEnabled(false);
                 ((CompoundButton) mRadioGroupNbPlayers.getChildAt(3)).setEnabled(false);
             }
         } else {

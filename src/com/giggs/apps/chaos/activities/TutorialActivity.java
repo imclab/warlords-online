@@ -42,6 +42,7 @@ public class TutorialActivity extends GameActivity {
     protected void initGameActivity() {
         mDbHelper = new DatabaseHelper(getApplicationContext());
 
+        myArmyIndex = 0;
         battle = new Battle();
         // setup players
         Player me = new Player("0", "Me", ArmiesData.HUMAN, 0, false);
@@ -257,5 +258,5 @@ public class TutorialActivity extends GameActivity {
     @Override
     public void sendChatMessage(int recipientIndex, String messageContent) {
     }
-    
+
 }

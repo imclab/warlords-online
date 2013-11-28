@@ -12,7 +12,7 @@ public class Message implements Serializable {
     private static final long serialVersionUID = -5267336555255334959L;
 
     public enum MessageType {
-        PARTICIPANT_ID, ARMY_INDEX, WHICH_ARMY, INIT_BATTLE, CHAT, TURN_ORDERS, START_GAME 
+        PARTICIPANT_ID, ARMY_INDEX, WHICH_ARMY, INIT_BATTLE, CHAT, TURN_ORDERS, START_BATTLE_NOW
     }
 
     private final int senderIndex;

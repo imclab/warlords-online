@@ -361,8 +361,14 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
 
         GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_nb_turn,
                 battle.getTurnCount());
-        GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.against_AI,
-                winningPlayer == battle.getMe(myArmyIndex) ? "victory" : "defeat");
+        if (winningPlayer != null) {
+            GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.winner_army,
+                    winningPlayer.getArmy().name());
+        }
+        if (!mIsMultiplayerGame) {
+            GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.against_AI,
+                    winningPlayer == battle.getMe(myArmyIndex) ? "victory" : "defeat");
+        }
 
         mGameGUI.displayVictoryLabel(winningPlayer == battle.getMe(myArmyIndex));
     }
@@ -460,7 +466,7 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
     private int chrono;
     private Timer timer;
 
-    private List<String> lstParticipantIds;
+    private List<String> lstParticipantIds = null;
     private String mMyParticipantId;
 
     public void sendOrdersOnline() {
@@ -569,6 +575,14 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
         case CHAT:
             onReceiveChatMessage(message.getSenderIndex(),
                     (ChatMessage) GameConverterHelper.getObjectFromByte(message.getContent()));
+            break;
+        case START_BATTLE_NOW:
+            if (lstParticipantIds == null) {
+                mWaitingRoomFinishedFromCode = true;
+                finishActivity(MultiplayerFragment.RC_WAITING_ROOM);
+                mMyParticipantId = mRoom.getParticipantId(getGamesClient().getCurrentPlayerId());
+                prepareGame(mRoom);
+            }
             break;
         }
     }
@@ -689,6 +703,8 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
     public void onLeftRoom(int statusCode, String arg1) {
     }
 
+    private boolean mWaitingRoomFinishedFromCode = false;
+
     @Override
     public void onActivityResult(int request, int response, Intent data) {
         if (request == MultiplayerFragment.RC_INVITATION_INBOX) {
@@ -706,6 +722,7 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
                     .build();
             getGamesClient().joinRoom(roomConfig);
         } else if (request == MultiplayerFragment.RC_SELECT_PLAYERS) {
+
             if (response != Activity.RESULT_OK) {
                 // user canceled
                 return;
@@ -719,7 +736,7 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
             int maxAutoMatchPlayers = data.getIntExtra(GamesClient.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
 
             if (minAutoMatchPlayers > 0) {
-                autoMatchCriteria = RoomConfig.createAutoMatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers, 0);
+                autoMatchCriteria = RoomConfig.createAutoMatchCriteria(1, maxAutoMatchPlayers, 0);
             } else {
                 autoMatchCriteria = null;
             }
@@ -733,10 +750,23 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
             RoomConfig roomConfig = roomConfigBuilder.build();
             getGamesClient().createRoom(roomConfig);
         } else if (request == MultiplayerFragment.RC_WAITING_ROOM) {
+
+            if (mWaitingRoomFinishedFromCode)
+                return;
+
             if (response == Activity.RESULT_OK) {
                 // start game
-                Room room = data.getParcelableExtra(GamesClient.EXTRA_ROOM);
-                prepareGame(room);
+                mMyParticipantId = mRoom.getParticipantId(getGamesClient().getCurrentPlayerId());
+
+                for (Participant p : mRoom.getParticipants()) {
+                    if (!p.getParticipantId().equals(mMyParticipantId)) {
+                        getGamesClient().sendReliableRealTimeMessage(this,
+                                new Message(myArmyIndex, MessageType.START_BATTLE_NOW, null).toByte(),
+                                mRoom.getRoomId(), p.getParticipantId());
+                    }
+                }
+
+                prepareGame(mRoom);
             } else if (response == Activity.RESULT_CANCELED) {
                 // Waiting room was dismissed with the back button. The meaning
                 // of this
@@ -765,7 +795,7 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
         }
 
         // get waiting room intent
-        Intent i = getGamesClient().getRealTimeWaitingRoomIntent(room, Integer.MAX_VALUE);
+        Intent i = getGamesClient().getRealTimeWaitingRoomIntent(room, 10);
         startActivityForResult(i, MultiplayerFragment.RC_WAITING_ROOM);
     }
 
@@ -800,8 +830,6 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
 
     private void prepareGame(Room room) {
         // send my participant id to all others players
-        mMyParticipantId = room.getParticipantId(getGamesClient().getCurrentPlayerId());
-
         receivedArmies = 1;
         lstParticipantIds = new ArrayList<String>();
         lstParticipantIds.add(mMyParticipantId);

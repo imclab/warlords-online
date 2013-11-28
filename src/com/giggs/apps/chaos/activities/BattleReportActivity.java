@@ -3,7 +3,9 @@ package com.giggs.apps.chaos.activities;
 import java.util.Iterator;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -36,6 +38,7 @@ import com.jjoe64.graphview.LineGraphView;
 
 public class BattleReportActivity extends BaseGameActivity implements OnLeaderboardScoresLoadedListener {
 
+    private SharedPreferences mSharedPrefs;
     private DatabaseHelper mDbHelper;
     private Battle battle;
     private boolean mIsVictory = false;
@@ -62,6 +65,7 @@ public class BattleReportActivity extends BaseGameActivity implements OnLeaderbo
         int myArmyIndex = args.getInt("army_index");
 
         mDbHelper = new DatabaseHelper(getApplicationContext());
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         // get battle info
         battle = args.getParcelable("battle");
@@ -166,8 +170,8 @@ public class BattleReportActivity extends BaseGameActivity implements OnLeaderbo
                     gameClient.incrementAchievement(getString(R.string.achievement_captain), 1);
                     gameClient.incrementAchievement(getString(R.string.achievement_warlord), 1);
                     gameClient.incrementAchievement(getString(R.string.achievement_professor_chaos), 1);
-                    gameClient.loadPlayerCenteredScores(this,
-                            getResources().getString(R.string.ranking_best_generals), 0, 0, 10);
+                    gameClient.loadPlayerCenteredScores(this, getResources().getString(R.string.ranking_best_generals),
+                            0, 0, 10);
                     return;
                 }
             }
@@ -189,9 +193,13 @@ public class BattleReportActivity extends BaseGameActivity implements OnLeaderbo
             LeaderboardScore temp = it.next();
             if (temp.getScoreHolder().getPlayerId().equals(getGamesClient().getCurrentPlayerId())) {
                 getGamesClient().submitScore(getString(R.string.ranking_best_generals), temp.getRawScore() + 1);
-                break;
+                mSharedPrefs.edit().putInt("ranking_best_generals", (int) (temp.getRawScore() + 1)).commit();
+                return;
             }
         }
+        int newScore = mSharedPrefs.getInt("ranking_best_generals", 0) + 1;
+        mSharedPrefs.edit().putInt("ranking_best_generals", newScore).commit();
+        getGamesClient().submitScore(getString(R.string.ranking_best_generals), newScore);
     }
 
 }

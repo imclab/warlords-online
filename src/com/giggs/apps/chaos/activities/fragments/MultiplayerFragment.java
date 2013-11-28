@@ -179,7 +179,7 @@ public class MultiplayerFragment extends Fragment implements OnClickListener {
 
     private void invitePlayersToMyGame() {
         // launch the player selection screen
-        Intent intent = ((BaseGameActivity) getActivity()).getGamesClient().getSelectPlayersIntent(1,
+        Intent intent = ((BaseGameActivity) getActivity()).getGamesClient().getSelectPlayersIntent(mNbPlayers - 1,
                 mNbPlayers - 1);
         getActivity().startActivityForResult(intent, RC_SELECT_PLAYERS);
         GoogleAnalyticsHelper.sendEvent(getActivity().getApplicationContext(), EventCategory.ui_action,
