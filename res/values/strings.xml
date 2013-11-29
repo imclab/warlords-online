@@ -148,7 +148,7 @@
     <string name="battle_title3">Strong places</string>
     <string name="battle3">- When protecting a fort or a castle, units only get half of the damages dealt to them.</string>
     <string name="battle_title4">Ranged attacks</string>
-    <string name="battle4">- Ranged attacks are executed first during battles.\n- Ranged units are very effective to defend strong positions.</string>
+    <string name="battle4">- Ranged attacks are executed first during battles.\n- Ranged units are very effective to defend strong positions and mountain zones.</string>
 
     <!-- Armies descriptions -->
     <string name="human_army_description">Balanced army.</string>

@@ -65,19 +65,9 @@ public class GameGUI {
 
     public GameGUI(GameActivity activity) {
         this.mGameActivity = activity;
-        initGUI();
     }
 
-    private void initGUI() {
-        // setup loading screen
-        mLoadingScreen = new Dialog(mGameActivity, R.style.LoadingDialog);
-        mLoadingScreen.setContentView(R.layout.dialog_game_loading);
-        mLoadingScreen.setCancelable(false);
-        mLoadingScreen.setCanceledOnTouchOutside(false);
-        // animate loading dots
-        Animation loadingDotsAnimation = AnimationUtils.loadAnimation(mGameActivity, R.anim.loading_dots);
-        ((TextView) mLoadingScreen.findViewById(R.id.loadingDots)).startAnimation(loadingDotsAnimation);
-        mLoadingScreen.show();
+    public void initGUI() {
 
         // setup big label
         mBigLabelAnimation = AnimationUtils.loadAnimation(mGameActivity, R.anim.big_label_in_game);
@@ -550,6 +540,18 @@ public class GameGUI {
             mChatNotification.setAnimation(null);
             mChatNotification.setVisibility(View.GONE);
         }
+    }
+
+    public void showLoadingScreen() {
+        // setup loading screen
+        mLoadingScreen = new Dialog(mGameActivity, R.style.LoadingDialog);
+        mLoadingScreen.setContentView(R.layout.dialog_game_loading);
+        mLoadingScreen.setCancelable(false);
+        mLoadingScreen.setCanceledOnTouchOutside(false);
+        // animate loading dots
+        Animation loadingDotsAnimation = AnimationUtils.loadAnimation(mGameActivity, R.anim.loading_dots);
+        ((TextView) mLoadingScreen.findViewById(R.id.loadingDots)).startAnimation(loadingDotsAnimation);
+        mLoadingScreen.show();
     }
 
 }

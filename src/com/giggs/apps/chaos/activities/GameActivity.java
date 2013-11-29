@@ -3,6 +3,7 @@ package com.giggs.apps.chaos.activities;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -113,6 +114,7 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
         initGameActivity();
+        GameLogic.random = new Random(153548);
 
         // If the device goes to sleep during handshake or gameplay, the player
         // will be disconnected from the room
@@ -137,6 +139,8 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
                 battle = GameCreation.createSoloGame(nbPlayers, myArmy, 0, null);
                 // init GUI
                 mGameGUI = new GameGUI(this);
+                mGameGUI.showLoadingScreen();
+                mGameGUI.initGUI();
                 GameConverterHelper.deleteSavedBattles(mDbHelper);
                 // analytics
                 GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.nb_players,
@@ -151,6 +155,8 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
             battle = mDbHelper.getBattleDao().get(null, null, null, null).get(0);
             // init GUI
             mGameGUI = new GameGUI(this);
+            mGameGUI.showLoadingScreen();
+            mGameGUI.initGUI();
         }
     }
 
@@ -601,15 +607,17 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
     }
 
     public void startMultiplayerGame() {
-        mGameGUI = new GameGUI(this);
+        mGameGUI.initGUI();
         getFragmentManager().beginTransaction().remove(multiplayerFragment).commit();
         try {
+            findViewById(R.id.surfaceView).setVisibility(View.GONE);
             getEngine().stop();
             onCreateResources(pOnCreateResourcesCallback);
         } catch (Exception e) {
             e.printStackTrace();
         }
         findViewById(R.id.fragment_container).setVisibility(View.GONE);
+        findViewById(R.id.surfaceView).setVisibility(View.VISIBLE);
         restartChrono();
     }
 
@@ -829,6 +837,9 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
     }
 
     private void prepareGame(Room room) {
+        // show loading screen
+        mGameGUI = new GameGUI(this);
+        mGameGUI.showLoadingScreen();
         // send my participant id to all others players
         receivedArmies = 1;
         lstParticipantIds = new ArrayList<String>();

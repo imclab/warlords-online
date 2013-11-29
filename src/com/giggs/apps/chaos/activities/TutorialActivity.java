@@ -80,6 +80,8 @@ public class TutorialActivity extends GameActivity {
         battle.setMap(map);
 
         mGameGUI = new GameGUI(this);
+        mGameGUI.showLoadingScreen();
+        mGameGUI.initGUI();
         mGameGUI.showConfirm = false;
 
         mMustSaveGame = false;

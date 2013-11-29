@@ -136,7 +136,7 @@
     <string name="battle_title3">Places fortes</string>
     <string name="battle3">- Lorsqu\'elles protègent une place forte, les unités en défense n\'encaissent que la moitié des dégâts.</string>
     <string name="battle_title4">Attaques à distance</string>
-    <string name="battle4">- Les attaques à distance sont effectués en premier lors des batailles.\n- Les unités à distance sont très efficaces pour defendre des positions.</string>
+    <string name="battle4">- Les attaques à distance sont effectués en premier lors des batailles.\n- Les unités à distance sont très efficaces pour defendre les places fortes et les zones de montagne.</string>
 
     <!-- Armies descriptions -->
     <string name="human_army_description">Armée équilibrée.</string>

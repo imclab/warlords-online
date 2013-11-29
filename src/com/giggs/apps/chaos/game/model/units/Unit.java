@@ -265,17 +265,20 @@ public abstract class Unit extends GameElement {
         double randomDamage = GameLogic.random.nextDouble();
         float attackFactor = GameLogic.WEAPONS_EFFICIENCY[weaponType.ordinal()][target.getArmorType().ordinal()];
         int damage = (int) Math.max(0, 1.0f * attack * attackFactor * (isRangedAttack ? health : tmpHealth) / maxHealth
-                * (isRangedAttack ? morale : tmpMorale) / 100 * (1.0f + 0.15f * randomDamage + 1.0f * experience / 100)
+                * (isRangedAttack ? morale : tmpMorale) / 100 * (1.0f + 5.0f * randomDamage + 1.0f * experience / 100)
                 - target.getArmor());
         // terrain modifier
         if ((target.getTilePosition().getTerrain() == TerrainData.castle || target.getTilePosition().getTerrain() == TerrainData.fort)
-                && (order == null || order instanceof DefendOrder)) {
+                && (target.getOrder() == null || target.getOrder() instanceof DefendOrder)) {
             damage *= 0.5f;
+        }
 
-            // ranged attacks are very effective when defending strong positions
-            if (isRangedAttack && (order == null || order instanceof DefendOrder)) {
-                damage *= 1.3f;
-            }
+        // ranged units are very effective when defending strong positions
+        if ((tilePosition.getTerrain() == TerrainData.castle || tilePosition.getTerrain() == TerrainData.fort || tilePosition
+                .getTerrain() == TerrainData.mountain)
+                && isRangedAttack
+                && (order == null || order instanceof DefendOrder)) {
+            damage *= 1.3f;
         }
 
         // orcs are agressive !
@@ -297,7 +300,6 @@ public abstract class Unit extends GameElement {
         if (target.getArmy() == ArmiesData.DWARF && target.getTilePosition().getTerrain() == TerrainData.mountain) {
             damage *= 0.8f;
         }
-
         return damage;
     }
 

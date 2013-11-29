@@ -18,7 +18,7 @@ public class Wizard extends Unit {
 
     public Wizard(int armyIndex) {
         super(R.string.chaos_wizards, R.drawable.chaos_wizard_image, "chaos_wizard.png", ArmiesData.CHAOS, armyIndex,
-                100, 500, true, WeaponType.magic, ArmorType.unarmored, 80, 2);
+                100, 500, true, WeaponType.magic, ArmorType.unarmored, 70, 2);
     }
 
     @Override
