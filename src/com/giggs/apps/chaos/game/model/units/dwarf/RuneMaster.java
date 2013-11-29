@@ -15,7 +15,7 @@ public class RuneMaster extends Unit {
 
     public RuneMaster(int armyIndex) {
         super(R.string.dwarf_rune_master, R.drawable.dwarf_rune_master_image, "dwarf_rune_master.png",
-                ArmiesData.DWARF, armyIndex, 130, 400, true, WeaponType.magic, ArmorType.light, 90, 4);
+                ArmiesData.DWARF, armyIndex, 140, 350, true, WeaponType.magic, ArmorType.light, 65, 4);
     }
 
     @Override
@@ -24,8 +24,8 @@ public class RuneMaster extends Unit {
         // rust enemies equipment
         for (Unit unit : tilePosition.getContent()) {
             if (unit.getArmyIndex() != armyIndex) {
-                unit.setAttack(unit.getAttack() - 1);
-                unit.setArmor(unit.getArmor() - 1);
+                unit.setAttack(Math.max(10, unit.getAttack() - 1));
+                unit.setArmor(Math.max(0, unit.getArmor() - 1));
             }
         }
         return damage;

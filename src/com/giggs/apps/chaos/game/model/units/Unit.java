@@ -239,7 +239,7 @@ public abstract class Unit extends GameElement {
         adjacentTilesBoucle: for (Tile tile : MapLogic.getAdjacentTiles(battle.getMap(), tilePosition, 1, false)) {
             if (canFleeHere(tile)) {
                 // check if enemies come from this position
-                for (Unit u : tile.getContent()) {
+                for (Unit u : tilePosition.getContent()) {
                     if (u.getArmyIndex() != armyIndex && u.getOrder() != null && u.getOrder() instanceof MoveOrder) {
                         MoveOrder moveOrder = (MoveOrder) u.getOrder();
                         if (moveOrder.getOrigin() == tile) {
@@ -283,7 +283,7 @@ public abstract class Unit extends GameElement {
 
         // orcs are agressive !
         if (army == ArmiesData.ORCS && order != null && order instanceof MoveOrder) {
-            damage *= 1.15f;
+            damage *= 1.1f;
         }
 
         // order modifier
