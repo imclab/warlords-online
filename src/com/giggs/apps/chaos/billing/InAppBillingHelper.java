@@ -71,15 +71,17 @@ public class InAppBillingHelper {
                 ArrayList<String> ownedSkus = ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
                 for (int i = 0; i < ownedSkus.size(); i++) {
                     String sku = ownedSkus.get(i);
-                    if (sku.equals("army_dwarf") || mSharedPrefs.getBoolean("army_dwarf", false)) {
+                    if (sku.equals("com.glevel.warlords.dwarf.army")
+                            || mSharedPrefs.getBoolean("com.glevel.warlords.dwarf.army", false)) {
                         lstArmiesAvailable.add(ArmiesData.DWARF.ordinal());
-                        if (!mSharedPrefs.getBoolean("army_dwarf", false)) {
-                            mSharedPrefs.edit().putBoolean("army_dwarf", true).commit();
+                        if (!mSharedPrefs.getBoolean("com.glevel.warlords.dwarf.army", false)) {
+                            mSharedPrefs.edit().putBoolean("com.glevel.warlords.dwarf.army", true).commit();
                         }
-                    } else if (sku.equals("army_chaos") || mSharedPrefs.getBoolean("army_chaos", false)) {
+                    } else if (sku.equals("com.glevel.warlords.chaos.army")
+                            || mSharedPrefs.getBoolean("com.glevel.warlords.chaos.army", false)) {
                         lstArmiesAvailable.add(ArmiesData.CHAOS.ordinal());
-                        if (!mSharedPrefs.getBoolean("army_chaos", false)) {
-                            mSharedPrefs.edit().putBoolean("army_chaos", true).commit();
+                        if (!mSharedPrefs.getBoolean("com.glevel.warlords.chaos.army", false)) {
+                            mSharedPrefs.edit().putBoolean("com.glevel.warlords.chaos.army", true).commit();
                         }
                     }
                 }
