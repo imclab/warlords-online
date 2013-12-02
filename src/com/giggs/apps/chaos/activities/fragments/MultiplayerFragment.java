@@ -21,6 +21,8 @@ import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventAction;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventCategory;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
 import com.giggs.apps.chaos.utils.MusicManager;
+import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.example.games.basegameutils.BaseGameActivity;
 
@@ -39,6 +41,7 @@ public class MultiplayerFragment extends Fragment implements OnClickListener {
 
     public int mArmyChosen = 0;
     private int mNbPlayers;
+    private RoomConfig roomConfigInvitation = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -116,7 +119,7 @@ public class MultiplayerFragment extends Fragment implements OnClickListener {
         }
     }
 
-    private void showJoinGameChooser() {
+    public void showJoinGameChooser() {
         DialogFragment fr = new CreateGameDialog();
         Bundle args = new Bundle();
         args.putInt(CreateGameDialog.ARGUMENT_GAME_TYPE, CreateGameDialog.MULTIPLAYER_GAME_TYPE);
@@ -136,7 +139,7 @@ public class MultiplayerFragment extends Fragment implements OnClickListener {
 
     private void showInvitations() {
         Intent intent = ((BaseGameActivity) getActivity()).getGamesClient().getInvitationInboxIntent();
-        getActivity().startActivityForResult(intent, RC_INVITATION_INBOX);
+        startActivityForResult(intent, RC_INVITATION_INBOX);
         GoogleAnalyticsHelper.sendEvent(getActivity().getApplicationContext(), EventCategory.ui_action,
                 EventAction.button_press, "show_invitations");
     }
@@ -150,6 +153,12 @@ public class MultiplayerFragment extends Fragment implements OnClickListener {
 
                 mArmyChosen = extras.getInt("army");
 
+                if (roomConfigInvitation != null) {
+                    // accepted invitation
+                    ((BaseGameActivity) getActivity()).getGamesClient().joinRoom(roomConfigInvitation);
+                    return;
+                }
+
                 int nbPlayers = extras.getInt("nb_players", -1);
                 if (nbPlayers > 0) {
                     mNbPlayers = nbPlayers;
@@ -159,6 +168,20 @@ public class MultiplayerFragment extends Fragment implements OnClickListener {
                     startQuickGame();
                 }
             }
+        } else if (requestCode == RC_INVITATION_INBOX) {
+            if (resultCode != Activity.RESULT_OK) {
+                // canceled
+                return;
+            }
+
+            // get the selected invitation
+            Bundle extras = data.getExtras();
+            Invitation invitation = extras.getParcelable(GamesClient.EXTRA_INVITATION);
+
+            // accept it, show the army chooser
+            roomConfigInvitation = ((GameActivity) getActivity()).makeBasicRoomConfigBuilder()
+                    .setInvitationIdToAccept(invitation.getInvitationId()).build();
+            showJoinGameChooser();
         }
     }
 

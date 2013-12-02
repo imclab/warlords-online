@@ -121,6 +121,7 @@ public class GameGUI {
                         for (Order order : mGameActivity.battle.getMe(mGameActivity.myArmyIndex).getLstTurnOrders()) {
                             if (order instanceof BuyOrder && ((BuyOrder) order).getTile() == selectedTile) {
                                 mGameActivity.battle.getMe(mGameActivity.myArmyIndex).removeOrder(order);
+                                break;
                             }
                         }
                         mGameActivity.battle
