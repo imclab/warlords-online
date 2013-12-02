@@ -31,8 +31,6 @@ import com.giggs.apps.chaos.activities.fragments.MultiplayerFragment;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventAction;
 import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.EventCategory;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.TimingCategory;
-import com.giggs.apps.chaos.analytics.GoogleAnalyticsHelper.TimingName;
 import com.giggs.apps.chaos.database.DatabaseHelper;
 import com.giggs.apps.chaos.game.GameConverterHelper;
 import com.giggs.apps.chaos.game.GameCreation;
@@ -63,7 +61,6 @@ import com.giggs.apps.chaos.game.multiplayer.Message.MessageType;
 import com.giggs.apps.chaos.utils.ApplicationUtils;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesClient;
-import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
@@ -80,7 +77,6 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
 	private static final int CAMERA_WIDTH = 800;
 	private static final int CAMERA_HEIGHT = 480;
 
-	private long mGameStartTime = 0L;
 	protected DatabaseHelper mDbHelper;
 	public Battle battle = null;
 	protected Tile castleTile = null;
@@ -147,12 +143,12 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
 				mGameGUI.initGUI();
 				GameConverterHelper.deleteSavedBattles(mDbHelper);
 				// analytics
-				GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.nb_players,
-				        "" + nbPlayers);
+				GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.game_stats,
+				        EventAction.nb_players_chosen_solo, "" + nbPlayers);
 			}
 			// analytics
-			GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game,
-			        EventAction.solo_player_army, ArmiesData.values()[myArmy].name());
+			GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.game_stats,
+			        EventAction.army_chosen_solo, ArmiesData.values()[myArmy].name());
 		} else {
 			// load solo game
 			myArmyIndex = 0;
@@ -178,13 +174,9 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
 	public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws Exception {
 		this.pOnCreateResourcesCallback = pOnCreateResourcesCallback;
 		if (battle != null) {
-			long startLoadingTime = System.currentTimeMillis();
 			// init game element factory
 			mGameElementFactory = new GraphicsFactory(this, getVertexBufferObjectManager(), getTextureManager());
 			mGameElementFactory.initGraphics(battle);
-			// analytics
-			GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.resources, TimingName.load_game,
-			        (System.currentTimeMillis() - startLoadingTime) / 1000);
 			pOnCreateResourcesCallback.onCreateResourcesFinished();
 		}
 	}
@@ -211,14 +203,6 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
 		// add selection circle
 		selectionCircle = new SelectionCircle(GraphicsFactory.mGfxMap.get("selection.png"),
 		        getVertexBufferObjectManager());
-
-		// add minimap
-		// minimap = new Rectangle(0, 0, 30, 30,
-		// getVertexBufferObjectManager());
-		// minimap.setColor(Color.WHITE);
-		// minimap.setAlpha(0.6f);
-		// mScene.registerTouchArea(minimap);
-		// mScene.attachChild(minimap);
 
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 		startGame();
@@ -274,9 +258,6 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
 				mGameGUI.updateEconomyBalance(economyHistory.get(economyHistory.size() - 1));
 			}
 		}
-
-		// analytics
-		mGameStartTime = System.currentTimeMillis();
 
 		// center map on player's castle
 		mCamera.setCenter(castleTile.getX() * GameUtils.TILE_SIZE, castleTile.getY() * GameUtils.TILE_SIZE);
@@ -364,20 +345,15 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
 	}
 
 	public void endGame(final Player winningPlayer) {
-		if (mGameStartTime > 0L) {
-			GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_time,
-			        (System.currentTimeMillis() - mGameStartTime) / 1000);
-		}
-
-		GoogleAnalyticsHelper.sendTiming(getApplicationContext(), TimingCategory.in_game, TimingName.game_nb_turn,
-		        battle.getTurnCount());
+		GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.game_stats, EventAction.game_nb_turn, ""
+		        + battle.getTurnCount());
 		if (winningPlayer != null) {
-			GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.winner_army,
+			GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.game_stats, EventAction.winner_army,
 			        winningPlayer.getArmy().name());
 		}
 		if (!mIsMultiplayerGame) {
-			GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.in_game, EventAction.against_AI,
-			        winningPlayer == battle.getMe(myArmyIndex) ? "victory" : "defeat");
+			GoogleAnalyticsHelper.sendEvent(getApplicationContext(), EventCategory.game_stats,
+			        EventAction.result_against_AI, winningPlayer == battle.getMe(myArmyIndex) ? "victory" : "defeat");
 		}
 
 		mGameGUI.displayVictoryLabel(winningPlayer == battle.getMe(myArmyIndex));
@@ -737,21 +713,11 @@ public class GameActivity extends CustomLayoutGameActivity implements RoomUpdate
 
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
-		if (request == MultiplayerFragment.RC_INVITATION_INBOX) {
-			if (response != Activity.RESULT_OK) {
-				// canceled
-				return;
-			}
+		if (!getGamesClient().isConnected()) {
+			return;
+		}
 
-			// get the selected invitation
-			Bundle extras = data.getExtras();
-			Invitation invitation = extras.getParcelable(GamesClient.EXTRA_INVITATION);
-
-			// accept it!
-			RoomConfig roomConfig = makeBasicRoomConfigBuilder().setInvitationIdToAccept(invitation.getInvitationId())
-			        .build();
-			getGamesClient().joinRoom(roomConfig);
-		} else if (request == MultiplayerFragment.RC_SELECT_PLAYERS) {
+		if (request == MultiplayerFragment.RC_SELECT_PLAYERS) {
 
 			if (response != Activity.RESULT_OK) {
 				// user canceled

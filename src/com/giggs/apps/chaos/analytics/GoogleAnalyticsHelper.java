@@ -9,11 +9,11 @@ import com.google.analytics.tracking.android.Tracker;
 public class GoogleAnalyticsHelper {
 
     public static enum EventCategory {
-        ui_action, in_game
+        ui_action, game_stats
     }
 
     public static enum EventAction {
-        button_press, end_game, winner_army, nb_players, solo_player_army, against_AI
+        button_press, end_game, winner_army, nb_players_chosen_solo, army_chosen_solo, result_against_AI, game_nb_turn
     }
 
     public static void sendEvent(Context context, EventCategory category, EventAction action, String label) {
@@ -22,11 +22,9 @@ public class GoogleAnalyticsHelper {
     }
 
     public static enum TimingCategory {
-        resources, in_game
     }
 
     public static enum TimingName {
-        load_game, game_time, game_nb_turn, winner_army
     }
 
     public static void sendTiming(Context context, TimingCategory category, TimingName name, long loadTime) {

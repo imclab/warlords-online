@@ -7,6 +7,7 @@ import java.util.List;
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.game.data.TerrainData;
 import com.giggs.apps.chaos.game.data.UnitsData;
+import com.giggs.apps.chaos.game.logic.MapLogic;
 import com.giggs.apps.chaos.game.model.Battle;
 import com.giggs.apps.chaos.game.model.Player;
 import com.giggs.apps.chaos.game.model.map.Map;
@@ -118,18 +119,6 @@ public class GameCreation {
         }
     }
 
-    private static TerrainData getRandomTerrain(int terrainQuantitySum) {
-        double random = Math.random();
-        double threshold = 0;
-        for (int n = 0; n < TerrainData.values().length; n++) {
-            threshold += (double) TerrainData.values()[n].getQuantityFactor() / terrainQuantitySum;
-            if (random < threshold) {
-                return TerrainData.values()[n];
-            }
-        }
-        return TerrainData.grass;
-    }
-
     private static void addPlayersZones(Map map, List<Player> lstPlayers) {
         List<Player> lstPlayersCopy = new ArrayList<Player>(lstPlayers);
         switch (lstPlayers.size()) {
@@ -179,6 +168,13 @@ public class GameCreation {
         } while (castleTile == farmTile);
         castleTile.setTerrain(TerrainData.castle);
 
+        // remove other forts and farms around castles
+        for (Tile tile : MapLogic.getAdjacentTiles(map, castleTile, 1, true)) {
+            if (tile != farmTile && (tile.getTerrain() == TerrainData.farm || tile.getTerrain() == TerrainData.fort)) {
+                tile.setTerrain(TerrainData.grass);
+            }
+        }
+
         // add initial units
         Player player = lstPlayers.get((int) (Math.random() * lstPlayers.size()));
         List<Unit> initialUnits = UnitsData.getInitialUnits(player.getArmy(), player.getArmyIndex());
@@ -187,6 +183,18 @@ public class GameCreation {
         }
         castleTile.setOwner(player.getArmyIndex());
         lstPlayers.remove(player);
+    }
+
+    private static TerrainData getRandomTerrain(int terrainQuantitySum) {
+        double random = Math.random();
+        double threshold = 0;
+        for (int n = 0; n < TerrainData.values().length; n++) {
+            threshold += (double) TerrainData.values()[n].getQuantityFactor() / terrainQuantitySum;
+            if (random < threshold) {
+                return TerrainData.values()[n];
+            }
+        }
+        return TerrainData.grass;
     }
 
     private static int getMapSize(int nbPlayers) {
