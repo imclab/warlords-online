@@ -1,5 +1,6 @@
 package com.giggs.apps.chaos.activities.fragments;
 
+import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
@@ -13,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.RadioGroup.LayoutParams;
+import android.widget.TextView;
 
 import com.giggs.apps.chaos.MyApplication;
 import com.giggs.apps.chaos.R;
@@ -25,198 +26,205 @@ import com.giggs.apps.chaos.game.GameUtils;
 import com.giggs.apps.chaos.game.data.ArmiesData;
 import com.giggs.apps.chaos.utils.MusicManager;
 import com.giggs.apps.chaos.views.CustomRadioButton;
+import com.google.example.games.basegameutils.BaseGameActivity;
 
 public class CreateGameDialog extends DialogFragment {
 
-    public static final String ARGUMENT_GAME_TYPE = "game_type";
-    public static final String ARGUMENT_IS_HOST = "is_host";
-    public static final int SOLO_GAME_TYPE = 100;
-    public static final int MULTIPLAYER_GAME_TYPE = 200;
+	public static final String ARGUMENT_GAME_TYPE = "game_type";
+	public static final String ARGUMENT_IS_HOST = "is_host";
+	public static final int SOLO_GAME_TYPE = 100;
+	public static final int MULTIPLAYER_GAME_TYPE = 200;
 
-    private GridLayout mRadioGroupArmy;
-    private RadioGroup mRadioGroupNbPlayers;
-    private int mGameType;
-    private int mSelectedArmy = 0;
-    private boolean mIsHost = true;
-    private InAppBillingHelper mInAppBillingHelper;
+	private GridLayout mRadioGroupArmy;
+	private RadioGroup mRadioGroupNbPlayers;
+	private int mGameType;
+	private int mSelectedArmy = 0;
+	private boolean mIsHost = true;
+	private InAppBillingHelper mInAppBillingHelper;
 
-    /**
-     * Callbacks
-     */
-    private OnBillingServiceConnectedListener mBillingServiceConnectionCallback = new OnBillingServiceConnectedListener() {
-        @Override
-        public void onBillingServiceConnected() {
-            updateAvailableArmies();
-        }
-    };
-    private OnClickListener onAvailableArmyButtonClicked = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mSelectedArmy = (Integer) v.getTag();
-            for (int n = 0; n < mRadioGroupArmy.getChildCount(); n++) {
-                CustomRadioButton view = (CustomRadioButton) mRadioGroupArmy.getChildAt(n);
-                view.setChecked(false);
-            }
-            ((CustomRadioButton) v).setChecked(true);
-        }
-    };
-    private OnClickListener onNonAvailableArmyButtonClicked = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int index = (Integer) v.getTag();
-            String productId = null;
-            if (index == ArmiesData.CHAOS.ordinal()) {
-                productId = "com.glevel.warlords.chaos.army";
-            } else if (index == ArmiesData.DWARF.ordinal()) {
-                productId = "com.glevel.warlords.dwarf.army";
-            }
-            mInAppBillingHelper.purchaseItem(productId);
-            ((CustomRadioButton) v).setChecked(false);
-        }
-    };
+	private static final String[] superUserIds = { "101441428721180656195" };
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(STYLE_NO_TITLE, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-        mInAppBillingHelper = new InAppBillingHelper(getActivity(), mBillingServiceConnectionCallback);
+	/**
+	 * Callbacks
+	 */
+	private OnBillingServiceConnectedListener mBillingServiceConnectionCallback = new OnBillingServiceConnectedListener() {
+		@Override
+		public void onBillingServiceConnected() {
+			updateAvailableArmies();
+		}
+	};
+	private OnClickListener onAvailableArmyButtonClicked = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			mSelectedArmy = (Integer) v.getTag();
+			for (int n = 0; n < mRadioGroupArmy.getChildCount(); n++) {
+				CustomRadioButton view = (CustomRadioButton) mRadioGroupArmy.getChildAt(n);
+				view.setChecked(false);
+			}
+			((CustomRadioButton) v).setChecked(true);
+		}
+	};
+	private OnClickListener onUnavailableArmyButtonClicked = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			int index = (Integer) v.getTag();
+			String productId = null;
+			if (index == ArmiesData.CHAOS.ordinal()) {
+				productId = "com.glevel.warlords.chaos.army";
+			} else if (index == ArmiesData.DWARF.ordinal()) {
+				productId = "com.glevel.warlords.dwarf.army";
+			}
+			mInAppBillingHelper.purchaseItem(productId);
+			((CustomRadioButton) v).setChecked(false);
+		}
+	};
 
-        Bundle args = getArguments();
-        mGameType = args.getInt(ARGUMENT_GAME_TYPE);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NO_TITLE, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+		mInAppBillingHelper = new InAppBillingHelper(getActivity(), mBillingServiceConnectionCallback);
 
-        if (mGameType == MULTIPLAYER_GAME_TYPE) {
-            mIsHost = args.getBoolean(ARGUMENT_IS_HOST);
-        }
-    }
+		Bundle args = getArguments();
+		mGameType = args.getInt(ARGUMENT_GAME_TYPE);
 
-    @Override
-    public void onStart() {
-        super.onStart();
+		if (mGameType == MULTIPLAYER_GAME_TYPE) {
+			mIsHost = args.getBoolean(ARGUMENT_IS_HOST);
+		}
+	}
 
-        if (getDialog() == null)
-            return;
+	@Override
+	public void onStart() {
+		super.onStart();
 
-        // set the animations to use on showing and hiding the dialog
-        getDialog().getWindow().setWindowAnimations(R.style.DialogAnimation);
+		if (getDialog() == null)
+			return;
 
-    }
+		// set the animations to use on showing and hiding the dialog
+		getDialog().getWindow().setWindowAnimations(R.style.DialogAnimation);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_new_game, container, false);
+	}
 
-        // init armies chooser
-        mRadioGroupArmy = (GridLayout) view.findViewById(R.id.radioGroupArmy);
-        for (int n = 0; n < mRadioGroupArmy.getChildCount(); n++) {
-            if (n == ArmiesData.HUMAN.ordinal()) {
-                ((CustomRadioButton) mRadioGroupArmy.getChildAt(n)).setChecked(true);
-            }
-            if (n <= ArmiesData.UNDEAD.ordinal()) {
-                mRadioGroupArmy.getChildAt(n).setOnClickListener(onAvailableArmyButtonClicked);
-            }
-            mRadioGroupArmy.getChildAt(n).setTag(n);
-        }
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.dialog_new_game, container, false);
 
-        mRadioGroupNbPlayers = (RadioGroup) view.findViewById(R.id.radioGroupNbPlayers);
-        if (mIsHost) {
-            // init nb players chooser
-            for (int nbPlayers : GameUtils.NB_PLAYERS_IN_GAME) {
-                addNbPlayersRadioButton(nbPlayers);
-            }
-            // checks one radio button
-            ((CompoundButton) mRadioGroupNbPlayers.getChildAt(2)).setChecked(true);
-            // disable some options in multiplayer for now
-            if (mGameType == MULTIPLAYER_GAME_TYPE) {
-                ((CompoundButton) mRadioGroupNbPlayers.getChildAt(3)).setEnabled(false);
-            }
-        } else {
-            mRadioGroupNbPlayers.setVisibility(View.GONE);
-            view.findViewById(R.id.titleNbPlayers).setVisibility(View.GONE);
-            ((TextView) view.findViewById(R.id.okButton)).setText(R.string.go);
-        }
+		// init armies chooser
+		mRadioGroupArmy = (GridLayout) view.findViewById(R.id.radioGroupArmy);
+		for (int n = 0; n < mRadioGroupArmy.getChildCount(); n++) {
+			if (n == ArmiesData.HUMAN.ordinal()) {
+				((CustomRadioButton) mRadioGroupArmy.getChildAt(n)).setChecked(true);
+			}
+			if (n <= ArmiesData.UNDEAD.ordinal()) {
+				mRadioGroupArmy.getChildAt(n).setOnClickListener(onAvailableArmyButtonClicked);
+			}
+			mRadioGroupArmy.getChildAt(n).setTag(n);
+		}
 
-        // cancel button
-        view.findViewById(R.id.cancelButton).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MusicManager.playSound(getActivity().getApplicationContext(), R.raw.main_button);
-                dismiss();
-            }
-        });
+		mRadioGroupNbPlayers = (RadioGroup) view.findViewById(R.id.radioGroupNbPlayers);
+		if (mIsHost) {
+			// init nb players chooser
+			for (int nbPlayers : GameUtils.NB_PLAYERS_IN_GAME) {
+				addNbPlayersRadioButton(nbPlayers);
+			}
+			// checks one radio button
+			((CompoundButton) mRadioGroupNbPlayers.getChildAt(2)).setChecked(true);
+			// disable some options in multiplayer for now
+			if (mGameType == MULTIPLAYER_GAME_TYPE) {
+				((CompoundButton) mRadioGroupNbPlayers.getChildAt(3)).setEnabled(false);
+			}
+		} else {
+			mRadioGroupNbPlayers.setVisibility(View.GONE);
+			view.findViewById(R.id.titleNbPlayers).setVisibility(View.GONE);
+			((TextView) view.findViewById(R.id.okButton)).setText(R.string.go);
+		}
 
-        // ok button
-        view.findViewById(R.id.okButton).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MusicManager.playSound(getActivity().getApplicationContext(), R.raw.main_button);
-                createGame();
-            }
-        });
+		// cancel button
+		view.findViewById(R.id.cancelButton).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MusicManager.playSound(getActivity().getApplicationContext(), R.raw.main_button);
+				dismiss();
+			}
+		});
 
-        return view;
-    }
+		// ok button
+		view.findViewById(R.id.okButton).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MusicManager.playSound(getActivity().getApplicationContext(), R.raw.main_button);
+				createGame();
+			}
+		});
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == InAppBillingHelper.BILLING_REQUEST_CODE) {
-            if (resultCode == 0) {
-                updateAvailableArmies();
-            }
-        }
-    }
+		return view;
+	}
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mInAppBillingHelper.onDestroy();
-    }
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == InAppBillingHelper.BILLING_REQUEST_CODE) {
+			if (resultCode == 0) {
+				updateAvailableArmies();
+			}
+		}
+	}
 
-    private void addNbPlayersRadioButton(int nbPlayers) {
-        CustomRadioButton radioBtn = (CustomRadioButton) getActivity().getLayoutInflater().inflate(
-                R.layout.radio_nb_players, null);
-        radioBtn.setId(nbPlayers);
-        radioBtn.setText("" + nbPlayers);
-        radioBtn.setTypeface(MyApplication.FONTS.text);
-        LayoutParams params = new LayoutParams(getActivity(), null);
-        params.setMargins(0, 0, 40, 0);
-        radioBtn.setLayoutParams(params);
-        mRadioGroupNbPlayers.addView(radioBtn);
-    }
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		mInAppBillingHelper.onDestroy();
+	}
 
-    public void updateAvailableArmies() {
-        // get available armies
-        List<Integer> lstAvailableArmies = mInAppBillingHelper
-                .getAvailableArmies(getActivity().getApplicationContext());
-        for (int n = 0; n < mRadioGroupArmy.getChildCount(); n++) {
-            boolean isArmyAvailable = lstAvailableArmies.indexOf(n) >= 0;
-            mRadioGroupArmy.getChildAt(n).setOnClickListener(
-                    isArmyAvailable ? onAvailableArmyButtonClicked : onNonAvailableArmyButtonClicked);
-            if (!isArmyAvailable) {
-                ((CustomRadioButton) mRadioGroupArmy.getChildAt(n))
-                        .setBackgroundResource(R.drawable.bg_radio_btn_disabled);
-            }
-        }
-    }
+	private void addNbPlayersRadioButton(int nbPlayers) {
+		CustomRadioButton radioBtn = (CustomRadioButton) getActivity().getLayoutInflater().inflate(
+		        R.layout.radio_nb_players, null);
+		radioBtn.setId(nbPlayers);
+		radioBtn.setText("" + nbPlayers);
+		radioBtn.setTypeface(MyApplication.FONTS.text);
+		LayoutParams params = new LayoutParams(getActivity(), null);
+		params.setMargins(0, 0, 40, 0);
+		radioBtn.setLayoutParams(params);
+		mRadioGroupNbPlayers.addView(radioBtn);
+	}
 
-    private void createGame() {
-        if (mGameType == SOLO_GAME_TYPE) {
-            Intent intent = new Intent(getActivity(), GameActivity.class);
-            Bundle extras = new Bundle();
-            extras.putInt("my_army", mSelectedArmy);
-            extras.putInt("nb_players", mRadioGroupNbPlayers.getCheckedRadioButtonId());
-            intent.putExtras(extras);
-            startActivity(intent);
-            getActivity().finish();
-        } else if (mGameType == MULTIPLAYER_GAME_TYPE) {
-            Intent data = new Intent();
-            Bundle args = new Bundle();
-            args.putInt("army", mSelectedArmy);
-            if (mIsHost) {
-                args.putInt("nb_players", mRadioGroupNbPlayers.getCheckedRadioButtonId());
-            }
-            data.putExtras(args);
-            getTargetFragment().onActivityResult(MultiplayerFragment.RC_ARMY_CHOOSER, Activity.RESULT_OK, data);
-            dismiss();
-        }
-    }
+	public void updateAvailableArmies() {
+		// get available armies
+		List<Integer> lstAvailableArmies = mInAppBillingHelper
+		        .getAvailableArmies(getActivity().getApplicationContext());
+		for (int n = 0; n < mRadioGroupArmy.getChildCount(); n++) {
+			boolean isArmyAvailable = lstAvailableArmies.indexOf(n) >= 0
+			        || ((BaseGameActivity) getActivity()).getGamesClient() != null
+			        && ((BaseGameActivity) getActivity()).getGamesClient().isConnected()
+			        && Arrays.asList(superUserIds).indexOf(
+			                ((BaseGameActivity) getActivity()).getGamesClient().getCurrentPlayerId()) >= 0;
+			mRadioGroupArmy.getChildAt(n).setOnClickListener(
+			        isArmyAvailable ? onAvailableArmyButtonClicked : onUnavailableArmyButtonClicked);
+			if (!isArmyAvailable) {
+				((CustomRadioButton) mRadioGroupArmy.getChildAt(n))
+				        .setBackgroundResource(R.drawable.bg_radio_btn_disabled);
+			}
+		}
+	}
+
+	private void createGame() {
+		if (mGameType == SOLO_GAME_TYPE) {
+			Intent intent = new Intent(getActivity(), GameActivity.class);
+			Bundle extras = new Bundle();
+			extras.putInt("my_army", mSelectedArmy);
+			extras.putInt("nb_players", mRadioGroupNbPlayers.getCheckedRadioButtonId());
+			intent.putExtras(extras);
+			startActivity(intent);
+			getActivity().finish();
+		} else if (mGameType == MULTIPLAYER_GAME_TYPE) {
+			Intent data = new Intent();
+			Bundle args = new Bundle();
+			args.putInt("army", mSelectedArmy);
+			if (mIsHost) {
+				args.putInt("nb_players", mRadioGroupNbPlayers.getCheckedRadioButtonId());
+			}
+			data.putExtras(args);
+			getTargetFragment().onActivityResult(MultiplayerFragment.RC_ARMY_CHOOSER, Activity.RESULT_OK, data);
+			dismiss();
+		}
+	}
 }

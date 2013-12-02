@@ -42,7 +42,7 @@ public class MultiplayerFragment extends Fragment implements OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_multiplayer, null);
+        View view = inflater.inflate(R.layout.fragment_multiplayer, null);
         mButtonsInAnimation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.bottom_in);
 
         mQuickGameButton = (Button) view.findViewById(R.id.quickGameButton);

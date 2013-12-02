@@ -110,7 +110,7 @@ public class InAppBillingHelper {
     public void onDestroy() {
         if (mServiceConn != null) {
             mActivity.unbindService(mServiceConn);
-        }
-    }
+		}
+	}
 
 }

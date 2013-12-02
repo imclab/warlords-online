@@ -26,7 +26,7 @@
     <string name="about_blog">Check out <a href="http://glevelapps.blogspot.co.uk">my Blog</a> !</string>
     <string name="about_contact"><a href="mailto:guillaume.gouchon@gmail.com">Contact me</a> if you have any issue or question.</string>
     <string name="about_other_sources">The game is using the AndEngine engine by Nicolas Gramlich.</string>
-    <string name="about_version">App version : 2.0.0</string>
+    <string name="about_version">Version : 2.0.1</string>
 
     <!-- Home Screen -->
     <string name="solo">Play Solo</string>
@@ -70,7 +70,7 @@
     <string name="quick_game">Quick Battle</string>
     <string name="invite_players">Create Game</string>
     <string name="show_invitations">Show Invitations</string>
-    <string name="rankings">Top Players Rankings</string>
+    <string name="rankings">Rankings</string>
     <string name="error_room_creation">An error occurred during the game creation, please retry !</string>
     <string name="error_room_join">An error occurred while joining the game, please retry !</string>
     <string name="error_room_connection">An error occurred while connecting to the game, please retry !</string>
