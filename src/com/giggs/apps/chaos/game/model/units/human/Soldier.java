@@ -15,7 +15,7 @@ public class Soldier extends Unit {
 
     public Soldier(int armyIndex) {
         super(R.string.human_soldier, R.drawable.human_soldier_image, "human_soldier.png", ArmiesData.HUMAN, armyIndex,
-                50, 900, false, WeaponType.normal, ArmorType.medium, 50, 5);
+                50, 900, false, WeaponType.normal, ArmorType.medium, 40, 4);
     }
 
 }

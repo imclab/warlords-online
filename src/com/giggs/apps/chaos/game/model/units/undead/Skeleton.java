@@ -15,7 +15,7 @@ public class Skeleton extends Unit {
 
     public Skeleton(int armyIndex) {
         super(R.string.undead_skeleton, R.drawable.undead_skeleton_image, "undead_skeleton.png", ArmiesData.UNDEAD,
-                armyIndex, 30, 900, false, WeaponType.normal, ArmorType.light, 30, 3);
+                armyIndex, 30, 900, false, WeaponType.normal, ArmorType.light, 35, 3);
     }
 
     @Override

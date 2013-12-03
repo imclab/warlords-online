@@ -17,8 +17,16 @@ import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class AI {
 
+    /**
+     * Generate turn orders for an AI player.
+     * 
+     * @param battle
+     * @param player
+     */
     public static void generateTurnOrders(Battle battle, Player player) {
         Map map = battle.getMap();
+
+        int nbUnits = 0;
 
         // check if my buildings are secured
         List<Tile> insecureTiles = new ArrayList<Tile>();
@@ -56,8 +64,10 @@ public class AI {
                 if (t.isAllyOnIt(player.getArmyIndex())) {
                     for (int n = 0; n < t.getContent().size(); n++) {
                         Unit u = t.getContent().get(n);
+                        nbUnits++;
                         for (Tile insecure : insecureTiles) {
                             int distance = MapLogic.getDistance(t, insecure);
+                            // unit is on an insecure tile
                             if (distance == 0) {
                                 // defend
                                 DefendOrder o = new DefendOrder(u, u.getTilePosition(), n);
@@ -65,7 +75,8 @@ public class AI {
                                 player.getLstTurnOrders().add(o);
                                 break;
                             } else if (distance <= 2) {
-                                // go back to defend
+                                // unit is near an insecure tile : go back to
+                                // defend
                                 Tile step = getOneStepCloser(map, u, insecure);
                                 if (step != null) {
                                     MoveOrder o = new MoveOrder(u, step, n);
@@ -77,7 +88,7 @@ public class AI {
                         }
 
                         if (u.getOrder() == null) {
-                            // conquer
+                            // if no order yet, conquer the map !
                             Tile closestInterestingPlace = getClosestInterestingPlace(map, u);
                             if (closestInterestingPlace != null) {
                                 Tile step = getOneStepCloser(map, u, closestInterestingPlace);
@@ -102,23 +113,22 @@ public class AI {
         }
         List<Unit> availableUnits;
         List<Tile> lstBuyOrders = new ArrayList<Tile>();
+        // at first, buy units on insecure tiles
         for (Tile tile : insecureTiles) {
             if (economyBalance <= 0) {
                 break;
             }
             if (tile.getTerrain().isUnitFactory() && tile.getContent().size() < GameUtils.MAX_UNITS_PER_TILE) {
                 availableUnits = UnitsData.getUnits(player.getArmy(), player.getArmyIndex());
-                for (int n = availableUnits.size() - 1; n >= 0; n--) {
-                    if (economyBalance > availableUnits.get(n).getPrice()) {
-                        player.getLstTurnOrders().add(new BuyOrder(tile, availableUnits.get(n)));
-                        lstBuyOrders.add(tile);
-                        economyBalance -= availableUnits.get(n).getPrice();
-                        break;
-                    }
+                Unit unitToBuy = chooseUnitToBuy(availableUnits, tile, economyBalance, false, nbUnits);
+                if (unitToBuy != null) {
+                    player.getLstTurnOrders().add(new BuyOrder(tile, unitToBuy));
+                    lstBuyOrders.add(tile);
+                    economyBalance -= unitToBuy.getPrice();
                 }
             }
         }
-
+        // then, buy units on forts
         for (Tile tile : map.getForts()) {
             if (economyBalance <= 0) {
                 break;
@@ -126,15 +136,14 @@ public class AI {
             if (lstBuyOrders.indexOf(tile) == -1 && tile.getOwner() == player.getArmyIndex()
                     && tile.getContent().size() < GameUtils.MAX_UNITS_PER_TILE) {
                 availableUnits = UnitsData.getUnits(player.getArmy(), player.getArmyIndex());
-                for (int n = availableUnits.size() - 1; n >= 0; n--) {
-                    if (economyBalance > availableUnits.get(n).getPrice()) {
-                        player.getLstTurnOrders().add(new BuyOrder(tile, availableUnits.get(n)));
-                        economyBalance -= availableUnits.get(n).getPrice();
-                        break;
-                    }
+                Unit unitToBuy = chooseUnitToBuy(availableUnits, tile, economyBalance, false, nbUnits);
+                if (unitToBuy != null) {
+                    player.getLstTurnOrders().add(new BuyOrder(tile, unitToBuy));
+                    economyBalance -= unitToBuy.getPrice();
                 }
             }
         }
+        // then, buy units on castles
         for (Tile tile : map.getCastles()) {
             if (economyBalance <= 0) {
                 break;
@@ -142,40 +151,61 @@ public class AI {
             if (lstBuyOrders.indexOf(tile) == -1 && tile.getOwner() == player.getArmyIndex()
                     && tile.getContent().size() < GameUtils.MAX_UNITS_PER_TILE) {
                 availableUnits = UnitsData.getUnits(player.getArmy(), player.getArmyIndex());
-                for (int n = availableUnits.size() - 1; n >= 0; n--) {
-                    if (economyBalance > availableUnits.get(n).getPrice()) {
-                        player.getLstTurnOrders().add(new BuyOrder(tile, availableUnits.get(n)));
-                        economyBalance -= availableUnits.get(n).getPrice();
-                        break;
-                    }
+                Unit unitToBuy = chooseUnitToBuy(availableUnits, tile, economyBalance, false, nbUnits);
+                if (unitToBuy != null) {
+                    player.getLstTurnOrders().add(new BuyOrder(tile, unitToBuy));
+                    economyBalance -= unitToBuy.getPrice();
                 }
             }
         }
 
     }
 
-    private static int getThreat(Tile tile) {
+    /**
+     * Calculates a tile's threat.
+     * 
+     * @param tile
+     * @return
+     */
+    private static int getTileThreat(Tile tile) {
         int threat = 0;
         for (Unit unit : tile.getContent()) {
-            threat += 100 * unit.getHealth() / unit.getMaxHealth() * unit.getExperience()
-                    * (unit.getAttack() + unit.getArmor());
+            threat += unit.getThreat();
         }
         return threat;
     }
 
+    /**
+     * Calculates a zone's threat (ally or enemy).
+     * 
+     * @param battle
+     * @param player
+     * @param tile
+     * @param distance
+     * @param allies
+     * @return
+     */
     private static int getThreatAround(Battle battle, Player player, Tile tile, int distance, boolean allies) {
         int threat = 0;
         for (Tile tileAround : MapLogic.getAdjacentTiles(battle.getMap(), tile, distance, true)) {
             if (allies && tileAround.isAllyOnIt(player.getArmyIndex()) || !allies
                     && tileAround.isEnemyOnIt(player.getArmyIndex())) {
                 if (!battle.getPlayers().get(tileAround.getContent().get(0).getArmyIndex()).isDefeated()) {
-                    threat += getThreat(tileAround);
+                    threat += getTileThreat(tileAround);
                 }
             }
         }
         return threat;
     }
 
+    /**
+     * Uses A* algorithm to move one step closer to a target.
+     * 
+     * @param map
+     * @param unit
+     * @param destination
+     * @return
+     */
     private static Tile getOneStepCloser(Map map, Unit unit, Tile destination) {
         List<Tile> path = new AStar<Tile>().search(map.getTiles(), unit.getTilePosition(), destination, false, unit);
         if (path != null && path.size() > 1) {
@@ -184,6 +214,14 @@ public class AI {
         return null;
     }
 
+    /**
+     * Returns the closest most interesting zone to conquer (or null if none).
+     * Castles have priority over farms, which have priority over forts.
+     * 
+     * @param map
+     * @param unit
+     * @return
+     */
     private static Tile getClosestInterestingPlace(Map map, Unit unit) {
         int distance = 100;
         Tile tile = null;
@@ -209,6 +247,57 @@ public class AI {
             }
         }
         return tile;
+    }
+
+    /**
+     * Returns the best unit to buy for a given economy balance and a given
+     * offensive / defensive situation.
+     * 
+     * @param availableUnits
+     * @param tile
+     * @param economyBalance
+     * @param defensiveBuy
+     * @param nbUnits
+     * @return
+     */
+    private static Unit chooseUnitToBuy(List<Unit> availableUnits, Tile tile, int economyBalance, boolean defensiveBuy,
+            int nbUnits) {
+        if (defensiveBuy || nbUnits > 3) {
+            // in defense or in late game, get best possible units
+            if (tile.getContent().size() > 0 && !tile.getContent().get(0).isRangedAttack()) {
+                // if a contact unit is already on the tile, get a
+                // ranged unit if possible
+                Unit unitToBuy = getBestPossibleUnit(availableUnits, economyBalance, true);
+                if (unitToBuy == null) {
+                    return getBestPossibleUnit(availableUnits, economyBalance, false);
+                }
+            } else {
+                // no unit on there : get the best unit possible
+                return getBestPossibleUnit(availableUnits, economyBalance, false);
+            }
+        } else {
+            // in attack in early game, get troops !
+            return availableUnits.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * Returns best possible unit (either ranged unit or not).
+     * 
+     * @param availableUnits
+     * @param economyBalance
+     * @param isRangedUnit
+     * @return
+     */
+    private static Unit getBestPossibleUnit(List<Unit> availableUnits, int economyBalance, boolean isRangedUnit) {
+        for (int n = availableUnits.size() - 1; n >= 0; n--) {
+            if ((isRangedUnit == availableUnits.get(n).isRangedAttack())
+                    && economyBalance >= availableUnits.get(n).getPrice()) {
+                return availableUnits.get(n);
+            }
+        }
+        return null;
     }
 
 }

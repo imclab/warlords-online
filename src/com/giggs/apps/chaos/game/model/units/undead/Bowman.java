@@ -15,7 +15,7 @@ public class Bowman extends Unit {
 
     public Bowman(int armyIndex) {
         super(R.string.undead_bowman, R.drawable.undead_bowman_image, "undead_bowman.png", ArmiesData.UNDEAD,
-                armyIndex, 70, 600, true, WeaponType.piercing, ArmorType.light, 55, 2);
+                armyIndex, 60, 600, true, WeaponType.piercing, ArmorType.light, 55, 1);
     }
 
     @Override

@@ -15,7 +15,7 @@ public class Zombie extends Unit {
 
     public Zombie(int armyIndex) {
         super(R.string.undead_zombie, R.drawable.undead_zombie_image, "undead_zombie.png", ArmiesData.UNDEAD,
-                armyIndex, 90, 900, false, WeaponType.normal, ArmorType.medium, 60, 12);
+                armyIndex, 90, 900, false, WeaponType.normal, ArmorType.medium, 70, 12);
     }
 
     @Override

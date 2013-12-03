@@ -15,7 +15,7 @@ public class Warrior extends Unit {
 
     public Warrior(int armyIndex) {
         super(R.string.chaos_warrior, R.drawable.chaos_warrior_image, "chaos_warrior.png", ArmiesData.CHAOS, armyIndex,
-                70, 600, false, WeaponType.normal, ArmorType.heavy, 70, 6);
+                70, 600, false, WeaponType.normal, ArmorType.heavy, 75, 8);
     }
 
 }

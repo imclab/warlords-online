@@ -15,7 +15,7 @@ public class GiantKiller extends Unit {
 
     public GiantKiller(int armyIndex) {
         super(R.string.dwarf_giant_killer, R.drawable.dwarf_giant_killer_image, "dwarf_giant_killer.png",
-                ArmiesData.DWARF, armyIndex, 85, 500, false, WeaponType.piercing, ArmorType.medium, 75, 3);
+                ArmiesData.DWARF, armyIndex, 85, 500, false, WeaponType.normal, ArmorType.unarmored, 110, 2);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class GiantKiller extends Unit {
         // beast killer !
         int damage = super.getDamage(target);
         if (target.getAttack() > 100) {
-            damage *= 1.3;
+            damage *= 1.5;
         }
         return damage;
     }

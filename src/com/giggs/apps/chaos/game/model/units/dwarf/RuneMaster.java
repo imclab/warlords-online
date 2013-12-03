@@ -15,7 +15,7 @@ public class RuneMaster extends Unit {
 
     public RuneMaster(int armyIndex) {
         super(R.string.dwarf_rune_master, R.drawable.dwarf_rune_master_image, "dwarf_rune_master.png",
-                ArmiesData.DWARF, armyIndex, 140, 350, true, WeaponType.magic, ArmorType.light, 65, 4);
+                ArmiesData.DWARF, armyIndex, 140, 350, true, WeaponType.magic, ArmorType.light, 70, 5);
     }
 
     @Override

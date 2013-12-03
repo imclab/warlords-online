@@ -265,8 +265,8 @@ public abstract class Unit extends GameElement {
         double randomDamage = GameLogic.random.nextDouble();
         float attackFactor = GameLogic.WEAPONS_EFFICIENCY[weaponType.ordinal()][target.getArmorType().ordinal()];
         int damage = (int) Math.max(0, 1.0f * attack * attackFactor * (isRangedAttack ? health : tmpHealth) / maxHealth
-                * (isRangedAttack ? morale : tmpMorale) / 100 * (1.0f + 5.0f * randomDamage + 1.0f * experience / 100)
-                - target.getArmor());
+                * (0.5 * (isRangedAttack ? morale : tmpMorale) / 100)
+                * (1.0f + 5.0f * randomDamage + 1.0f * experience / 100) - target.getArmor());
         // terrain modifier
         if ((target.getTilePosition().getTerrain() == TerrainData.castle || target.getTilePosition().getTerrain() == TerrainData.fort)
                 && (target.getOrder() == null || target.getOrder() instanceof DefendOrder)) {
@@ -283,7 +283,7 @@ public abstract class Unit extends GameElement {
 
         // orcs are agressive !
         if (army == ArmiesData.ORCS && order != null && order instanceof MoveOrder) {
-            damage *= 1.1f;
+            damage *= 1.15f;
         }
 
         // order modifier
@@ -298,7 +298,12 @@ public abstract class Unit extends GameElement {
         }
 
         if (target.getArmy() == ArmiesData.DWARF && target.getTilePosition().getTerrain() == TerrainData.mountain) {
+            // dwarves are strong in the mountains...
             damage *= 0.8f;
+        } else if (army == ArmiesData.DWARF && tilePosition.getTerrain() == TerrainData.forest) {
+            // but weak in the forest !
+            damage *= 0.8f;
+
         }
         return damage;
     }
@@ -318,6 +323,10 @@ public abstract class Unit extends GameElement {
     public void updateTempStats() {
         tmpHealth = health;
         tmpMorale = morale;
+    }
+
+    public int getThreat() {
+        return (int) (100.0f * health / maxHealth * (1 + experience + morale) * (attack + 3 * armor));
     }
 
 }
