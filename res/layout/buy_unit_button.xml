@@ -12,9 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:drawablePadding="5dp"
+        android:drawablePadding="3dp"
         android:gravity="center"
-        android:text="@string/placeholder" />
+        android:text="@string/placeholder"
+        android:textSize="14sp" />
 
     <com.giggs.apps.chaos.views.CustomTextView
         android:id="@+id/price"
@@ -24,7 +25,6 @@
         android:layout_gravity="right|top"
         android:drawableLeft="@drawable/ic_price"
         android:drawablePadding="3dp"
-        android:gravity="center"
         android:text="@string/placeholder"
         android:textColor="@color/gold"
         android:textSize="12sp" />

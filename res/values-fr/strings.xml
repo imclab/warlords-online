@@ -20,7 +20,6 @@
     <string name="about_blog">Jetez un coup d\'oeil à <a href="http://glevelapps.blogspot.co.uk">mon Blog</a> !</string>
     <string name="about_contact"><a href="mailto:guillaume.gouchon@gmail.com">Contactez moi</a> si vous rencontrez un problème ou si vous avez une question.</string>
     <string name="about_other_sources">L\'application utilise le moteur AndEngine réalisé par Nicolas Gramlich.</string>
-    <string name="about_version">Version : 2.0.0</string>
 
     <!-- Home Screen -->
     <string name="solo">Partie Solo</string>
@@ -51,12 +50,12 @@
     <string name="leave_report">Quitter le debriefing</string>
     <string name="players">Joueurs</string>
     <string name="gold_gathered">Or récolté</string>
-    <string name="units_created">Unités créés</string>
+    <string name="units_created">Unités créées</string>
     <string name="units_killed">Unités détruites</string>
     <string name="battles_won">Batailles remportées</string>
     <string name="population_graph_title">Graphe de population</string>
     <string name="economy_graph_title">Graphe d\'économie</string>
-    <string name="game_was_too_short">La partie était trop courte !\Vos stats ne seront pas mises à jour&#8230;</string>
+    <string name="game_was_too_short">La partie était trop courte !\nVos stats ne seront pas mises à jour&#8230;</string>
 
     <!-- Multiplayer Screen -->
     <string name="quick_game">Partie rapide</string>

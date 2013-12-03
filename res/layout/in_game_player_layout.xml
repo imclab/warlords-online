@@ -14,7 +14,8 @@
         android:drawablePadding="14dp"
         android:gravity="center"
         android:padding="6dp"
-        android:text="@string/placeholder" />
+        android:text="@string/placeholder"
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/chat"
@@ -31,12 +32,13 @@
         style="@style/SettingsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="25dp"
         android:drawableLeft="@drawable/ic_coin"
         android:drawablePadding="10dp"
         android:gravity="center"
         android:padding="6dp"
         android:text="@string/placeholder"
+        android:textSize="20sp"
         android:visibility="gone" />
 
 </LinearLayout>

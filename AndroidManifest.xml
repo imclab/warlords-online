@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.giggs.apps.chaos"
     android:installLocation="preferExternal"
-    android:versionCode="27"
-    android:versionName="2.0" >
+    android:versionCode="28"
+    android:versionName="2.0.2" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
