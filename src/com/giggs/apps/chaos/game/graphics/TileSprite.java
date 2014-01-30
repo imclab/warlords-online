@@ -14,6 +14,7 @@ public class TileSprite extends Sprite {
 
     private Tile tile;
     private BuySprite buySprite;
+    private boolean isWinter = false;
 
     public TileSprite(float pX, float pY, TextureRegion pTextureRegion,
             VertexBufferObjectManager pSpriteVertexBufferObject, Scene mScene, InputManager inputManager, Tile tile) {
@@ -38,10 +39,10 @@ public class TileSprite extends Sprite {
             buySprite.setVisible(false);
             attachChild(buySprite);
         }
-
     }
 
     public void updateWeather(boolean isWinter) {
+        this.isWinter = isWinter;
         if (isWinter) {
             setTextureRegion(GraphicsFactory.mGfxMap.get(tile.getTerrain().getSpriteName().replace(".png", "")
                     + "_winter.png"));
@@ -59,4 +60,9 @@ public class TileSprite extends Sprite {
             buySprite.setX(getWidth() - 59);
         }
     }
+
+    public boolean isWinter() {
+        return isWinter;
+    }
+
 }

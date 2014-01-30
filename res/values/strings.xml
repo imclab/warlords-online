@@ -25,8 +25,8 @@
     <string name="about_credits">Game and music\nby <a href="http://www.linkedin.com/profile/view?id=144913212">Guillaume Gouchon</a>.</string>
     <string name="about_blog">Check out <a href="http://glevelapps.blogspot.co.uk">my Blog</a> !</string>
     <string name="about_contact"><a href="mailto:guillaume.gouchon@gmail.com">Contact me</a> if you have any issue or question.</string>
-    <string name="about_other_sources">The game is using the AndEngine engine by Nicolas Gramlich.</string>
-    <string name="about_version">Version : 2.0.2</string>
+    <string name="about_other_sources">The game is using AndEngine by Nicolas Gramlich.</string>
+    <string name="about_version">Version : 2.0.3</string>
 
     <!-- Home Screen -->
     <string name="solo">Play Solo</string>
@@ -131,12 +131,14 @@
     <string name="fort">Fort</string>
     <string name="windmill">Windmill Farms</string>
     <string name="mountain">Mountain</string>
+    <string name="lake">Lake</string>
     <string name="grass_description">No effect</string>
     <string name="castle_description">+100 gold/turn (+70 during winter)\n\n- The most important place of your kingdom: lose it and you lose the game\n- Units factory\n- Gives protection and recovering bonuses to units</string>
     <string name="windmill_description">+100 gold/turn (+70 during winter)\n\n- Gives morale recovering bonuses.</string>
     <string name="fort_description">+50 gold/turn (+35 during winter)\n\n- Units factory\n- Gives protection and recovering bonuses to units</string>
     <string name="forest_description">- Fogs of war are not removed with units in diagonals</string>
     <string name="mountain_description">- Heavy infantries cannot climb mountains\n- Mountains allow you to see further through the fogs of war</string>
+    <string name="lake_description">- Units cannot cross lakes during Summer. During winter, frozen lakes can be crossed</string>
 
     <!-- Help section -->
     <string name="terrain_tiles">Terrain Tiles</string>
@@ -155,7 +157,7 @@
     <string name="orcs_army_description">The Orcs and Goblins are composed of aggressive and ruthlessly troops.\nTheir troops get damage bonuses when attacking, but they get less bonuses than other armies when defending.</string>
     <string name="undead_army_description">Undead units are weak in battle but will never flee the battlefield; instead, their troops go back to dust when their morale (= magic) is too low.\nUndead are terrifying and decrease largely opponents\' morale during battles.</string>
     <string name="chaos_army_description">The Chaos armies are composed of outnumbered elite troops, deadly spellcasters and devilish monsters.</string>
-    <string name="dwarf_army_description">Balanced defensive army.\nDwarves units have extra combat bonuses in mountains and when defending positions.</string>
+    <string name="dwarf_army_description">Balanced defensive army.\nDwarves units have extra combat bonuses in mountains and when defending positions but are weak in forests. </string>
 
     <!-- Units descriptions -->
     <string name="human_soldier_description"></string>

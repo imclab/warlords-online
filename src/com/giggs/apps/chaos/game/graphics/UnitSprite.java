@@ -32,7 +32,8 @@ public class UnitSprite extends Sprite {
 
     public UnitSprite(GameElement gameElement, InputManager inputManager, float pX, float pY,
             ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager mVertexBufferObjectManager) {
-        super(pX, pY, GraphicsFactory.mGfxMap.get("transparent.png"), mVertexBufferObjectManager);
+        super(pX, pY, GraphicsFactory.mGfxMap.get("transparent.png") != null ? GraphicsFactory.mGfxMap
+                .get("transparent.png") : GraphicsFactory.mGfxMap.get("transparent2.png"), mVertexBufferObjectManager);
         mGameElement = gameElement;
         mInputManager = inputManager;
         // add characters

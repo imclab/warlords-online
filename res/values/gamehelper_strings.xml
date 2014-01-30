@@ -12,6 +12,9 @@
     <string name="achievement_captain">CgkI54OOvI8REAIQBQ</string>
     <string name="achievement_warlord">CgkI54OOvI8REAIQBg</string>
     <string name="achievement_professor_chaos">CgkI54OOvI8REAIQBw</string>
+    <string name="achievement_big_battle">CgkI54OOvI8REAIQCQ</string>
+    <string name="achievement_back_door">CgkI54OOvI8REAIQCg</string>
+    <string name="achievement_blitzkrieg">CgkI54OOvI8REAIQCw</string>
     <string name="ranking_best_generals">CgkI54OOvI8REAIQAQ</string>
 
 </resources>

@@ -15,163 +15,159 @@ import com.giggs.apps.chaos.game.model.units.Unit;
 
 public class Tile extends Node implements Serializable {
 
-	/**
+    /**
      * 
      */
-	private static final long serialVersionUID = -4833559440300774703L;
-	private TerrainData terrain;
-	private List<Unit> content = new ArrayList<Unit>();
-	private int owner = -1;
-	private transient TileSprite sprite;
-	private boolean isVisible;
+    private static final long serialVersionUID = -4833559440300774703L;
+    private TerrainData terrain;
+    private List<Unit> content = new ArrayList<Unit>();
+    private int owner = -1;
+    private transient TileSprite sprite;
+    private boolean isVisible;
 
-	private boolean isMoveOption = false;
+    private boolean isMoveOption = false;
 
-	public Tile(int x, int y, TerrainData terrain) {
-		super(x, y);
-		this.terrain = terrain;
-	}
+    public Tile(int x, int y, TerrainData terrain) {
+        super(x, y);
+        this.terrain = terrain;
+    }
 
-	public List<Unit> getContent() {
-		return content;
-	}
+    public List<Unit> getContent() {
+        return content;
+    }
 
-	public void setContent(List<Unit> content) {
-		this.content = content;
-	}
+    public void setContent(List<Unit> content) {
+        this.content = content;
+    }
 
-	public TerrainData getTerrain() {
-		return terrain;
-	}
+    public TerrainData getTerrain() {
+        return terrain;
+    }
 
-	public void setTerrain(TerrainData terrain) {
-		this.terrain = terrain;
-	}
+    public void setTerrain(TerrainData terrain) {
+        this.terrain = terrain;
+    }
 
-	public int getOwner() {
-		return owner;
-	}
+    public int getOwner() {
+        return owner;
+    }
 
-	public void setOwner(int owner) {
-		this.owner = owner;
-	}
+    public void setOwner(int owner) {
+        this.owner = owner;
+    }
 
-	public TileSprite getSprite() {
-		return sprite;
-	}
+    public TileSprite getSprite() {
+        return sprite;
+    }
 
-	public void setSprite(TileSprite sprite) {
-		this.sprite = sprite;
-	}
+    public void setSprite(TileSprite sprite) {
+        this.sprite = sprite;
+    }
 
-	public void updateTileOwner(int myArmyIndex, int newOwner) {
-		setOwner(newOwner);
+    public void updateTileOwner(int myArmyIndex, int newOwner) {
+        setOwner(newOwner);
 
-		if (sprite != null) {
-			// update buy button visibility
-			if (terrain.isUnitFactory()) {
-				sprite.getChildByTag(R.string.tag_buy_button).setVisible(newOwner == myArmyIndex);
-			}
+        if (sprite != null) {
+            // update buy button visibility
+            if (terrain.isUnitFactory()) {
+                sprite.getChildByTag(R.string.tag_buy_button).setVisible(newOwner == myArmyIndex);
+            }
 
-			// update owner's control zone color
-			if (sprite.getChildByTag(R.string.tag_control_zone) != null) {
-				sprite.getChildByTag(R.string.tag_control_zone).setVisible(true);
-				sprite.getChildByTag(R.string.tag_control_zone).setColor(GameUtils.PLAYER_COLORS[newOwner]);
-			}
-		}
-	}
+            // update owner's control zone color
+            if (sprite.getChildByTag(R.string.tag_control_zone) != null) {
+                sprite.getChildByTag(R.string.tag_control_zone).setVisible(true);
+                sprite.getChildByTag(R.string.tag_control_zone).setColor(GameUtils.PLAYER_COLORS[newOwner]);
+            }
+        }
+    }
 
-	public boolean isVisible() {
-		return isVisible;
-	}
+    public boolean isVisible() {
+        return isVisible;
+    }
 
-	public void setVisible(int myArmyIndex, boolean isVisible) {
-		this.isVisible = isVisible;
+    public void setVisible(int myArmyIndex, boolean isVisible) {
+        this.isVisible = isVisible;
 
-		if (sprite != null) {
-			// update visibility
-			if (isVisible) {
-				sprite.setAlpha(1.0f);
-			} else {
-				sprite.setAlpha(0.5f);
-			}
-			// update sprite children visibility
-			if (sprite.getChildByTag(R.string.tag_control_zone) != null && owner >= 0) {
-				sprite.getChildByTag(R.string.tag_control_zone).setVisible(isVisible);
-			}
+        sprite.setAlpha(isVisible ? 1.0f : 0.5f);
 
-			// update buy button visibility
-			if (terrain.isUnitFactory()) {
-				sprite.getChildByTag(R.string.tag_buy_button).setVisible(owner == myArmyIndex && isVisible);
-			}
+        if (sprite != null) {
+            // update sprite children visibility
+            if (sprite.getChildByTag(R.string.tag_control_zone) != null && owner >= 0) {
+                sprite.getChildByTag(R.string.tag_control_zone).setVisible(isVisible);
+            }
 
-			// update content visibility
-			for (Unit unit : content) {
-				unit.getSprite().setVisible(isVisible);
-			}
-		}
-	}
+            // update buy button visibility
+            if (terrain.isUnitFactory()) {
+                sprite.getChildByTag(R.string.tag_buy_button).setVisible(owner == myArmyIndex && isVisible);
+            }
 
-	public boolean isMoveOption() {
-		return isMoveOption;
-	}
+            // update content visibility
+            for (Unit unit : content) {
+                unit.getSprite().setVisible(isVisible);
+            }
+        }
+    }
 
-	public void setMoveOption(boolean isSet) {
-		isMoveOption = isSet;
-		updateColor();
-	}
+    public boolean isMoveOption() {
+        return isMoveOption;
+    }
 
-	private void updateColor() {
-		if (isMoveOption) {
-			sprite.setColor(0.0f, 0.6f, 0.0f);
-		} else {
-			sprite.setColor(1.0f, 1.0f, 1.0f);
-		}
-	}
+    public void setMoveOption(boolean isSet) {
+        isMoveOption = isSet;
+        updateColor();
+    }
 
-	public void setHovered(boolean isHovered) {
-		if (isHovered) {
-			sprite.setColor(0.0f, 0.35f, 0.0f);
-		} else {
-			updateColor();
-		}
-	}
+    private void updateColor() {
+        if (isMoveOption) {
+            sprite.setColor(0.0f, 0.6f, 0.0f);
+        } else {
+            sprite.setColor(1.0f, 1.0f, 1.0f);
+        }
+    }
 
-	public void updateWeather(boolean isWinter) {
-		if (sprite != null) {
-			sprite.updateWeather(isWinter);
-		}
-	}
+    public void setHovered(boolean isHovered) {
+        if (isHovered) {
+            sprite.setColor(0.0f, 0.35f, 0.0f);
+        } else {
+            updateColor();
+        }
+    }
 
-	public int getGoldAmountGathered() {
-		switch (terrain) {
-		case farm:
-			return 100;
-		case castle:
-			return 100;
-		case fort:
-			return 50;
-		}
-		return 0;
-	}
+    public void updateWeather(boolean isWinter) {
+        if (sprite != null) {
+            sprite.updateWeather(isWinter);
+        }
+    }
 
-	public boolean isEnemyOnIt(int myArmyIndex) {
-		return content.size() > 0 && content.get(0).getArmyIndex() != myArmyIndex;
-	}
+    public int getGoldAmountGathered() {
+        switch (terrain) {
+        case farm:
+            return 100;
+        case castle:
+            return 100;
+        case fort:
+            return 50;
+        }
+        return 0;
+    }
 
-	public boolean isAllyOnIt(int myArmyIndex) {
-		return content.size() > 0 && content.get(0).getArmyIndex() == myArmyIndex;
-	}
+    public boolean isEnemyOnIt(int myArmyIndex) {
+        return content.size() > 0 && content.get(0).getArmyIndex() != myArmyIndex;
+    }
 
-	public void updateUnitProduction(TextureRegion texture) {
-		if (sprite != null) {
-			sprite.updateUnitProduction(texture);
-		}
-	}
+    public boolean isAllyOnIt(int myArmyIndex) {
+        return content.size() > 0 && content.get(0).getArmyIndex() == myArmyIndex;
+    }
 
-	@Override
-	public boolean canMoveIn() {
-		return true;
-	}
+    public void updateUnitProduction(TextureRegion texture) {
+        if (sprite != null) {
+            sprite.updateUnitProduction(texture);
+        }
+    }
+
+    @Override
+    public boolean canMoveIn() {
+        return true;
+    }
 
 }

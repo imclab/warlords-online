@@ -56,6 +56,7 @@ public class HelpActivity extends MyActivity {
                     content.addView(getRow(R.drawable.ti_forest, R.string.forest, R.string.forest_description));
                     content.addView(getRow(R.drawable.ti_fort, R.string.fort, R.string.fort_description));
                     content.addView(getRow(R.drawable.ti_mountains, R.string.mountain, R.string.mountain_description));
+                    content.addView(getRow(R.drawable.ti_water, R.string.lake, R.string.lake_description));
                     break;
                 case 2:
                     content.addView(getRow(R.drawable.ic_double_axe, R.string.battle_title1, R.string.battle1));

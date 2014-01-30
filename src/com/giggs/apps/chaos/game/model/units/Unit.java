@@ -132,6 +132,9 @@ public abstract class Unit extends GameElement {
     }
 
     public boolean canMove(Tile tile) {
+        if (!tile.getSprite().isWinter() && tile.getTerrain() == TerrainData.water) {
+            return false;
+        }
         return true;
     }
 

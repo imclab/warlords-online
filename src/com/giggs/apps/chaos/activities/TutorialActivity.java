@@ -103,7 +103,8 @@ public class TutorialActivity extends GameActivity {
         // init game element factory
         mGameElementFactory = new GraphicsFactory(this, getVertexBufferObjectManager(), getTextureManager());
         mGameElementFactory.initGraphics(battle);
-
+        // load fogs shader
+        // this.getShaderProgramManager().loadShaderProgram(Fogs.shader);
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 
@@ -170,7 +171,8 @@ public class TutorialActivity extends GameActivity {
         }
 
         // init fogs of war
-        GameLogic.updateFogsOfWar(battle, 0);
+        // mScene.attachChild(fogs);
+        GameLogic.updateFogsOfWar(battle, 0, fogs);
 
         wait(300);
         mGameGUI.hideLoadingScreen();
@@ -218,7 +220,7 @@ public class TutorialActivity extends GameActivity {
         }
 
         // update fogs of war
-        GameLogic.updateFogsOfWar(battle, 0);
+        GameLogic.updateFogsOfWar(battle, 0, fogs);
 
         getEngine().start();
 

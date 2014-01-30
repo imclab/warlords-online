@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import org.andengine.entity.primitive.Rectangle;
+
 import android.annotation.SuppressLint;
 
 import com.giggs.apps.chaos.game.AI;
@@ -454,7 +456,7 @@ public class GameLogic {
         }
     }
 
-    public static void updateFogsOfWar(Battle battle, int myArmyIndex) {
+    public static void updateFogsOfWar(Battle battle, int myArmyIndex, Rectangle fogs) {
         Map map = battle.getMap();
         // hide all tiles
         for (int y = 0; y < map.getHeight(); y++) {
@@ -470,6 +472,7 @@ public class GameLogic {
                 // do I own this tile ?
                 if (tile.getOwner() == myArmyIndex || tile.getContent().size() > 0
                         && tile.getContent().get(0).getArmyIndex() == myArmyIndex) {
+
                     tile.setVisible(myArmyIndex, true);
 
                     int vision = 1;// control zone vision

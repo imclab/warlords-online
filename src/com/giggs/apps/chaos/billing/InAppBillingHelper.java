@@ -98,8 +98,10 @@ public class InAppBillingHelper {
             Bundle buyIntentBundle = mService.getBuyIntent(3, mActivity.getPackageName(), productId,
                     IN_APP_PURCHASE_TYPE, "doodidadoodoodida");
             PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
-            mActivity.startIntentSenderForResult(pendingIntent.getIntentSender(), BILLING_REQUEST_CODE, new Intent(),
-                    Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0));
+            if (pendingIntent != null) {
+                mActivity.startIntentSenderForResult(pendingIntent.getIntentSender(), BILLING_REQUEST_CODE,
+                        new Intent(), Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0));
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (SendIntentException e) {
@@ -110,7 +112,7 @@ public class InAppBillingHelper {
     public void onDestroy() {
         if (mServiceConn != null) {
             mActivity.unbindService(mServiceConn);
-		}
-	}
+        }
+    }
 
 }

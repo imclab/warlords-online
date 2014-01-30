@@ -118,12 +118,14 @@
     <string name="fort">Fort</string>
     <string name="windmill">Fermes</string>
     <string name="mountain">Montagnes</string>
+    <string name="lake">Lacs</string>
     <string name="grass_description">Pas d\'effet particulier</string>
     <string name="castle_description">+100 or/tour (+70 en hiver)\n\n- L\'endroit le plus important de votre royaume: vous perdez la partie si vous le perdez\n- Fabrique d\'unités\n- Procure protection et bonus de récupération aux unités</string>
     <string name="windmill_description">+100 or/tour (+70 en hiver)\n\n- Donne un bonus de récupération au moral.</string>
     <string name="fort_description">+50 or/tour (+35 en hiver)\n\n- Fabrique d\'unités\n- Procure protection et bonus de récupération aux unités</string>
     <string name="forest_description">- Les unités en diagonale ne font pas tomber le brouillard de guerre</string>
     <string name="mountain_description">- Les unités lourdes ne peuvent pas gravir les montagnes\n- Les montagnes donnent des bonus de vision</string>
+    <string name="lake_description">- Les unités ne peuvent traverser les lacs durant l\'été. Pendant l\'hiver, les lacs gelés peuvent être traversés</string>
 
     <!-- Help section -->
     <string name="terrain_tiles">Types de terrains</string>
@@ -142,7 +144,7 @@
     <string name="orcs_army_description">Les orques et gobelins sont composés de troupes agressives et sans merci.\nLeurs troupes ont des bonus offensifs quand elles attaquent, mais gagnent moins de bonus que les autres armées quand elles défendent leurs positions.</string>
     <string name="undead_army_description">Les unités morts-vivants sont faibles au combat mais ne fuiront jamais une bataille car sans âme; à la place, leurs troupes retournent à l\'état de poussière quand leur moral (=magie) est bas.\nLes morts-vivants sont terrifiants et font rapidement décroître le moral de leurs ennemis pendant les combats.</string>
     <string name="chaos_army_description">Les armées du Chaos sont uniquement composées de troupes d\'élites en sous-nombre, de puissants sorciers et de monstres démoniaques.</string>
-    <string name="dwarf_army_description">Armée défensive.\nLes unités naines ont des bonus de combat en défense et dans les montagnes.</string>
+    <string name="dwarf_army_description">Armée défensive.\nLes unités naines ont des bonus de combat en défense et dans les montagnes mais sont affaiblies en forêt.</string>
 
     <!-- Units descriptions -->
     <string name="human_soldier_description"></string>

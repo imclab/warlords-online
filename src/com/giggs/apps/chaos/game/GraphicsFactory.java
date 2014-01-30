@@ -57,12 +57,13 @@ public class GraphicsFactory {
         }
 
         // stuff to load
+        loadGfxFromAssets(2, 2, "transparent.png", 0, 0);
+        loadGfxFromAssets(10, 10, "transparent2.png", 0, 0);
         loadGfxFromAssets(256, 256, "control_zone.png", 0, 0);
         loadGfxFromAssets(128, 128, "selection.png", 0, 0);
         loadGfxFromAssets(64, 64, "buy.png", 0, 0);
         loadGfxFromAssets(50, 80, "move_order.png", 0, 0);
         loadGfxFromAssets(70, 70, "defend_order.png", 0, 0);
-        loadGfxFromAssets(2, 2, "transparent.png", 0, 0);
     }
 
     private void loadGfxFromAssets(int textureWidth, int textureHeight, String imageName, int x, int y) {

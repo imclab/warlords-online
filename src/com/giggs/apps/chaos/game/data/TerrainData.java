@@ -1,8 +1,8 @@
 package com.giggs.apps.chaos.game.data;
 
 public enum TerrainData {
-    grass(12, "ti_empty_grass.png"), fort(1, "ti_fort.png"), castle(0, "ti_castle.png"), forest(5, "ti_forest.png"), mountain(
-            4, "ti_mountains.png"), farm(1, "ti_windmills.png");
+    grass(16, "ti_empty_grass.png"), fort(2, "ti_fort.png"), castle(0, "ti_castle.png"), forest(8, "ti_forest.png"), mountain(
+            6, "ti_mountains.png"), farm(2, "ti_windmills.png"), water(1, "ti_water.png");
 
     private final int quantityFactor;
     private final String spriteName;
